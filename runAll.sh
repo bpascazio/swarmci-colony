@@ -1,1 +1,1 @@
-java -jar build/jar/Swarm.jar
+java -jar build/jar/Colony.jar
