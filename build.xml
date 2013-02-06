@@ -1,35 +1,36 @@
 <project>
 
-    <target name="clean">
-        <delete dir="build"/>
-    </target>
+	<target name="clean">
+		<delete dir="build" />
+	</target>
 
-    <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" 
-            destdir="build/classes"/>
-    </target>
+	<target name="compile">
+		<mkdir dir="build/classes" />
+		<javac srcdir="src" destdir="build/classes"
+			classpath="libs/httpcore-4.2.2.jar:libs/httpclient-4.2.3.jar:libs/json-20090211.jar" />
+	</target>
 
-    <target name="colony-jar">
-        <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/Colony.jar" basedir="build/classes">
-            <manifest>
-                <attribute name="Main-Class" value="com.bytefly.swarm.colony.Colony"/>
-            </manifest>
-        </jar>
-    </target>
+	<target name="colony-jar">
+		<mkdir dir="build/jar" />
+		<jar destfile="build/jar/Colony.jar" basedir="build/classes">
+			<manifest>
+				<attribute name="Main-Class" value="com.bytefly.swarm.colony.Colony" />
+			</manifest>
+		</jar>
+	</target>
 
-    <target name="swarm-jar">
-        <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/Swarm.jar" basedir="build/classes">
-            <manifest>
-                <attribute name="Main-Class" value="com.bytefly.swarm.CommandLine"/>
-            </manifest>
-        </jar>
-    </target>
-    
-    <target name="run-colony">
-        <java jar="build/jar/Colony.jar" fork="true"/>
-    </target>
-    
+	<target name="swarm-jar">
+		<mkdir dir="build/jar" />
+		<jar destfile="build/jar/Swarm.jar" basedir="build/classes">
+			<manifest>
+				<attribute name="Main-Class" value="com.bytefly.swarm.CommandLine" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run-colony">
+		<java jar="build/jar/Colony.jar" fork="true"
+			classpath="libs/httpcore-4.2.2.jar:libs/httpclient-4.2.3.jar:libs/json-20090211.jar" />
+	</target>
+
 </project>
