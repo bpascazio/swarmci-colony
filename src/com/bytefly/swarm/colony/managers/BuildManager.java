@@ -7,14 +7,19 @@ public class BuildManager extends Manager {
 
 	public void run() {
 		this.start();
-		Debug.Log(Debug.INFO, "Build manager started.");
+		Debug.Log(Debug.INFO, "BuildManager started.");
 		while (running) {
-			Debug.Log(Debug.TRACE, "processing build queue");
+			Debug.Log(Debug.TRACE, "BuildManager taking from queue");
+			Work w = null;
 			try {
-				Thread.sleep(Config.getIntValue(Config.SWARM_BUILD_CHECK_FREQ));
+				w = this.take();
+				Debug.Log(Debug.TRACE, "BuildManager received item "+w.toString());
+				// pull code from git here then queue a build
 			} catch (Exception e) {
-
+				Debug.Log(Debug.TRACE, "BuildManager work queue exception - exiting");
+				stop();
 			}
 		}
+		Debug.Log(Debug.INFO, "BuildManager stopped.");
 	}
 }

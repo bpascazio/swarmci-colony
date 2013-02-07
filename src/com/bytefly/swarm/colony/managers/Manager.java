@@ -1,20 +1,48 @@
 package com.bytefly.swarm.colony.managers;
 
+import java.util.Queue;
+import java.util.LinkedList;
+
+import com.bytefly.swarm.colony.util.Config;
+
 public abstract class Manager implements Runnable {
 
 	protected boolean running;
+	protected Queue<Work> workq;
+	private int capacity;
 
 	Manager() {
 		this(true);
 	}
 
 	Manager(boolean autostart) {
+		workq = new LinkedList<Work>();
 		if (autostart) {
-			running = true;
+			start();
 			create();
 		} else {
 			running = false;
 		}
+		capacity = Config.getIntValue(Config.SWARM_DEFAULT_QUEUE_SIZE);
+	}
+
+	public synchronized void put(Work element) throws InterruptedException {
+		while (workq.size() == capacity) {
+			wait();
+		}
+
+		workq.add(element);
+		notify();
+	}
+
+	public synchronized Work take() throws InterruptedException {
+		while (workq.isEmpty()) {
+			wait();
+		}
+
+		Work item = workq.remove();
+		notify();
+		return item;
 	}
 
 	void stop() {
