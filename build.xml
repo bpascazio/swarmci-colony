@@ -7,7 +7,7 @@
 	<target name="compile">
 		<mkdir dir="build/classes" />
 		<javac srcdir="src" destdir="build/classes"
-			classpath="libs/httpcore-4.2.2.jar:libs/httpclient-4.2.3.jar:libs/json-20090211.jar" />
+			classpath="libs/httpcore-4.2.2.jar:libs/httpclient-4.2.3.jar:libs/json-lib-2.4-jdk15.jar:libs/apache-commons.jar" />
 	</target>
 
 	<target name="colony-jar">
@@ -30,7 +30,7 @@
 
 	<target name="run-colony">
 		<java jar="build/jar/Colony.jar" fork="true"
-			classpath="libs/httpcore-4.2.2.jar:libs/httpclient-4.2.3.jar:libs/json-20090211.jar" />
+			classpath="libs/httpcore-4.2.2.jar:libs/httpclient-4.2.3.jar:libs/json-lib-2.4-jdk15.jar:libs/apache-commons.jar" />
 	</target>
 
 </project>

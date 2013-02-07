@@ -19,7 +19,7 @@ public class Colony {
 		ProjectManager pm = new ProjectManager(gm);
 		
 		// swarm manager manages lifecycle of server
-		SwarmManager sm = new SwarmManager();
+		SwarmManager sm = new SwarmManager(pm, gm, bm);
 		sm.run();
 	}
 }

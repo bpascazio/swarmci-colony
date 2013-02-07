@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/bpascazio/code/swarm-v1-colony-java/libs/httpcore-4.2.2.jar"/>
 	<classpathentry kind="lib" path="/Users/bpascazio/code/swarm-v1-colony-java/libs/httpclient-4.2.3.jar"/>
-	<classpathentry kind="lib" path="/Users/bpascazio/code/swarm-v1-colony-java/libs/json-20090211.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/swarm-v1-colony-java/libs/json-lib-2.4-jdk15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

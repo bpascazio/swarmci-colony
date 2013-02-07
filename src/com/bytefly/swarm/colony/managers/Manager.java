@@ -3,6 +3,7 @@ package com.bytefly.swarm.colony.managers;
 import java.util.Queue;
 import java.util.LinkedList;
 
+import com.bytefly.swarm.colony.managers.work.Work;
 import com.bytefly.swarm.colony.util.Config;
 
 public abstract class Manager implements Runnable {

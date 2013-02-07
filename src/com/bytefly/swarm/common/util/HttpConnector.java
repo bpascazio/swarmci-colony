@@ -8,15 +8,16 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.util.JSONTokener;
 
 import com.bytefly.swarm.colony.util.Version;
 import com.bytefly.swarm.common.util.Config;
 import com.bytefly.swarm.common.util.Debug;
 
 // 
-// This class provides a simple stable HTTP communication to get weather information.
+// This class provides a simple stable HTTP communication to fetch an entity list.
 //
 
 public class HttpConnector {
@@ -33,7 +34,6 @@ public class HttpConnector {
 
 		boolean updated = false; // assume failure
 		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton problem
-		String ServerURL = "";
 		BufferedReader in = null;
 
 		try {
@@ -72,10 +72,12 @@ public class HttpConnector {
 			//
 			// Note that the reponse is JSON.
 			//
-/*			
+			
 			JSONTokener tokener = new JSONTokener(page);
-			JSONObject res = (JSONObject) tokener.nextValue();
-			int resultjson = (int) res.getLong("result");
+			JSONArray res = (JSONArray) tokener.nextValue();
+			Debug.Log(Debug.DEBUG, "entity list size=" + res.size());
+			
+			/*int resultjson = (int) res.getLong("result");
 			error_code = resultjson;
 			if (resultjson == 0) {
 				tempstr = res.getString("temp");
@@ -85,8 +87,8 @@ public class HttpConnector {
 			} else {
 				// error response code
 				Log.d(TAG, "error response code=" + resultjson);
-			}
-			*/
+			}*/
+			
 		} catch (Exception e) {
 			
 			//
