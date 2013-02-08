@@ -21,9 +21,8 @@ public class SwarmManager extends Manager {
 		Debug.Log(Debug.INFO, "SwarmManager started.");
 		start();
 		
-		// Note we add one quanta of swarm mgr check freq below so we start immediately.
-		int cproject = Config.getIntValue(Config.SWARM_PROJECT_CHECK_FREQ)+Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
-		int cscan = Config.getIntValue(Config.SWARM_GIT_CHECK_FREQ)+Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
+		int cproject = 0;
+		int cscan = 0;
 		Work w = null;
 		
 		
@@ -37,7 +36,6 @@ public class SwarmManager extends Manager {
 			// for changes every 1 second.  These values are all controllable by config and properties.
 			//
 			
-			cproject = cproject - Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
 			if (cproject == 0) {
 				
 				// send command to project manager
@@ -52,9 +50,10 @@ public class SwarmManager extends Manager {
 				
 				// reset the counter
 				cproject = Config.getIntValue(Config.SWARM_PROJECT_CHECK_FREQ)+Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
+			} else {
+				cproject = cproject - Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
 			}
 			
-			cscan = cscan - Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
 			if (cscan == 0) {
 
 				// send command to git manager
@@ -68,6 +67,8 @@ public class SwarmManager extends Manager {
 				}				
 				// reset the counter
 				cscan = Config.getIntValue(Config.SWARM_GIT_CHECK_FREQ)+Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
+			} else {
+				cscan = cscan - Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
 			}
 			
 			try {

@@ -8,7 +8,7 @@ public class Debug {
 	static public final int INFO    = 3;
 	static public final int ERROR   = 4;
 
-	private static final int log_level = DEBUG;
+	private static final int log_level = TRACE;
 
 	public static void Log(int level, String msg) {
 		if (level >= log_level) {

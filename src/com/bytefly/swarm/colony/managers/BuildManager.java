@@ -1,12 +1,15 @@
 package com.bytefly.swarm.colony.managers;
 
+import com.bytefly.swarm.colony.builders.Builder;
+import com.bytefly.swarm.colony.builders.XCodeBuilder;
 import com.bytefly.swarm.colony.managers.work.Work;
+import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Debug;
 
 // Work is to build an app and send out.
 
 public class BuildManager extends Manager {
-
+	int fake_count = 0;
 	public void run() {
 		this.start();
 		Debug.Log(Debug.INFO, "BuildManager started.");
@@ -21,10 +24,17 @@ public class BuildManager extends Manager {
 					stop();
 				} else if (w.name.equals(Work.WORK_ITEM_BUILD_BUILD_PROJECT)) {
 					// pull code from git here then queue a build
-					Debug.Log(Debug.DEBUG, "BuildManager executing build");
+					Project p = (Project) w.data;
+					Debug.Log(Debug.DEBUG, "BuildManager executing build for "+p.Name);
+					if (p.BuilderType == Builder.BUILDER_TYPE_XCODE) {
+						Debug.Log(Debug.TRACE, "BuildManager executing xcode project");
+						XCodeBuilder xcb = new XCodeBuilder();
+						xcb.p = p;
+						xcb.runAll();
+					}
 				}				
 			} catch (Exception e) {
-				Debug.Log(Debug.INFO, "BuildManager work queue exception - exiting");
+				Debug.Log(Debug.INFO, "BuildManager work queue exception - exiting "+e.toString());
 				stop();
 			}
 		}

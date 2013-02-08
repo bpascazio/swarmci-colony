@@ -2,8 +2,9 @@ package com.bytefly.swarm.colony.collections;
 
 import com.bytefly.swarm.common.util.HttpConnector;
 import com.bytefly.swarm.colony.models.Project;
+import com.bytefly.swarm.colony.models.Project;
 
-public class ProjectList {
+public class ProjectList extends Collection {
 
 	public ProjectList() {
 		load();
@@ -11,7 +12,7 @@ public class ProjectList {
 	
 	public void load() {
 		HttpConnector hc = new HttpConnector();
-		hc.getEntityList(Project.ENTITY_COLLECTION);
+		this.cv = hc.getEntityList(new Project().ENTITY_COLLECTION);
 	}
 	
 	public void refresh() {
