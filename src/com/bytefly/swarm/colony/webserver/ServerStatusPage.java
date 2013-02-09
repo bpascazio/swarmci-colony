@@ -1,0 +1,31 @@
+package com.bytefly.swarm.colony.webserver;
+
+import java.io.DataOutputStream;
+
+import com.bytefly.swarm.colony.Status;
+
+public class ServerStatusPage {
+
+	public static void sendStatus(DataOutputStream os) {
+		try {
+			os.writeBytes("<html>\n");
+			os.writeBytes("<head><meta http-equiv=\"refresh\" content=\"5\" ></head>\n");
+			os.writeBytes("<body>\n");
+			os.writeBytes("<b>Colony Server Status Page</b>\n");
+			os.writeBytes("<table border=\"1\">\n");
+			os.writeBytes("<tr><td>Description</td><td>Count</tc></tr>\n");
+			os.writeBytes("<tr><td>Loaded Projects</td><td>"+Status.counter_loaded_projects+"</td></tr>\n");
+			os.writeBytes("<tr><td>Git Checks</td><td>"+Status.counter_git_checks+"</td></tr>\n");			
+			os.writeBytes("<tr><td>Git Updates</td><td>"+Status.counter_git_updates+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git Clone</td><td>"+Status.counter_git_clone+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git RepoCleans</td><td>"+Status.counter_git_repocleans+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git Builds Total</td><td>"+Status.counter_builds_total+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git Builds XCode</td><td>"+Status.counter_builds_xcode+"</td></tr>\n");	
+			os.writeBytes("</table>\n");
+			os.writeBytes("</body>\n");
+			os.writeBytes("</html>\n");
+		} catch (Exception e) {
+			
+		}
+	}
+}

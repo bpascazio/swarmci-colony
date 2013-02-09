@@ -1,12 +1,14 @@
 package com.bytefly.swarm.colony.builders;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 
+import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
-import com.bytefly.swarm.common.util.HttpConnector;
+import com.bytefly.swarm.util.HttpConnector;
 
 public class Builder {
 
@@ -49,8 +51,26 @@ public class Builder {
 		}
 	}
 
-	public void repoGet() {
+	public void repoUpdate() {
 		try {
+			Status.counter_git_updates++;
+			Debug.Log(
+					Debug.TRACE,
+					"Executing "
+							+ Config.getStringValue(Config.SWARM_GIT_UPDATE_CMD));
+			Process pr = Runtime.getRuntime().exec(
+					Config.getStringValue(Config.SWARM_GIT_UPDATE_CMD),null,new File(this.p.BaseName));
+			pr.waitFor(); 
+			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
+		} catch (Exception e) {
+			Debug.Log(Debug.INFO,
+					"Exception caught running repoUpdate " + e.toString());
+		}
+	}
+
+	public void repoClone() {
+		try {
+			Status.counter_git_clone++;
 			Debug.Log(
 					Debug.TRACE,
 					"Executing "

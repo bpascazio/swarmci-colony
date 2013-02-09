@@ -8,4 +8,9 @@ public class Project extends Entity{
 	public String Repo;
 	public int BuilderType;
 	public String BaseName;
+	public boolean forceClean;
+	
+	public Project() {
+		forceClean = false;
+	}
 }

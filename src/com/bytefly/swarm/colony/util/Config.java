@@ -11,16 +11,17 @@ public class Config {
 	public static final String SWARM_GIT_CLONE_CMD = "SWARM_GIT_CLONE_CMD";
 	public static final String SWARM_XCODE_BUILD_CMD = "SWARM_XCODE_BUILD_CMD";
 	public static final String SWARM_GIT_CHECK_CMD = "SWARM_GIT_CHECK_CMD";
+	public static final String SWARM_GIT_UPDATE_CMD = "SWARM_GIT_UPDATE_CMD";
 	public static final String SWARM_CLEAN_REPO_CMD = "SWARM_CLEAN_REPO_CMD";
 	public static final String SWARM_NOTIFY_EMAIL_CMD = "SWARM_NOTIFY_EMAIL_CMD";
 	
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
-			return 60000; // fetch project from rails server every 60 seconds
+			return 60000; // fetch projects from rails server every 60 seconds
 		}
 		if (key.equals(SWARM_GIT_CHECK_FREQ)) {
-			return 15000; // scan for updated git repositories every 15 seconds
+			return 30000; // scan for updated git repositories every 15 seconds
 		}
 		if (key.equals(SWARM_MGR_CHECK_FREQ)) {
 			return 250; // swarm manager checks for commands every 4 times a second
@@ -35,6 +36,9 @@ public class Config {
 	public static String getStringValue(String key) {
 		if (key.equals(SWARM_RAILS_URL)) {
 			return "http://localhost:3000";
+		}
+		if (key.equals(SWARM_GIT_UPDATE_CMD)) {
+			return "git pull";
 		}
 		if (key.equals(SWARM_GIT_CLONE_CMD)) {
 			return "git clone";

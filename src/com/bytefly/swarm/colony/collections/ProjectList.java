@@ -1,8 +1,8 @@
 package com.bytefly.swarm.colony.collections;
 
-import com.bytefly.swarm.common.util.HttpConnector;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.models.Project;
+import com.bytefly.swarm.util.HttpConnector;
 
 public class ProjectList extends Collection {
 

@@ -1,5 +1,6 @@
 package com.bytefly.swarm.colony.managers;
 
+import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.builders.Builder;
 import com.bytefly.swarm.colony.builders.XCodeBuilder;
 import com.bytefly.swarm.colony.managers.work.Work;
@@ -26,8 +27,10 @@ public class BuildManager extends Manager {
 					// pull code from git here then queue a build
 					Project p = (Project) w.data;
 					Debug.Log(Debug.DEBUG, "BuildManager executing build for "+p.Name);
+					Status.counter_builds_total++;
 					if (p.BuilderType == Builder.BUILDER_TYPE_XCODE) {
 						Debug.Log(Debug.TRACE, "BuildManager executing xcode project");
+						Status.counter_builds_xcode++;
 						XCodeBuilder xcb = new XCodeBuilder();
 						xcb.p = p;
 						xcb.runAll();

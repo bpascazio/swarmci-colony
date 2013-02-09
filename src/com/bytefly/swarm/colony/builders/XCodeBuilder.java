@@ -12,10 +12,13 @@ import com.bytefly.swarm.colony.util.Debug;
 public class XCodeBuilder extends Builder {
 
 	public void runAll() {
-		this.repoClean();
-		this.repoGet();
-		this.xcodeBuild();
-		this.notifyEmail();
+		File f = new File(p.BaseName);
+		if(f.exists()) { 
+			Debug.Log(Debug.TRACE, "Git repo exists");
+			this.repoUpdate();
+		} else {
+			this.repoClone();
+		}		
 	}
 	
 	public void xcodeBuild() {

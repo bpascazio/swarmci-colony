@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.builders.GitChecker;
 import com.bytefly.swarm.colony.builders.XCodeBuilder;
 import com.bytefly.swarm.colony.collections.ProjectList;
@@ -15,16 +16,77 @@ import com.bytefly.swarm.colony.util.Debug;
 // Work is to receive lists of projects, check for Git Updates and queue Builds.
 
 public class GitManager extends Manager {
-	
+
 	BuildManager bm;
 	ProjectList pl;
 	HashMap<String, String> mg;
-	
+
 	public GitManager(BuildManager m) {
 		bm = m;
-		mg= new HashMap();
+		mg = new HashMap();
 	}
-	
+
+	class GitRunnable implements Runnable {
+
+		Project p;
+
+		public GitRunnable(Project _p) {
+			p = _p;
+		}
+
+		public void run() {
+			Debug.Log(Debug.TRACE,
+					"GitManager checking for updates project repo " + p.Repo);
+
+			try {
+				// Check for git updates with hashmap
+				GitChecker gc = new GitChecker();
+				gc.p = p;
+				gc.runAll();
+
+				if (gc.lastCheckin != null) {
+					if (mg.containsKey(p.Repo)) {
+
+						// in the repo
+						String existingval = (String) mg.get(p.Repo);
+						Debug.Log(Debug.TRACE, "GitManager existing key "
+								+ existingval);
+
+						// so compare with checker val
+						if (gc.lastCheckin.equals(existingval)) {
+							Debug.Log(Debug.TRACE, "GitManager not changed.");
+						} else {
+							Debug.Log(Debug.TRACE,
+									"Change detected kick off build.");
+
+							Status.counter_git_updates++;
+
+							// set the new key val
+							mg.remove(p.Repo);
+							mg.put(p.Repo, gc.lastCheckin);
+							Work bw = new Work(
+									Work.WORK_ITEM_BUILD_BUILD_PROJECT);
+							bw.data = p;
+							bm.put(bw); // fake queue build
+						}
+					} else {
+
+						// not so add it
+						Debug.Log(Debug.TRACE, "GitManager not in repo "
+								+ p.Repo);
+						mg.put(p.Repo, gc.lastCheckin);
+					}
+				}
+
+			} catch (Exception e) {
+				Debug.Log(Debug.INFO,
+						"GitManager exception in worker thread - exiting");
+				stop();
+			}
+
+		}
+	}
+
 	public void run() {
 		Debug.Log(Debug.INFO, "GitManager started.");
 		while (running) {
@@ -32,57 +94,29 @@ public class GitManager extends Manager {
 			Work w = null;
 			try {
 				w = this.take();
-				Debug.Log(Debug.TRACE, "GitManager received item "+w.toString());
+				Debug.Log(Debug.TRACE,
+						"GitManager received item " + w.toString());
 				if (w.name.equals(Work.WORK_ITEM_STOP)) {
-					//told to stop
+					// told to stop
 					stop();
 				} else if (w.name.equals(Work.WORK_ITEM_UPDATE_PROJECTS)) {
 					pl = (ProjectList) w.data;
 				} else if (w.name.equals(Work.WORK_ITEM_GIT_SCAN_PROJECTS)) {
-					Debug.Log(Debug.DEBUG, "GitManager scanning projects on github for changes...");
-					// scan all the projects github repos and possibly queue builds
-					if (pl!=null&&pl.cv!=null)
-					for (int i=0; i<pl.cv.size(); i++ ) {
-						Project p = (Project) pl.cv.get(i);
-						Debug.Log(Debug.TRACE, "GitManager checking for updates project repo "+p.Repo);
-						
-						// Check for git updates with hashmap
-						GitChecker gc = new GitChecker();
-						gc.p = p;
-						gc.runAll();
-						
-						if (gc.lastCheckin != null) {
-							if ( mg.containsKey(p.Repo)) {
-								
-								// in the repo
-								String existingval=(String) mg.get(p.Repo);
-								Debug.Log(Debug.TRACE, "GitManager existing key "+existingval);
-								
-								// so compare with checker val
-								if (gc.lastCheckin.equals(existingval)) {
-									Debug.Log(Debug.TRACE, "GitManager not changed.");
-								} else {
-									Debug.Log(Debug.TRACE, "Change detected kick off build.");
-									
-									// set the new key val
-									mg.remove(p.Repo);
-									mg.put( p.Repo, gc.lastCheckin );
-									Work bw = new Work(Work.WORK_ITEM_BUILD_BUILD_PROJECT);
-									bw.data=p;
-									bm.put(bw); // fake queue build								
-								}
-							} else {
-								
-								// not so add it
-								Debug.Log(Debug.TRACE, "GitManager not in repo "+p.Repo);
-								mg.put( p.Repo, gc.lastCheckin );								
-							}
+					Debug.Log(Debug.DEBUG,
+							"GitManager scanning projects on github for changes...");
+					// scan all the projects github repos and possibly queue
+					// builds
+					if (pl != null && pl.cv != null)
+						for (int i = 0; i < pl.cv.size(); i++) {
+							Project p = (Project) pl.cv.get(i);
+							GitRunnable gr = new GitRunnable(p); 
+							Thread gth = new Thread(gr);
+							gth.start(); 
 						}
-
-					}
-				}			
+				}
 			} catch (Exception e) {
-				Debug.Log(Debug.INFO, "GitManager work queue exception - exiting");
+				Debug.Log(Debug.INFO,
+						"GitManager work queue exception - exiting");
 				stop();
 			}
 		}
