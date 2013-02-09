@@ -18,7 +18,8 @@ public class XCodeBuilder extends Builder {
 			this.repoUpdate();
 		} else {
 			this.repoClone();
-		}		
+		}	
+		xcodeBuild();
 	}
 	
 	public void xcodeBuild() {

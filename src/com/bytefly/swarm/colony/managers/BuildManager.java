@@ -1,6 +1,7 @@
 package com.bytefly.swarm.colony.managers;
 
 import com.bytefly.swarm.colony.Status;
+import com.bytefly.swarm.colony.builders.AndroidBuilder;
 import com.bytefly.swarm.colony.builders.Builder;
 import com.bytefly.swarm.colony.builders.XCodeBuilder;
 import com.bytefly.swarm.colony.managers.work.Work;
@@ -34,6 +35,13 @@ public class BuildManager extends Manager {
 						XCodeBuilder xcb = new XCodeBuilder();
 						xcb.p = p;
 						xcb.runAll();
+					}
+					if (p.BuilderType == Builder.BUILDER_TYPE_ANDROID) {
+						Debug.Log(Debug.TRACE, "BuildManager executing android project");
+						Status.counter_builds_android++;
+						AndroidBuilder ab = new AndroidBuilder();
+						ab.p = p;
+						ab.runAll();
 					}
 				}				
 			} catch (Exception e) {

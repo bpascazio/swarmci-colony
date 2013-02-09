@@ -9,8 +9,16 @@ public class Project extends Entity{
 	public int BuilderType;
 	public String BaseName;
 	public boolean forceClean;
+	public boolean debug;
+	public String Version;
+	public int buildNum;
+	public boolean triggerBuild;
 	
 	public Project() {
 		forceClean = false;
+		debug = true;
+		Version = "1.0";
+		buildNum = 1;
+		triggerBuild = false;
 	}
 }

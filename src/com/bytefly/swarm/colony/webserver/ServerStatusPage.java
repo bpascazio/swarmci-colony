@@ -21,6 +21,10 @@ public class ServerStatusPage {
 			os.writeBytes("<tr><td>Git RepoCleans</td><td>"+Status.counter_git_repocleans+"</td></tr>\n");	
 			os.writeBytes("<tr><td>Git Builds Total</td><td>"+Status.counter_builds_total+"</td></tr>\n");	
 			os.writeBytes("<tr><td>Git Builds XCode</td><td>"+Status.counter_builds_xcode+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git Builds Android</td><td>"+Status.counter_builds_android+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git Builds Triggered</td><td>"+Status.counter_builds_triggered+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git Builds Success</td><td>"+Status.counter_builds_success+"</td></tr>\n");	
+			os.writeBytes("<tr><td>Git Builds Failure</td><td>"+Status.counter_builds_failure+"</td></tr>\n");		
 			os.writeBytes("</table>\n");
 			os.writeBytes("</body>\n");
 			os.writeBytes("</html>\n");

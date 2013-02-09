@@ -32,6 +32,7 @@ public class GitChecker extends Builder {
 			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_GIT_CHECK_CMD),null,new File(this.p.BaseName));
 			pr.waitFor(); 
 			lastCheckin = new String(getOutAndErrStream(pr));
+			lastCheckin = lastCheckin.replace("\n", "");
 			Debug.Log(Debug.TRACE, "result="+lastCheckin);
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());

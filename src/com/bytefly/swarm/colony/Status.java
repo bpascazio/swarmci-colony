@@ -9,4 +9,8 @@ public class Status {
 	public static int counter_loaded_projects = 0;
 	public static int counter_builds_total = 0;
 	public static int counter_builds_xcode = 0;
+	public static int counter_builds_android = 0;
+	public static int counter_builds_triggered = 0;
+	public static int counter_builds_success = 0;
+	public static int counter_builds_failure = 0;
 }

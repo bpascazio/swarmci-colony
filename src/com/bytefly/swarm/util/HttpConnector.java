@@ -157,7 +157,7 @@ public class HttpConnector {
 					String[] tokens2 = tokens1[1].split("\\.");
 					Debug.Log(Debug.TRACE, "parsed out base name "+tokens2[0]);
 					p.BaseName = tokens2[0];
-					p.BuilderType = Builder.BUILDER_TYPE_XCODE;
+					p.BuilderType = Builder.BUILDER_TYPE_ANDROID;
 					Debug.Log(Debug.TRACE, "adding " + p.Name + " " + p.Repo);
 					c.add(p);
 				}

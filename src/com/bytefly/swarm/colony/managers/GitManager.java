@@ -43,8 +43,18 @@ public class GitManager extends Manager {
 				GitChecker gc = new GitChecker();
 				gc.p = p;
 				gc.runAll();
+				Status.counter_git_updates++;
 
-				if (gc.lastCheckin != null) {
+				if (p.triggerBuild) {
+					
+					Debug.Log(Debug.TRACE, "Build triggered by project.");
+					Status.counter_builds_triggered++;
+					p.triggerBuild = false;
+					Work bw = new Work(Work.WORK_ITEM_BUILD_BUILD_PROJECT);
+					bw.data = p;
+					bm.put(bw);
+				} else if (gc.lastCheckin != null) {
+					
 					if (mg.containsKey(p.Repo)) {
 
 						// in the repo
@@ -58,22 +68,23 @@ public class GitManager extends Manager {
 						} else {
 							Debug.Log(Debug.TRACE,
 									"Change detected kick off build.");
-
-							Status.counter_git_updates++;
+							
 
 							// set the new key val
 							mg.remove(p.Repo);
 							mg.put(p.Repo, gc.lastCheckin);
+
 							Work bw = new Work(
 									Work.WORK_ITEM_BUILD_BUILD_PROJECT);
 							bw.data = p;
-							bm.put(bw); // fake queue build
+							bm.put(bw);
 						}
 					} else {
 
 						// not so add it
-						Debug.Log(Debug.TRACE, "GitManager not in repo "
-								+ p.Repo);
+						Debug.Log(Debug.TRACE,
+								"GitManager not building - not in repo hash yet "
+										+ p.Repo);
 						mg.put(p.Repo, gc.lastCheckin);
 					}
 				}
@@ -109,9 +120,9 @@ public class GitManager extends Manager {
 					if (pl != null && pl.cv != null)
 						for (int i = 0; i < pl.cv.size(); i++) {
 							Project p = (Project) pl.cv.get(i);
-							GitRunnable gr = new GitRunnable(p); 
+							GitRunnable gr = new GitRunnable(p);
 							Thread gth = new Thread(gr);
-							gth.start(); 
+							gth.start();
 						}
 				}
 			} catch (Exception e) {
