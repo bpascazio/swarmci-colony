@@ -21,6 +21,7 @@ public class Config {
 	public static final String SWARM_ANDROID_FIND_MANIFEST = "SWARM_ANDROID_FIND_MANIFEST";
 	public static final String SWARM_ANDROID_FIND_BUILDXML = "SWARM_ANDROID_FIND_BUILDXML";
 	public static final String SWARM_ANDROID_SEND_EMAIL_APK = "SWARM_ANDROID_SEND_EMAIL_APK";
+	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -65,7 +66,7 @@ public class Config {
 			return "http://www.bytefly.com/apps/teamcity/email.php?name=639Building&bnum=4&build=639building-android-1.0.5.apk&log=buildlog-5.log&owner=bytefly&repo=639building-android&to=bob@bytefly.com&fname=AndroidBuild";
 		}
 		if (key.equals(SWARM_ANDROID_CLEARN_CMD)) {
-			return "rm -rf bin;rm -rf gen";
+			return "rm -rf bin";
 		}
 		if (key.equals(SWARM_ANDROID_FIND_MANIFEST)) {
 			return "find . -name AndroidManifest.xml -print -quit";
@@ -81,6 +82,9 @@ public class Config {
 		}
 		if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
 			return "curl http://www.bytefly.com/apps/teamcity/email.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuild";
+		}	
+		if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
+			return "curl http://www.bytefly.com/apps/teamcity/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";
 		}	
 		Debug.Log(Debug.DEBUG, "Undefined Config Value " + key);
 		return "";

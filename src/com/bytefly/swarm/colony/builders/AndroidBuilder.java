@@ -29,6 +29,7 @@ public class AndroidBuilder extends Builder {
 		bd.success = false;
 		if (apkName.equals("")) {
 			Debug.Log(Debug.TRACE, "no apk found");			
+			sendFailureEmail();
 		} else {
 			Debug.Log(Debug.TRACE, "apk found uploading and emailing");						
 			androidUploadBuild();
@@ -41,8 +42,8 @@ public class AndroidBuilder extends Builder {
 	
 	public void androidRemoveBinDirs() {
 		try {
-			Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_CLEARN_CMD));
-			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_CLEARN_CMD),null,new File(this.p.BaseName));
+			Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_CLEARN_CMD)+" in directory "+this.p.BaseName+"/"+this.p.buildDirectory);
+			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_CLEARN_CMD),null,new File(this.p.BaseName+"/"+this.p.buildDirectory));
 			pr.waitFor(); 
 			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
 		} catch (Exception e) {

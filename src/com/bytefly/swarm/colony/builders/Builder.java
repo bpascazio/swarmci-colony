@@ -17,7 +17,25 @@ public class Builder {
 	public static final int BUILDER_TYPE_GENERIC = 0;
 	public static final int BUILDER_TYPE_XCODE = 1;
 	public static final int BUILDER_TYPE_ANDROID = 2;
+	
+	public void sendFailureEmail() {
 
+		try {
+			String name = p.BaseName+"-"+p.Version+"-";
+			String owner = "bytefly";
+			String repo = p.BaseName;
+			String to = "qa@bytefly.com";
+			String cmd = 
+					String.format(Config.getStringValue(Config.SWARM_SEND_FAILURE_EMAIL), 
+							name, p.buildNum, this.p.BaseName+".apk", owner, repo, to);
+			Debug.Log(Debug.TRACE, "Executing "+cmd);
+			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
+			pr.waitFor(); 
+		} catch (Exception e) {
+			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
+		}	
+	}
+	
 	public void notifyEmail() {
 		try {
 			Debug.Log(
