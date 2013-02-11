@@ -23,7 +23,8 @@ public class Config {
 	public static final String SWARM_ANDROID_SEND_EMAIL_APK = "SWARM_ANDROID_SEND_EMAIL_APK";
 	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
 	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
-	public static final String DEBUG_LOG_LEVEL = "swarm_debug_level";
+	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
+	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -43,61 +44,69 @@ public class Config {
 	}
 	
 	static String VAL_SWARM_RAILS_URL = "http://localhost:3000";
+	static String VAL_SWARM_COLONY_UUID = "";
 
 	public static void setRailsServer(String s) {
 		VAL_SWARM_RAILS_URL = s;
+	}
+
+	public static void setColonyUUID(String s) {
+		VAL_SWARM_COLONY_UUID = s;
 	}
 	
 	public static String getStringValue(String key) {
 		if (key.equals(SWARM_RAILS_URL)) {
 			return VAL_SWARM_RAILS_URL;
 		}
-		if (key.equals(SWARM_GIT_UPDATE_CMD)) {
+		else if (key.equals(SWARM_COLONY_UUID)) {
+			return VAL_SWARM_COLONY_UUID;
+		}
+		else if (key.equals(SWARM_GIT_UPDATE_CMD)) {
 			return "git pull";
 		}
-		if (key.equals(SWARM_GIT_CLONE_CMD)) {
+		else if (key.equals(SWARM_GIT_CLONE_CMD)) {
 			return "git clone";
 		}
-		if (key.equals(SWARM_XCODE_BUILD_CMD)) {
+		else if (key.equals(SWARM_XCODE_BUILD_CMD)) {
 			return "/usr/bin/xcodebuild -sdk iphoneos6.0 -configuration Release OBJROOT=\"build_intermediates\" SYMROOT=\"build_results\" IPHONEOS_DEPLOYMENT_TARGET=5.0 clean build";
 		}
-		if (key.equals(SWARM_ANDROID_BUILD_CMD)) {
+		else if (key.equals(SWARM_ANDROID_BUILD_CMD)) {
 			return "ant";
 		}	
-		if (key.equals(SWARM_GIT_CHECK_CMD)) {
+		else if (key.equals(SWARM_GIT_CHECK_CMD)) {
 			return "git rev-parse HEAD";
 		}
-		if (key.equals(SWARM_CLEAN_REPO_CMD)) {
+		else if (key.equals(SWARM_CLEAN_REPO_CMD)) {
 			return "rm -rf";
 		}
-		if (key.equals(SWARM_NOTIFY_EMAIL_CMD)) {
+		else if (key.equals(SWARM_NOTIFY_EMAIL_CMD)) {
 			return "http://www.bytefly.com/apps/teamcity/email.php?name=639Building&bnum=4&build=639building-android-1.0.5.apk&log=buildlog-5.log&owner=bytefly&repo=639building-android&to=bob@bytefly.com&fname=AndroidBuild";
 		}
-		if (key.equals(SWARM_ANDROID_CLEARN_CMD)) {
+		else if (key.equals(SWARM_ANDROID_CLEARN_CMD)) {
 			return "rm -rf bin";
 		}
-		if (key.equals(SWARM_ANDROID_FIND_MANIFEST)) {
+		else if (key.equals(SWARM_ANDROID_FIND_MANIFEST)) {
 			return "find . -name AndroidManifest.xml -print -quit";
 		}
-		if (key.equals(SWARM_ANDROID_FIND_BUILDXML)) {
+		else if (key.equals(SWARM_ANDROID_FIND_BUILDXML)) {
 			return "find . -name build.xml -print -quit";
 		}
-		if (key.equals(SWARM_ANDROID_APP_NAME)) {
+		else if (key.equals(SWARM_ANDROID_APP_NAME)) {
 			return "find . -name *.apk -print -quit";
 		}
-		if (key.equals(SWARM_ANDROID_UPLOAD_APK)) {
+		else if (key.equals(SWARM_ANDROID_UPLOAD_APK)) {
 			return "scp -P 22123 %s bpascazio@www.bytefly.com:builds/%s";
 		}
-		if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
+		else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
 			return "curl http://www.bytefly.com/apps/teamcity/email.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuild";
 		}	
-		if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
+		else if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
 			return "curl http://www.bytefly.com/apps/teamcity/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";
 		}	
-		if (key.equals(SWARM_DUMP_XML)) {
+		else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";
 		}		
-		Debug.Log(Debug.DEBUG, "Undefined Config Value " + key);
+		Debug.Log(Debug.ERROR, "Undefined Config Value " + key);
 		return "";
 	}
 }

@@ -55,9 +55,12 @@ public class Colony extends Thread {
 			colonyProps.load(in);
 			in.close();
 			Config.setRailsServer(colonyProps.getProperty(Config.SWARM_RAILS_URL));
-			String ll = colonyProps.getProperty(Config.DEBUG_LOG_LEVEL);
+			String ll = colonyProps.getProperty(Config.SWARM_DEBUG_LOG_LEVEL);
 			Debug.setLevel(ll);
 			Debug.Log("Logging level set to :"+ll);
+			String uid = colonyProps.getProperty(Config.SWARM_COLONY_UUID);
+			Config.setColonyUUID(uid);
+			Debug.Log("UUID set to :"+uid);
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
