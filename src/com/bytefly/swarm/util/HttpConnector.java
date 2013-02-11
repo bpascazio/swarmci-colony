@@ -3,7 +3,6 @@ package com.bytefly.swarm.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +22,11 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONTokener;
 
-import com.bytefly.swarm.colony.builders.Builder;
 import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.models.Entity;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Version;
-import com.sun.tools.javac.code.Attribute.Array;
+import com.bytefly.swarm.colony.util.Config;
 
 // 
 // This class provides a simple stable HTTP communication to fetch an entity list.

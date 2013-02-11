@@ -6,7 +6,7 @@ public class Config {
 	public static final String SWARM_PROJECT_CHECK_FREQ = "SWARM_PROJECT_CHECK_FREQ";
 	public static final String SWARM_GIT_CHECK_FREQ = "SWARM_GIT_CHECK_FREQ";
 	public static final String SWARM_MGR_CHECK_FREQ = "SWARM_MGR_CHECK_FREQ";
-	public static final String SWARM_RAILS_URL = "SWARM_RAILS_URL";
+	public static final String SWARM_RAILS_URL = "swarm_cloud_url";
 	public static final String SWARM_DEFAULT_QUEUE_SIZE = "SWARM_DEFAULT_QUEUE_SIZE";
 	public static final String SWARM_GIT_CLONE_CMD = "SWARM_GIT_CLONE_CMD";
 	public static final String SWARM_XCODE_BUILD_CMD = "SWARM_XCODE_BUILD_CMD";
@@ -23,6 +23,7 @@ public class Config {
 	public static final String SWARM_ANDROID_SEND_EMAIL_APK = "SWARM_ANDROID_SEND_EMAIL_APK";
 	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
 	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
+	public static final String DEBUG_LOG_LEVEL = "swarm_debug_level";
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -40,10 +41,16 @@ public class Config {
 		Debug.Log(Debug.DEBUG, "Undefined Config Value " + key);
 		return 0;
 	}
+	
+	static String VAL_SWARM_RAILS_URL = "http://localhost:3000";
 
+	public static void setRailsServer(String s) {
+		VAL_SWARM_RAILS_URL = s;
+	}
+	
 	public static String getStringValue(String key) {
 		if (key.equals(SWARM_RAILS_URL)) {
-			return "http://swarm-cloud.herokuapp.com/";
+			return VAL_SWARM_RAILS_URL;
 		}
 		if (key.equals(SWARM_GIT_UPDATE_CMD)) {
 			return "git pull";
