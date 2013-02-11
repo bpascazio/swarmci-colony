@@ -27,6 +27,7 @@ import com.bytefly.swarm.colony.models.Entity;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Version;
 import com.bytefly.swarm.colony.util.Config;
+import com.bytefly.swarm.colony.util.Debug;
 
 // 
 // This class provides a simple stable HTTP communication to fetch an entity list.

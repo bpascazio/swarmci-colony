@@ -25,6 +25,7 @@ public class Config {
 	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
+	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -45,13 +46,30 @@ public class Config {
 	
 	static String VAL_SWARM_RAILS_URL = "http://localhost:3000";
 	static String VAL_SWARM_COLONY_UUID = "";
+	static String VAL_SWARM_DEBUG_LOG_FILE = "";
 
 	public static void setRailsServer(String s) {
 		VAL_SWARM_RAILS_URL = s;
 	}
 
+	public static String getRailsServer() {
+		return VAL_SWARM_RAILS_URL;
+	}
+
 	public static void setColonyUUID(String s) {
 		VAL_SWARM_COLONY_UUID = s;
+	}
+
+	public static String getColonyUUID() {
+		return VAL_SWARM_COLONY_UUID;
+	}
+
+	public static void setLogFile(String s) {
+		VAL_SWARM_DEBUG_LOG_FILE = s;
+	}
+
+	public static String getLogFile() {
+		return VAL_SWARM_DEBUG_LOG_FILE;
 	}
 	
 	public static String getStringValue(String key) {

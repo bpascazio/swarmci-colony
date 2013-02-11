@@ -23,11 +23,13 @@ public class Colony extends Thread {
 	}
 
 	public static void startServer() {
-		Debug.Log("Swarm Colony Server Starting...");
-		Debug.Log("Version is " + Version.getVersion() + " Build "
-				+ Version.getBuildNum());
 
 		if (getPreference() == true) {
+			
+			// Header info
+			Debug.Log("Swarm Colony Server Starting...");
+			Debug.Log("Version is " + Version.getVersion() + " Build "
+					+ Version.getBuildNum());
 
 			// build manager triggered on commit updates to build product
 			BuildManager bm = new BuildManager();
@@ -54,6 +56,9 @@ public class Colony extends Thread {
 			in = new FileInputStream("colony.properties");
 			colonyProps.load(in);
 			in.close();
+			String lfile = colonyProps.getProperty(Config.SWARM_DEBUG_LOG_FILE);
+			Config.setLogFile(lfile);
+			Debug.Log("Log file output set to :"+lfile);
 			Config.setRailsServer(colonyProps.getProperty(Config.SWARM_RAILS_URL));
 			String ll = colonyProps.getProperty(Config.SWARM_DEBUG_LOG_LEVEL);
 			Debug.setLevel(ll);
