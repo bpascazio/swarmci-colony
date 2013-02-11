@@ -2,8 +2,10 @@ package com.bytefly.swarm.colony.builders;
 
 import java.io.File;
 
+import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
+import com.bytefly.swarm.util.HttpConnector;
 
 public class AndroidBuilder extends Builder {
 
@@ -21,13 +23,20 @@ public class AndroidBuilder extends Builder {
 		andoidBuild();
 		apkName="";
 		androidGetAPKName();
+		Build bd = new Build();
+		bd.user_id = p.UserId;
+		bd.project_id = p.ProjectId;
+		bd.success = false;
 		if (apkName.equals("")) {
 			Debug.Log(Debug.TRACE, "no apk found");			
 		} else {
 			Debug.Log(Debug.TRACE, "apk found uploading and emailing");						
 			androidUploadBuild();
 			androidSendEmail();
+			bd.success = true;
 		}
+		HttpConnector h = new HttpConnector();
+		h.setEntity(bd);
 	}
 	
 	public void androidRemoveBinDirs() {

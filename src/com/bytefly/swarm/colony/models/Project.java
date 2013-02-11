@@ -4,7 +4,8 @@ public class Project extends Entity{
 	public final String ENTITY = "Project";
 	public final String ENTITY_COLLECTION = "projects";
 	public String Name;
-	public int User;
+	public int UserId;
+	public int ProjectId;
 	public String Repo;
 	public int BuilderType;
 	public String BaseName;
@@ -22,5 +23,7 @@ public class Project extends Entity{
 		buildNum = 1;
 		triggerBuild = false;
 		buildDirectory = "";
+		UserId = -1;
+		ProjectId = -1;
 	}
 }
