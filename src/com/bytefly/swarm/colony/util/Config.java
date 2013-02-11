@@ -22,6 +22,7 @@ public class Config {
 	public static final String SWARM_ANDROID_FIND_BUILDXML = "SWARM_ANDROID_FIND_BUILDXML";
 	public static final String SWARM_ANDROID_SEND_EMAIL_APK = "SWARM_ANDROID_SEND_EMAIL_APK";
 	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
+	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -42,7 +43,7 @@ public class Config {
 
 	public static String getStringValue(String key) {
 		if (key.equals(SWARM_RAILS_URL)) {
-			return "http://localhost:3000";
+			return "http://swarm-cloud.herokuapp.com/";
 		}
 		if (key.equals(SWARM_GIT_UPDATE_CMD)) {
 			return "git pull";
@@ -86,6 +87,9 @@ public class Config {
 		if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
 			return "curl http://www.bytefly.com/apps/teamcity/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";
 		}	
+		if (key.equals(SWARM_DUMP_XML)) {
+			return "cat swarm.xml";
+		}		
 		Debug.Log(Debug.DEBUG, "Undefined Config Value " + key);
 		return "";
 	}

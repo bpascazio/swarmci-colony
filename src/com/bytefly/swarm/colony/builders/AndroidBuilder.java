@@ -77,7 +77,7 @@ public class AndroidBuilder extends Builder {
 			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
 		}
 	}
-
+	
 	public void androidUploadBuild() {
 
 		try {
@@ -98,7 +98,7 @@ public class AndroidBuilder extends Builder {
 			String name = p.BaseName+"-"+p.Version+"-";
 			String owner = "bytefly";
 			String repo = p.BaseName;
-			String to = "qa@bytefly.com";
+			String to = this.toList;
 			String cmd = 
 					String.format(Config.getStringValue(Config.SWARM_ANDROID_SEND_EMAIL_APK), 
 							name, p.buildNum, this.p.BaseName+".apk", owner, repo, to);

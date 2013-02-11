@@ -14,6 +14,9 @@ public class Builder {
 
 	public Project p;
 
+	String toList;
+	String toFailList;
+
 	public static final int BUILDER_TYPE_GENERIC = 0;
 	public static final int BUILDER_TYPE_XCODE = 1;
 	public static final int BUILDER_TYPE_ANDROID = 2;
@@ -24,7 +27,7 @@ public class Builder {
 			String name = p.BaseName+"-"+p.Version+"-";
 			String owner = "bytefly";
 			String repo = p.BaseName;
-			String to = "qa@bytefly.com";
+			String to = toFailList;
 			String cmd = 
 					String.format(Config.getStringValue(Config.SWARM_SEND_FAILURE_EMAIL), 
 							name, p.buildNum, this.p.BaseName+".apk", owner, repo, to);
@@ -129,5 +132,21 @@ public class Builder {
 			}
 		} 
 		return cmd_out.toString();
+	}
+	
+	public void loadSwarmXML() {
+		
+		try {
+			Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_DUMP_XML));
+			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_DUMP_XML),null,new File(this.p.BaseName));
+			pr.waitFor(); 
+			toList = new String(getOutAndErrStream(pr));
+			toList = toList.replace("\n", "");
+			if (toList.equals("cat: swarm.xml: No such file or directory")) toList="";
+			Debug.Log(Debug.TRACE, "toList="+toList);
+			toFailList = toList;
+		} catch (Exception e) {
+			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
+		}
 	}
 }
