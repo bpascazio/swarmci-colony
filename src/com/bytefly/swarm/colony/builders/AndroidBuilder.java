@@ -45,8 +45,8 @@ public class AndroidBuilder extends Builder {
 		try {
 			String target="release";
 			if (p.debug)target="debug";
-			Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target);
-			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target,null,new File(this.p.BaseName));
+			Debug.Log(Debug.DEBUG, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target+" in directory "+this.p.BaseName+"/"+this.p.buildDirectory);
+			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target,null,new File(this.p.BaseName+"/"+this.p.buildDirectory));
 			pr.waitFor(); 
 			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
 		} catch (Exception e) {

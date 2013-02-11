@@ -35,13 +35,14 @@ public class BuildManager extends Manager {
 						XCodeBuilder xcb = new XCodeBuilder();
 						xcb.p = p;
 						xcb.runAll();
-					}
-					if (p.BuilderType == Builder.BUILDER_TYPE_ANDROID) {
+					} else 	if (p.BuilderType == Builder.BUILDER_TYPE_ANDROID) {
 						Debug.Log(Debug.TRACE, "BuildManager executing android project");
 						Status.counter_builds_android++;
 						AndroidBuilder ab = new AndroidBuilder();
 						ab.p = p;
 						ab.runAll();
+					} else {
+						Debug.Log(Debug.DEBUG, "BuildManager flagging build failure no project found.");
 					}
 				}				
 			} catch (Exception e) {

@@ -18,6 +18,8 @@ public class Config {
 	public static final String SWARM_ANDROID_BUILD_CMD = "SWARM_ANDROID_BUILD_CMD";
 	public static final String SWARM_ANDROID_CLEARN_CMD = "SWARM_ANDROID_CLEARN_CMD";
 	public static final String SWARM_ANDROID_UPLOAD_APK = "SWARM_ANDROID_UPLOAD_APK";
+	public static final String SWARM_ANDROID_FIND_MANIFEST = "SWARM_ANDROID_FIND_MANIFEST";
+	public static final String SWARM_ANDROID_FIND_BUILDXML = "SWARM_ANDROID_FIND_BUILDXML";
 	public static final String SWARM_ANDROID_SEND_EMAIL_APK = "SWARM_ANDROID_SEND_EMAIL_APK";
 	
 	public static int getIntValue(String key) {
@@ -64,6 +66,12 @@ public class Config {
 		}
 		if (key.equals(SWARM_ANDROID_CLEARN_CMD)) {
 			return "rm -rf bin;rm -rf gen";
+		}
+		if (key.equals(SWARM_ANDROID_FIND_MANIFEST)) {
+			return "find . -name AndroidManifest.xml -print -quit";
+		}
+		if (key.equals(SWARM_ANDROID_FIND_BUILDXML)) {
+			return "find . -name build.xml -print -quit";
 		}
 		if (key.equals(SWARM_ANDROID_APP_NAME)) {
 			return "find . -name *.apk -print -quit";

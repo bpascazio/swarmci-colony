@@ -13,6 +13,7 @@ public class Project extends Entity{
 	public String Version;
 	public int buildNum;
 	public boolean triggerBuild;
+	public String buildDirectory;
 	
 	public Project() {
 		forceClean = false;
@@ -20,5 +21,6 @@ public class Project extends Entity{
 		Version = "1.0";
 		buildNum = 1;
 		triggerBuild = false;
+		buildDirectory = "";
 	}
 }

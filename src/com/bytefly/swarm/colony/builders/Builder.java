@@ -26,7 +26,7 @@ public class Builder {
 							+ Config.getStringValue(Config.SWARM_NOTIFY_EMAIL_CMD));
 			HttpConnector hc = new HttpConnector();
 			String r = hc.getURL(Config.getStringValue(Config.SWARM_NOTIFY_EMAIL_CMD));
-			Debug.Log(Debug.TRACE, "result="+r);
+			Debug.Log(Debug.TRACE, "notifyEmail result="+r);
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
 					"Exception caught running notifyEmail " + e.toString());
@@ -44,7 +44,7 @@ public class Builder {
 					Config.getStringValue(Config.SWARM_CLEAN_REPO_CMD) + " "
 							+ p.BaseName);
 			pr.waitFor(); 
-			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
+			Debug.Log(Debug.TRACE, "repoClean result="+getOutAndErrStream(pr));
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
 					"Exception caught running repoClean " + e.toString());
@@ -61,7 +61,8 @@ public class Builder {
 			Process pr = Runtime.getRuntime().exec(
 					Config.getStringValue(Config.SWARM_GIT_UPDATE_CMD),null,new File(this.p.BaseName));
 			pr.waitFor(); 
-			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
+			String result = getOutAndErrStream(pr).replace("\n", "");
+			Debug.Log(Debug.TRACE, "repoUpdate result="+result);
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
 					"Exception caught running repoUpdate " + e.toString());
@@ -80,7 +81,7 @@ public class Builder {
 					Config.getStringValue(Config.SWARM_GIT_CLONE_CMD) + " "
 							+ p.Repo);
 			pr.waitFor(); 
-			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
+			Debug.Log(Debug.TRACE, "repoClone result="+getOutAndErrStream(pr));
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
 					"Exception caught running repoGet " + e.toString());

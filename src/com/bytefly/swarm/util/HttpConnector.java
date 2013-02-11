@@ -153,12 +153,6 @@ public class HttpConnector {
 					Project p = new Project();
 					p.Name = o.getString("name");
 					p.Repo = o.getString("repo");
-					String[] tokens1 = p.Repo.split("/");
-					String[] tokens2 = tokens1[1].split("\\.");
-					Debug.Log(Debug.TRACE, "parsed out base name "+tokens2[0]);
-					p.BaseName = tokens2[0];
-					p.BuilderType = Builder.BUILDER_TYPE_ANDROID;
-					Debug.Log(Debug.TRACE, "adding " + p.Name + " " + p.Repo);
 					c.add(p);
 				}
 			}
