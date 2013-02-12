@@ -3,6 +3,7 @@ package com.bytefly.swarm.colony.managers;
 import com.bytefly.swarm.colony.managers.work.Work;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
+import com.bytefly.swarm.colony.Status;
 
 public class SwarmManager extends Manager {
 	
@@ -19,6 +20,7 @@ public class SwarmManager extends Manager {
 	
 	public void run() {
 		Debug.Log(Debug.INFO, "SwarmManager started.");
+		Status.counter_initial_uptime=System.currentTimeMillis();
 		start();
 		
 		int cproject = 0;

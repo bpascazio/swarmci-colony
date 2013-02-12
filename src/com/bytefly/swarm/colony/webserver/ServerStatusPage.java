@@ -12,6 +12,9 @@ public class ServerStatusPage {
 			os.writeBytes("<head><meta http-equiv=\"refresh\" content=\"5\" ></head>\n");
 			os.writeBytes("<body>\n");
 			os.writeBytes("<b>Colony Server Status Page</b>\n");
+			String u = ""+(System.currentTimeMillis()-Status.counter_initial_uptime)/1000;
+			os.writeBytes("<p><b>Uptime is "+u+" seconds</b><p>\n");
+			
 			os.writeBytes("<table border=\"1\">\n");
 			os.writeBytes("<tr><td>Description</td><td>Count</tc></tr>\n");
 			os.writeBytes("<tr><td>Loaded Projects</td><td>"+Status.counter_loaded_projects+"</td></tr>\n");
