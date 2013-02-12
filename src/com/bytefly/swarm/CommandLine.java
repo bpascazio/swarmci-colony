@@ -2,6 +2,7 @@ package com.bytefly.swarm;
 
 import java.util.Scanner;
 
+import com.bytefly.swarm.colony.Info;
 import com.bytefly.swarm.commands.Create;
 import com.bytefly.swarm.util.Debug;
 
@@ -27,7 +28,7 @@ public class CommandLine {
 		Debug.Log(Debug.INFO, "version # Displays version information");
 	}
 	public static void version() {
-		Debug.Log(Debug.INFO, "Version is "+Version.getVersion()+" Build "+Version.getBuildNum());		
+		Debug.Log(Debug.INFO, "Version is "+Info.build_version+" built on "+Info.build_date);		
 	}
 	public static void create() {
 		Create c = new Create();

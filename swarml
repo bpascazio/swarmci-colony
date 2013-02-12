@@ -1,0 +1,3 @@
+#!/bin/sh
+java -classpath /usr/lib/swarm/commons-codec-1.6.jar:/usr/lib/swarm/httpclient-cache-4.2.3.jar:/usr/lib/swarm/commons-logging-1.1.1.jar:/usr/lib/swarm/httpcore-4.2.2.jar:/usr/lib/swarm/fluent-hc-4.2.3.jar:/usr/lib/swarm/httpmime-4.2.3.jar:/usr/lib/swarm/httpclient-4.2.3.jar:/usr/lib/swarm/json-lib-2.4-jdk15.jar:/usr/lib/swarm/apache-commons.jar:/usr/lib/swarm/apache-commons-lang.jar:/usr/lib/swarm/ezmorph-1.0.5.jar:/usr/lib/swarm/Swarm.jar com.bytefly.swarm.CommandLine $*
+
