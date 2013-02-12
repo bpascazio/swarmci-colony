@@ -2,6 +2,7 @@ package com.bytefly.swarm.colony.webserver;
 
 import java.io.DataOutputStream;
 
+import com.bytefly.swarm.colony.Info;
 import com.bytefly.swarm.colony.Status;
 
 public class ServerStatusPage {
@@ -13,9 +14,13 @@ public class ServerStatusPage {
 			os.writeBytes("<body>\n");
 			os.writeBytes("<b>Colony Server Status Page</b>\n");
 			String u = ""+(System.currentTimeMillis()-Status.counter_initial_uptime)/1000;
-			os.writeBytes("<p><b>Uptime is "+u+" seconds</b><p>\n");
+			os.writeBytes("<p><table border=\"0\">\n");
+			os.writeBytes("<tr><td>Version</td><td>"+Info.build_version+"</td></tr>\n");
+			os.writeBytes("<tr><td>Build Date</td><td>"+Info.build_date+"</td></tr>\n");
+			os.writeBytes("<tr><td>Uptime</td><td>"+u+" seconds</td></tr>\n");
+			os.writeBytes("</table>\n");
 			
-			os.writeBytes("<table border=\"1\">\n");
+			os.writeBytes("<p><table border=\"1\">\n");
 			os.writeBytes("<tr><td>Description</td><td>Count</tc></tr>\n");
 			os.writeBytes("<tr><td>Loaded Projects</td><td>"+Status.counter_loaded_projects+"</td></tr>\n");
 			os.writeBytes("<tr><td>Git Checks</td><td>"+Status.counter_git_checks+"</td></tr>\n");			
