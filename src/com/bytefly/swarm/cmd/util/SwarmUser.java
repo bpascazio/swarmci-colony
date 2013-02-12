@@ -142,7 +142,7 @@ public class SwarmUser {
 				success = true;
 
 			} catch (Exception e) {
-				// e.printStackTrace();
+	//			 e.printStackTrace();
 			}
 
 		}
@@ -156,11 +156,17 @@ public class SwarmUser {
 			String path = Config
 					.getStringValue(Config.SWARM_COLONY_CONFIG_PATH);
 			if (path.equals("")) {
+				String homeDir = System.getenv("HOMEPATH");
 				String userHome = System.getProperty("user.home");
-				path = userHome + "/.swarm/swarmcfg.xml";
+				if (homeDir!=null && homeDir.equals("")==false) {
+					path = System.getenv("HOMEDRIVE") + "\\swarmcfg.xml";
+				} else {
+					path = userHome + "/.swarm/swarmcfg.xml";
+				}
 			}
 			r = new ReadXMLFile();
 			r.execute(path);
+			
 		} catch (Exception e) {
 			System.out.print("Exception caught running attemptLoadFromFile "
 					+ e.toString());
@@ -261,6 +267,7 @@ public class SwarmUser {
 		su.username = new String(username);
 		su.password = new String(password);
 		su.server = new String(server);
+
 		return su;
 	}
 
@@ -276,15 +283,21 @@ public class SwarmUser {
 
 			String userHome = System.getProperty("user.home");
 			// System.out.print("userHome "+userHome);
-			Process pr = Runtime.getRuntime().exec(
-					Config.getStringValue(Config.SWARM_MAKE_DOT_SWARM_DIR),
-					null, new File(userHome));
-			pr.waitFor();
-			String result = getOutAndErrStream(pr).replace("\n", "");
+			String homeDir = System.getenv("HOMEPATH");
+			if (homeDir==null || homeDir.equals("")==true) {
+				Process pr = Runtime.getRuntime().exec(
+						Config.getStringValue(Config.SWARM_MAKE_DOT_SWARM_DIR),
+						null, new File(userHome));
+				pr.waitFor();
+				String result = getOutAndErrStream(pr).replace("\n", "");
+			}
 			// System.out.print("resultmk "+result);
+			String path = userHome + "/.swarm/swarmcfg.xml";
+			if (homeDir!=null && homeDir.equals("")==false) {
+				path =  System.getenv("HOMEDRIVE") + "\\swarmcfg.xml";
+			}
 			BufferedWriter bw;
-			bw = new BufferedWriter(new FileWriter(userHome
-					+ "/.swarm/swarmcfg.xml", false));
+			bw = new BufferedWriter(new FileWriter(path, false));
 			bw.write(xmlfile);
 			bw.flush();
 			bw.close();

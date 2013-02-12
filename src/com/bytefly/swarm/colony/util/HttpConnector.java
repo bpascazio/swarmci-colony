@@ -73,7 +73,7 @@ public class HttpConnector {
 		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
 														// problem
 		BufferedReader in = null;
-
+		
 		try {
 			String url = String
 					.format(Config
@@ -82,7 +82,7 @@ public class HttpConnector {
 							semail,
 							spassword);
 			
-//			System.out.println("***SECURITY**** url=" + url);
+	//		System.out.println("***SECURITY**** url=" + url);
 
 			if (client==null) client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
@@ -118,7 +118,7 @@ public class HttpConnector {
 							semail,
 							spassword);
 			
-//			System.out.println("***SECURITY**** url=" + url);
+	//		System.out.println("***SECURITY**** url=" + url);
 
 			if (client==null) client = new DefaultHttpClient();
 			request = new HttpGet();
@@ -144,7 +144,8 @@ public class HttpConnector {
 			}
 			in.close();
 			page = sb.toString();
-//			System.out.println("***SECURITY**** page=" + page);
+	//		System.out.println("***SECURITY**** page=<" + page+">");
+			page = page.replace("\r", "");
 			page = page.replace("\n", "");
 			page = page.replace(" ", "");
 			if (!page.equals("")) {
@@ -158,7 +159,7 @@ public class HttpConnector {
 			// related.
 			// That is why we assume a server communication error.
 			//
-			Debug.Log(Debug.TRACE, "exception=" + e);
+			Debug.Log(Debug.TRACE, "exception1=" + e);
 
 		} finally {
 
@@ -166,7 +167,7 @@ public class HttpConnector {
 				try {
 					in.close();
 				} catch (IOException e) {
-					Debug.Log(Debug.TRACE, "exception=" + e);
+					Debug.Log(Debug.TRACE, "exception2=" + e);
 				}
 			}
 

@@ -77,7 +77,7 @@ public class Config {
 		return 0;
 	}
 	
-	static String VAL_SWARM_RAILS_URL = "www.swarmbuilt.com";
+	static String VAL_SWARM_RAILS_URL = "www.swarmci.com";
 	static String VAL_SWARM_COLONY_UUID = "";
 	static String VAL_SWARM_DEBUG_LOG_FILE = "";
 	static String VAL_SWARM_PROJECT_DIR = ".";
