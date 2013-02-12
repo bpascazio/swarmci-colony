@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.util.JSONTokener;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -18,19 +22,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import net.sf.json.util.JSONTokener;
-
 import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.models.Entity;
 import com.bytefly.swarm.colony.models.Project;
-import com.bytefly.swarm.colony.util.Version;
 import com.bytefly.swarm.colony.util.Config;
-import com.bytefly.swarm.colony.util.Debug;
+import com.bytefly.swarm.util.Debug;
+import com.bytefly.swarm.colony.util.Version;
 
-// 
-// This class provides a simple stable HTTP communication to fetch an entity list.
+//
+//This class provides a simple stable HTTP communication to fetch an entity list.
 //
 
 public class HttpConnector {
@@ -121,7 +121,7 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
+			String url = "http://swarm-cloud.herokuapp.com" + "/"
 					+ entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
@@ -200,16 +200,27 @@ public class HttpConnector {
 	public void setEntity(Entity e) {
 		// Create a new HttpClient and Post Header
 		String entitystr = e.ENTITY_COLLECTION;
-		String url = Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
+		String url = "http://swarm-cloud.herokuapp.com" + "/"
 				+ entitystr;
 		
-		Debug.Log(Debug.TRACE, "url=" + url);
+		System.out.print("url=" + url);
 		
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
 		BufferedReader in = null;
 		// Add your data
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+
+		if (e instanceof Project) {
+
+			Project b = (Project)e;
+			nameValuePairs
+					.add(new BasicNameValuePair("project[name]", b.Name));
+			nameValuePairs.add(new BasicNameValuePair("project[repo]",
+					""+b.Repo));
+			nameValuePairs.add(new BasicNameValuePair("project[user_id]",
+					""+b.UserId));
+		}
 
 		if (e instanceof Build) {
 
@@ -220,7 +231,7 @@ public class HttpConnector {
 					""+b.project_id));
 			nameValuePairs.add(new BasicNameValuePair("build[user_id]",
 					""+b.user_id));
-			Debug.Log(Debug.TRACE, "adding entity "+b.project_id+" "+b.user_id+" "+b.success);
+			System.out.print("adding entity "+b.project_id+" "+b.user_id+" "+b.success);
 		}
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

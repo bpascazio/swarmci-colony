@@ -1,8 +1,6 @@
 package com.bytefly.swarm.colony.models;
 
 public class Project extends Entity{
-	public final String ENTITY = "Project";
-	public final String ENTITY_COLLECTION = "projects";
 	public String Name;
 	public int UserId;
 	public int ProjectId;
@@ -17,6 +15,8 @@ public class Project extends Entity{
 	public String buildDirectory;
 	
 	public Project() {
+		ENTITY = "Project";
+		ENTITY_COLLECTION = "projects";
 		forceClean = false;
 		debug = true;
 		Version = "1.0";

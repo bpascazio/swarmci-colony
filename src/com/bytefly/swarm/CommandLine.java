@@ -2,6 +2,7 @@ package com.bytefly.swarm;
 
 import java.util.Scanner;
 
+import com.bytefly.swarm.commands.Create;
 import com.bytefly.swarm.util.Debug;
 
 public class CommandLine {
@@ -15,7 +16,7 @@ public class CommandLine {
 		}
 	}
 	public static void usage() {
-		Debug.Log(Debug.INFO, "Usage: swarm [options]");
+		Debug.Log(Debug.INFO, "Usage:\n\tswarm [options]");
 		Debug.Log(Debug.INFO, "\nOptions:\n");
 		Debug.Log(Debug.INFO, "create  # Creates a new swarm project configuration");		
 		Debug.Log(Debug.INFO, "start   # Sets Started project state so builds are sent out normally");
@@ -29,9 +30,6 @@ public class CommandLine {
 		Debug.Log(Debug.INFO, "Version is "+Version.getVersion()+" Build "+Version.getBuildNum());		
 	}
 	public static void create() {
-		Scanner scanner = new Scanner(System.in);
-        System.out.print("Username: ");
-        String username = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();	}
+		Create c = new Create();
+	}
 }

@@ -10,6 +10,8 @@ public class Debug {
 
 	private static int log_level = TRACE;
 
+	public static boolean verbose = true;
+	
 	public static void setLevel(int l) {
 		log_level = l;
 	}

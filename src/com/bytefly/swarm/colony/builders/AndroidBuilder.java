@@ -5,7 +5,7 @@ import java.io.File;
 import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
-import com.bytefly.swarm.util.HttpConnector;
+import com.bytefly.swarm.colony.util.HttpConnector;
 
 public class AndroidBuilder extends Builder {
 

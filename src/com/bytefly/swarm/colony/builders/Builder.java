@@ -16,7 +16,7 @@ import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
-import com.bytefly.swarm.util.HttpConnector;
+import com.bytefly.swarm.colony.util.HttpConnector;
 
 public class Builder {
 
