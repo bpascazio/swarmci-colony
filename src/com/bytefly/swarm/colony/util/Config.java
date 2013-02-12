@@ -23,9 +23,11 @@ public class Config {
 	public static final String SWARM_ANDROID_SEND_EMAIL_APK = "SWARM_ANDROID_SEND_EMAIL_APK";
 	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
 	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
+	public static final String SWARM_MAKE_PROJECT_DIR = "SWARM_MAKE_PROJECT_DIR";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
+	public static final String SWARM_PROJECT_DIR = "swarm_project_dir";
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -47,6 +49,15 @@ public class Config {
 	static String VAL_SWARM_RAILS_URL = "http://localhost:3000";
 	static String VAL_SWARM_COLONY_UUID = "";
 	static String VAL_SWARM_DEBUG_LOG_FILE = "";
+	static String VAL_SWARM_PROJECT_DIR = ".";
+
+	public static void setProjectDir(String s) {
+		VAL_SWARM_PROJECT_DIR = s;
+	}
+
+	public static String getProjectDir() {
+		return VAL_SWARM_PROJECT_DIR;
+	}
 
 	public static void setRailsServer(String s) {
 		VAL_SWARM_RAILS_URL = s;
@@ -123,7 +134,9 @@ public class Config {
 		}	
 		else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";
-		}		
+		} else if (key.equals(SWARM_MAKE_PROJECT_DIR)) {
+			return "mkdir";
+		}
 		Debug.Log(Debug.ERROR, "Undefined Config Value " + key);
 		return "";
 	}

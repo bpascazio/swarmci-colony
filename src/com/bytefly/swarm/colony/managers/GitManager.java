@@ -91,7 +91,7 @@ public class GitManager extends Manager {
 
 			} catch (Exception e) {
 				Debug.Log(Debug.INFO,
-						"GitManager exception in worker thread - exiting");
+						"GitManager exception in worker thread - exiting "+e);
 				stop();
 			}
 

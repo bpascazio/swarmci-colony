@@ -5,6 +5,7 @@ package com.bytefly.swarm.colony.managers;
 import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.managers.work.Work;
 import com.bytefly.swarm.colony.models.Project;
+import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
 import com.bytefly.swarm.colony.builders.Builder;
 import com.bytefly.swarm.colony.collections.ProjectList;
@@ -73,13 +74,24 @@ public class ProjectManager extends Manager {
 	void processList(ProjectList pl) {
 		for (int i = 0; i < pl.cv.size(); i++) {
 			Project p = (Project) pl.cv.get(i);
-			
+
 			// Get the base name from the repo.
-			String[] tokens1 = p.Repo.split("/");
-			String[] tokens2 = tokens1[1].split("\\.");
-			Debug.Log(Debug.TRACE, "parsed out base name " + tokens2[0]);
-			p.BaseName = tokens2[0];
-			
+			p.BaseName = "";
+			if (p.Repo.indexOf("https") == 0) {
+
+				String[] tokens1 = p.Repo.split("/");
+				Debug.Log(Debug.TRACE, "http parsed out base name "
+						+ tokens1[tokens1.length - 1]);
+				p.BaseName = Config.getProjectDir()+"/"+tokens1[tokens1.length - 1];
+
+			} else {
+
+				String[] tokens1 = p.Repo.split("/");
+				String[] tokens2 = tokens1[1].split("\\.");
+				Debug.Log(Debug.TRACE, "git parsed out base name " + tokens2[0]);
+				p.BaseName = Config.getProjectDir()+"/"+tokens2[0];
+			}
+
 			// Set generic builder type for now.
 			p.BuilderType = Builder.BUILDER_TYPE_GENERIC;
 			Debug.Log(Debug.TRACE, "adding " + p.Name + " " + p.Repo);

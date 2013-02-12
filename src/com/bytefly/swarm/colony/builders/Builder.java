@@ -117,7 +117,7 @@ public class Builder {
 							+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(
 					Config.getStringValue(Config.SWARM_GIT_CLONE_CMD) + " "
-							+ p.Repo);
+							+ p.Repo, null, new File(Config.getProjectDir()));
 			pr.waitFor();
 			Debug.Log(Debug.TRACE, "repoClone result=" + getOutAndErrStream(pr));
 		} catch (Exception e) {

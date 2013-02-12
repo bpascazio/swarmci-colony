@@ -9,6 +9,7 @@ import java.util.prefs.Preferences;
 import com.bytefly.swarm.colony.managers.*;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
+import com.bytefly.swarm.colony.util.HttpConnector;
 import com.bytefly.swarm.colony.util.Version;
 
 public class Colony extends Thread {
@@ -66,6 +67,22 @@ public class Colony extends Thread {
 			String uid = colonyProps.getProperty(Config.SWARM_COLONY_UUID);
 			Config.setColonyUUID(uid);
 			Debug.Log("UUID set to :"+uid);
+			String dir = colonyProps.getProperty(Config.SWARM_PROJECT_DIR);
+			Config.setProjectDir(dir);
+			Debug.Log("Directory set to :"+dir);
+			
+			Debug.Log(Debug.TRACE, "Creating directory "+dir);
+			try {
+				Process pr = Runtime.getRuntime().exec(
+						Config.getStringValue(Config.SWARM_MAKE_PROJECT_DIR) + " "
+								+ dir);
+				pr.waitFor();
+			} catch (Exception e) {
+				Debug.Log(Debug.INFO,
+						"Exception caught creating project dir " + e.toString());
+			}
+
+			
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
