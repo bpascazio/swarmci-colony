@@ -15,4 +15,5 @@ public class Status {
 	public static int counter_builds_failure = 0;
 	
 	public static long counter_initial_uptime = 0;
+	public static String[] project_list = null;
 }

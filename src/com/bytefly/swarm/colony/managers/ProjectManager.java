@@ -72,6 +72,7 @@ public class ProjectManager extends Manager {
 	}
 
 	void processList(ProjectList pl) {
+		String pll[] = new String[pl.cv.size()];
 		for (int i = 0; i < pl.cv.size(); i++) {
 			Project p = (Project) pl.cv.get(i);
 
@@ -95,6 +96,8 @@ public class ProjectManager extends Manager {
 			// Set generic builder type for now.
 			p.BuilderType = Builder.BUILDER_TYPE_GENERIC;
 			Debug.Log(Debug.TRACE, "adding " + p.Name + " " + p.Repo);
+			pll[i]=p.Repo;
 		}
+		Status.project_list=pll;
 	}
 }
