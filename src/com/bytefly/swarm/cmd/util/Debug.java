@@ -1,4 +1,4 @@
-package com.bytefly.swarm.util;
+package com.bytefly.swarm.cmd.util;
 
 public class Debug {
 

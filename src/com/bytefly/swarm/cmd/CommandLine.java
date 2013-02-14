@@ -1,10 +1,10 @@
-package com.bytefly.swarm;
+package com.bytefly.swarm.cmd;
 
 import java.util.Scanner;
 
+import com.bytefly.swarm.cmd.commands.Create;
+import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.colony.Info;
-import com.bytefly.swarm.commands.Create;
-import com.bytefly.swarm.util.Debug;
 
 public class CommandLine {
 	public static void main(String[] args) {

@@ -2,8 +2,22 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/bpascazio/code/swarm-v1-colony-java/libs/httpcore-4.2.2.jar"/>
-	<classpathentry kind="lib" path="/Users/bpascazio/code/swarm-v1-colony-java/libs/httpclient-4.2.3.jar"/>
-	<classpathentry kind="lib" path="/Users/bpascazio/code/swarm-v1-colony-java/libs/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/slf4j-migrator-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/slf4j-ext-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/slf4j-api-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/log4j-over-slf4j-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/jul-to-slf4j-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/jcl-over-slf4j-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/ezmorph-1.0.5.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/apache-commons-lang.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/apache-commons.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/fluent-hc-4.2.3.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/httpclient-cache-4.2.3.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/httpmime-4.2.3.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/httpclient-4.2.3.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/httpcore-4.2.2.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="/Users/bpascazio/code/bf/swarm-v1-colony-java/libs/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

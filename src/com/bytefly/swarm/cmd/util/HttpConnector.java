@@ -1,4 +1,4 @@
-package com.bytefly.swarm.util;
+package com.bytefly.swarm.cmd.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,11 +22,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.models.Entity;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
-import com.bytefly.swarm.util.Debug;
 import com.bytefly.swarm.colony.util.Version;
 
 //
@@ -57,7 +57,7 @@ public class HttpConnector {
 			String sstr = java.net.URLEncoder.encode(eurl, "ISO-8859-1");
 			String url = eurl;
 
-			Debug.Log(Debug.TRACE, "url=" + url);
+//			Debug.Log(Debug.TRACE, "url=" + url);
 
 			HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
@@ -83,7 +83,7 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-			Debug.Log(Debug.TRACE, "response=" + page);
+	//		Debug.Log(Debug.TRACE, "response=" + page);
 			return page;
 
 		} catch (Exception e) {
@@ -203,7 +203,7 @@ public class HttpConnector {
 		String url = "http://swarm-cloud.herokuapp.com" + "/"
 				+ entitystr;
 		
-		System.out.print("url=" + url);
+//		System.out.print("url=" + url);
 		
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
@@ -254,7 +254,7 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-			Debug.Log(Debug.TRACE, "post response=" + page);
+//			Debug.Log(Debug.TRACE, "post response=" + page);
 			if (in != null) {
 				try {
 					in.close();

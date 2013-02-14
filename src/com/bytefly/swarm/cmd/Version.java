@@ -1,4 +1,4 @@
-package com.bytefly.swarm;
+package com.bytefly.swarm.cmd;
 
 public class Version {
 	public static final String SWARM_VERSION = "1.0";

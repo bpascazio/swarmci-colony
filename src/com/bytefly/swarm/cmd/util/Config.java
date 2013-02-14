@@ -1,4 +1,4 @@
-package com.bytefly.swarm.util;
+package com.bytefly.swarm.cmd.util;
 
 import com.bytefly.swarm.colony.util.Debug;
 

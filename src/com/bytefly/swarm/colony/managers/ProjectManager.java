@@ -83,7 +83,15 @@ public class ProjectManager extends Manager {
 				String[] tokens1 = p.Repo.split("/");
 				Debug.Log(Debug.TRACE, "http parsed out base name "
 						+ tokens1[tokens1.length - 1]);
-				p.BaseName = Config.getProjectDir()+"/"+tokens1[tokens1.length - 1];
+				String parsed=tokens1[tokens1.length - 1];
+				String[] tokens2 = parsed.split("\\.");
+				if (tokens2.length==2) {
+					parsed=tokens2[0];
+					Debug.Log(Debug.TRACE, "reparsed base name "
+							+ parsed);
+				}
+				
+				p.BaseName = Config.getProjectDir()+"/"+parsed;
 
 			} else {
 

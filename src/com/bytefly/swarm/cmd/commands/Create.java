@@ -1,13 +1,13 @@
-package com.bytefly.swarm.commands;
+package com.bytefly.swarm.cmd.commands;
 
 import java.io.File;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import com.bytefly.swarm.cmd.util.Debug;
+import com.bytefly.swarm.cmd.util.HttpConnector;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
-import com.bytefly.swarm.util.Debug;
-import com.bytefly.swarm.util.HttpConnector;
 
 public class Create extends Command {
 	String repo = "";
@@ -17,17 +17,16 @@ public class Create extends Command {
 		if (checkForGit()) {
 
 			getRepo();
+			checkForSwarmXML();
+			Project p = new Project();
+			p.Repo=repo;
+			HttpConnector h = new HttpConnector();
+			h.setEntity(p);
+			System.out.print("Swarm cloud building enabled.\n");
 
-			Scanner scanner = new Scanner(System.in);
-			System.out.print("Username: ");
-			String username = scanner.nextLine();
-			System.out.print("Password: ");
-			String password = scanner.nextLine();
+		} else {
+			System.out.print("\n");
 		}
-		Project p = new Project();
-		p.Repo=repo;
-		HttpConnector h = new HttpConnector();
-		h.setEntity(p);
 	}
 
 	public void getRepo() {
@@ -48,8 +47,6 @@ public class Create extends Command {
 				int j = in.indexOf("URL:");
 				if (j > 0) {
 					String path = in.substring(j + 5);
-					if (Debug.verbose)
-						System.out.println("*found path " + path);
 					repo = path;
 					return;
 				}
