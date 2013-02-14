@@ -44,6 +44,11 @@ public class BuildManager extends Manager {
 						ab.loadSwarmXML();
 						ab.runAll();
 					} else {
+						Builder b = new Builder();
+						b.p =  p;
+						b.loadSwarmXML();
+						b.sendFailureEmail();
+						Status.counter_builds_failure++;
 						Debug.Log(Debug.DEBUG, "BuildManager flagging build failure no project found.");
 					}
 				}				
