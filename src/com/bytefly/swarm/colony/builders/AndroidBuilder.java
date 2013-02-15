@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
@@ -34,9 +35,11 @@ public class AndroidBuilder extends Builder {
 		bd.success = false;
 		if (apkName.equals("")) {
 			Debug.Log(Debug.TRACE, "no apk found");			
+			Status.counter_builds_failure++;
 			sendFailureEmail();
 		} else {
 			Debug.Log(Debug.TRACE, "apk found uploading and emailing");						
+			Status.counter_builds_success++;
 			androidUploadBuild();
 			androidSendEmail();
 			bd.success = true;
