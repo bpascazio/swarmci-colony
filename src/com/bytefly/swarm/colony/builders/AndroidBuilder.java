@@ -1,6 +1,9 @@
 package com.bytefly.swarm.colony.builders;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.util.Config;
@@ -20,6 +23,8 @@ public class AndroidBuilder extends Builder {
 			this.repoClone();
 		}
 		androidRemoveBinDirs();
+		androidSetSDK();
+		androidVerifyCreateBuildXml();
 		andoidBuild();
 		apkName="";
 		androidGetAPKName();
@@ -49,6 +54,42 @@ public class AndroidBuilder extends Builder {
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO, "Exception caught running androidRemoveBinDirs "+e.toString());
 		}		
+	}
+	
+	public void androidSetSDK() {
+		try {
+			String lfile="sdk.dir="+Config.getAndroidSDK()+"\n";
+			BufferedWriter bw;
+			bw = new BufferedWriter(new FileWriter(this.p.BaseName+"/"+this.p.buildDirectory+"local.properties", true));
+			bw.write(lfile);
+			bw.flush();
+			Debug.Log(Debug.TRACE, "android sdk set to "+Config.getAndroidSDK());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Debug.Log(Debug.INFO, "Exception caught running androidSetSDK "+e.toString());
+		}
+
+	}
+	
+	public void androidVerifyCreateBuildXml() {
+		Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_FIND_BUILDXML)+"");
+		Process pr;
+		try {
+			pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_FIND_BUILDXML),null,new File(this.p.BaseName));
+			pr.waitFor(); 
+			String androidxPath = new String(getOutAndErrStream(pr));
+			androidxPath = androidxPath.replace("\n", "");
+			Debug.Log(Debug.TRACE, "androidxPath "+androidxPath);
+			if (androidxPath.equals("")) {
+				String createbxml = Config.getAndroidSDK()+"/"+Config.getStringValue(Config.SWARM_ANDROID_GENERATE_BUILDXML);
+				Debug.Log(Debug.TRACE, "Executing "+createbxml);
+				pr = Runtime.getRuntime().exec(createbxml,null,new File(this.p.BaseName+"/"+this.p.buildDirectory));
+				pr.waitFor(); 
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Debug.Log(Debug.INFO, "Exception caught running androidVerifyCreateBuildXml "+e.toString());
+		}
 	}
 	
 	public void andoidBuild() {

@@ -24,10 +24,12 @@ public class Config {
 	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
 	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
 	public static final String SWARM_MAKE_PROJECT_DIR = "SWARM_MAKE_PROJECT_DIR";
+	public static final String SWARM_ANDROID_GENERATE_BUILDXML = "SWARM_ANDROID_GENERATE_BUILDXML";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
 	public static final String SWARM_PROJECT_DIR = "swarm_project_dir";
+	public static final String SWARM_ANDROID_SDK = "swarm_android_sdk";
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -50,6 +52,7 @@ public class Config {
 	static String VAL_SWARM_COLONY_UUID = "";
 	static String VAL_SWARM_DEBUG_LOG_FILE = "";
 	static String VAL_SWARM_PROJECT_DIR = ".";
+	static String VAL_SWARM_ANDROID_SDK = "/Android/sdk";
 
 	public static void setProjectDir(String s) {
 		VAL_SWARM_PROJECT_DIR = s;
@@ -69,6 +72,14 @@ public class Config {
 
 	public static void setColonyUUID(String s) {
 		VAL_SWARM_COLONY_UUID = s;
+	}
+
+	public static void setAndroidSDK(String s) {
+		VAL_SWARM_ANDROID_SDK = s;
+	}
+
+	public static String getAndroidSDK() {
+		return VAL_SWARM_ANDROID_SDK;
 	}
 
 	public static String getColonyUUID() {
@@ -125,6 +136,9 @@ public class Config {
 		}
 		else if (key.equals(SWARM_ANDROID_UPLOAD_APK)) {
 			return "scp -P 22123 %s bpascazio@www.bytefly.com:builds/%s";
+		}
+		else if (key.equals(SWARM_ANDROID_GENERATE_BUILDXML)) {
+			return "tools/android update project -p .";
 		}
 		else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
 			return "curl http://www.bytefly.com/apps/teamcity/email.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuild";

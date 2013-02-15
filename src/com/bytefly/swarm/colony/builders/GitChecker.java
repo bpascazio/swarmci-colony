@@ -60,8 +60,8 @@ public class GitChecker extends Builder {
 				p.buildDirectory =  tokens1[0];
 				
 				// Make sure build.xml is there.
-				Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_FIND_BUILDXML)+"");
-				Process pr2 = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_FIND_BUILDXML),null,new File(this.p.BaseName));
+				Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_FIND_MANIFEST)+"");
+				Process pr2 = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_FIND_MANIFEST),null,new File(this.p.BaseName));
 				pr2.waitFor(); 
 				String buildXMLPath = new String(getOutAndErrStream(pr2));
 				buildXMLPath = buildXMLPath.replace("\n", "");
@@ -69,7 +69,7 @@ public class GitChecker extends Builder {
 				if (buildXMLPath.equals("")) {
 					
 					// no build file found
-					Debug.Log(Debug.DEBUG, p.Name+"no build.xml file found not valid android build");
+					Debug.Log(Debug.DEBUG, p.Name+"no AndroidManifest.xml file found not valid android build");
 				} else {
 					p.BuilderType =  Builder.BUILDER_TYPE_ANDROID;
 				}

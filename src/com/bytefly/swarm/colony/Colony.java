@@ -70,6 +70,9 @@ public class Colony extends Thread {
 			String dir = colonyProps.getProperty(Config.SWARM_PROJECT_DIR);
 			Config.setProjectDir(dir);
 			Debug.Log("Directory set to :"+dir);
+			String asdk = colonyProps.getProperty(Config.SWARM_ANDROID_SDK);
+			Config.setAndroidSDK(asdk);
+			Debug.Log("Android SDK set to :"+asdk);
 			
 			Debug.Log(Debug.TRACE, "Creating directory "+dir);
 			try {
