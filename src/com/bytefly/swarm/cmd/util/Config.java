@@ -13,7 +13,7 @@ public class Config {
 
 	public static String getStringValue(String key) {
 		if (key.equals(SWARM_RAILS_URL)) {
-			return "http://swarm-cloud.herokuapp.com/";
+			return "http://swarmintegrator.herokuapp.com/";
 		}
 		Debug.Log(Debug.DEBUG, "Undefined Config Value " + key);
 		return "";
