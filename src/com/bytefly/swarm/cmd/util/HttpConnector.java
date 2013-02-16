@@ -121,7 +121,7 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = "http://swarm-cloud.herokuapp.com" + "/"
+			String url = "http://swarmbytefly.herokuapp.com" + "/"
 					+ entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
@@ -200,7 +200,7 @@ public class HttpConnector {
 	public void setEntity(Entity e) {
 		// Create a new HttpClient and Post Header
 		String entitystr = e.ENTITY_COLLECTION;
-		String url = "http://swarm-cloud.herokuapp.com" + "/"
+		String url = "http://swarmbytefly.herokuapp.com" + "/"
 				+ entitystr;
 		
 //		System.out.print("url=" + url);
