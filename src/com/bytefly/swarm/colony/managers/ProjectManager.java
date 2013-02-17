@@ -91,14 +91,16 @@ public class ProjectManager extends Manager {
 							+ parsed);
 				}
 				
-				p.BaseName = Config.getProjectDir()+"/"+parsed;
+				p.BaseName = new String(Config.getProjectDir()+"/"+parsed);
+				p.BaseNameMinimal = new String(parsed);
 
 			} else {
 
 				String[] tokens1 = p.Repo.split("/");
 				String[] tokens2 = tokens1[1].split("\\.");
 				Debug.Log(Debug.TRACE, "git parsed out base name " + tokens2[0]);
-				p.BaseName = Config.getProjectDir()+"/"+tokens2[0];
+				p.BaseName = new String(Config.getProjectDir()+"/"+tokens2[0]);
+				p.BaseNameMinimal = new String(tokens2[0]);
 			}
 
 			// Set generic builder type for now.

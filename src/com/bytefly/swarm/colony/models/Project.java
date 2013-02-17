@@ -7,6 +7,7 @@ public class Project extends Entity{
 	public String Repo;
 	public int BuilderType;
 	public String BaseName;
+	public String BaseNameMinimal;
 	public boolean forceClean;
 	public boolean debug;
 	public String Version;
@@ -25,5 +26,6 @@ public class Project extends Entity{
 		buildDirectory = "";
 		UserId = -1;
 		ProjectId = -1;
+		BaseNameMinimal = "";
 	}
 }

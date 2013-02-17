@@ -127,7 +127,7 @@ public class AndroidBuilder extends Builder {
 		try {
 			String cmd = 
 					String.format(Config.getStringValue(Config.SWARM_ANDROID_UPLOAD_APK), 
-							this.apkName, this.p.BaseName+".apk");
+							this.apkName, this.p.BaseNameMinimal+".apk");
 			Debug.Log(Debug.TRACE, "Executing "+cmd);
 			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
 			pr.waitFor(); 
@@ -139,13 +139,13 @@ public class AndroidBuilder extends Builder {
 	public void androidSendEmail() {
 
 		try {
-			String name = p.BaseName+"-"+p.Version+"-";
+			String name = p.BaseNameMinimal+"-"+p.Version+"."+p.buildNum;
 			String owner = "bytefly";
 			String repo = p.BaseName;
 			String to = this.toList;
 			String cmd = 
 					String.format(Config.getStringValue(Config.SWARM_ANDROID_SEND_EMAIL_APK), 
-							name, p.buildNum, this.p.BaseName+".apk", owner, repo, to);
+							name, p.buildNum, this.p.BaseNameMinimal+".apk", owner, repo, to);
 			Debug.Log(Debug.TRACE, "Executing "+cmd);
 			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
 			pr.waitFor(); 
