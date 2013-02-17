@@ -120,7 +120,7 @@ public class Config {
 			return "rm -rf";
 		}
 		else if (key.equals(SWARM_NOTIFY_EMAIL_CMD)) {
-			return "http://www.bytefly.com/apps/teamcity/email.php?name=639Building&bnum=4&build=639building-android-1.0.5.apk&log=buildlog-5.log&owner=bytefly&repo=639building-android&to=bob@bytefly.com&fname=AndroidBuild";
+			return "http://swarm.bytefly.com/email.php?name=639Building&bnum=4&build=639building-android-1.0.5.apk&log=buildlog-5.log&owner=bytefly&repo=639building-android&to=bob@bytefly.com&fname=AndroidBuild";
 		}
 		else if (key.equals(SWARM_ANDROID_CLEARN_CMD)) {
 			return "rm -rf bin";
@@ -141,10 +141,10 @@ public class Config {
 			return "tools/android update project -p .";
 		}
 		else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
-			return "curl http://www.bytefly.com/apps/teamcity/email.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuild";
+			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuild";
 		}	
 		else if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
-			return "curl http://www.bytefly.com/apps/teamcity/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";
+			return "curl http://swarm.bytefly.com/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";
 		}	
 		else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";
