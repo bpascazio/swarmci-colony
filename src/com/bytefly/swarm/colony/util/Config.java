@@ -21,6 +21,7 @@ public class Config {
 	public static final String SWARM_ANDROID_FIND_MANIFEST = "SWARM_ANDROID_FIND_MANIFEST";
 	public static final String SWARM_ANDROID_FIND_BUILDXML = "SWARM_ANDROID_FIND_BUILDXML";
 	public static final String SWARM_ANDROID_SEND_EMAIL_APK = "SWARM_ANDROID_SEND_EMAIL_APK";
+	public static final String SWARM_UPLOAD_LOGFILE = "SWARM_UPLOAD_LOGFILE";
 	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
 	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
 	public static final String SWARM_MAKE_PROJECT_DIR = "SWARM_MAKE_PROJECT_DIR";
@@ -137,11 +138,14 @@ public class Config {
 		else if (key.equals(SWARM_ANDROID_UPLOAD_APK)) {
 			return "scp -P 22123 %s bpascazio@www.bytefly.com:builds/%s";
 		}
+		else if (key.equals(SWARM_UPLOAD_LOGFILE)) {
+			return "scp -P 22123 %s bpascazio@www.bytefly.com:builds/%s";
+		}
 		else if (key.equals(SWARM_ANDROID_GENERATE_BUILDXML)) {
 			return "tools/android update project -p .";
 		}
 		else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
-			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuild";
+			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=AndroidBuild";
 		}	
 		else if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
 			return "curl http://swarm.bytefly.com/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";

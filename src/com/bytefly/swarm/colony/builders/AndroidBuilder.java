@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.models.Build;
+import com.bytefly.swarm.colony.models.Logfile;
 import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
 import com.bytefly.swarm.colony.util.HttpConnector;
@@ -24,6 +25,8 @@ public class AndroidBuilder extends Builder {
 			this.repoClone();
 		}
 		androidRemoveBinDirs();
+		p.logFile = new Logfile();
+		p.logFile.startLogFile(p.BaseNameMinimal+p.buildNum+".log", p.BaseName);
 		androidSetSDK();
 		androidVerifyCreateBuildXml();
 		andoidBuild();
@@ -36,11 +39,13 @@ public class AndroidBuilder extends Builder {
 		if (apkName.equals("")) {
 			Debug.Log(Debug.TRACE, "no apk found");			
 			Status.counter_builds_failure++;
+			p.logFile.stopLogFile();
 			sendFailureEmail();
 		} else {
 			Debug.Log(Debug.TRACE, "apk found uploading and emailing");						
 			Status.counter_builds_success++;
 			androidUploadBuild();
+			p.logFile.stopLogFile();
 			androidSendEmail();
 			bd.success = true;
 		}
@@ -102,7 +107,9 @@ public class AndroidBuilder extends Builder {
 			Debug.Log(Debug.DEBUG, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target+" in directory "+this.p.BaseName+"/"+this.p.buildDirectory);
 			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target,null,new File(this.p.BaseName+"/"+this.p.buildDirectory));
 			pr.waitFor(); 
-			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
+			String result = getOutAndErrStream(pr);
+			p.logFile.writeToLog(result);
+			Debug.Log(Debug.TRACE, "result="+result);
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO, "Exception caught running androidRemoveBinDirs "+e.toString());
 		}
@@ -143,9 +150,10 @@ public class AndroidBuilder extends Builder {
 			String owner = "bytefly";
 			String repo = p.BaseName;
 			String to = this.toList;
+			String log = this.p.BaseNameMinimal+this.p.buildNum+".log";
 			String cmd = 
 					String.format(Config.getStringValue(Config.SWARM_ANDROID_SEND_EMAIL_APK), 
-							name, p.buildNum, this.p.BaseNameMinimal+this.p.buildNum+".apk", owner, repo, to);
+							name, p.buildNum, this.p.BaseNameMinimal+this.p.buildNum+".apk", log, owner, repo, to);
 			Debug.Log(Debug.TRACE, "Executing "+cmd);
 			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
 			pr.waitFor(); 

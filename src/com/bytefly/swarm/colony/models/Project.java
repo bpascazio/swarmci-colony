@@ -14,6 +14,7 @@ public class Project extends Entity{
 	public int buildNum;
 	public boolean triggerBuild;
 	public String buildDirectory;
+	public Logfile logFile;
 	
 	public Project() {
 		ENTITY = "Project";
@@ -27,5 +28,6 @@ public class Project extends Entity{
 		UserId = -1;
 		ProjectId = -1;
 		BaseNameMinimal = "";
+		logFile = null;
 	}
 }
