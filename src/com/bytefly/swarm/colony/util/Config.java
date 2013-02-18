@@ -25,6 +25,7 @@ public class Config {
 	public static final String SWARM_SEND_FAILURE_EMAIL = "SWARM_SEND_FAILURE_EMAIL";
 	public static final String SWARM_DUMP_XML = "SWARM_DUMP_XML";
 	public static final String SWARM_MAKE_PROJECT_DIR = "SWARM_MAKE_PROJECT_DIR";
+	public static final String SWARM_MAKE_DOT_SWARM_DIR = "SWARM_MAKE_DOT_SWARM_DIR";
 	public static final String SWARM_ANDROID_GENERATE_BUILDXML = "SWARM_ANDROID_GENERATE_BUILDXML";
 	public static final String SWARM_CLOUD_CHECK_FREQ = "SWARM_CLOUD_CHECK_FREQ";
 	public static final String SWARM_COLONY_AUTHENTICATION_V1 = "SWARM_COLONY_AUTHENTICATION_V1";
@@ -160,8 +161,12 @@ public class Config {
 		}		
 		else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";
-		} else if (key.equals(SWARM_MAKE_PROJECT_DIR)) {
+		} 
+		else if (key.equals(SWARM_MAKE_PROJECT_DIR)) {
 			return "mkdir";
+		} 
+		else if (key.equals(SWARM_MAKE_DOT_SWARM_DIR)) {
+			return "mkdir .swarm";
 		}
 		Debug.Log(Debug.ERROR, "Undefined Config Value " + key);
 		return "";
