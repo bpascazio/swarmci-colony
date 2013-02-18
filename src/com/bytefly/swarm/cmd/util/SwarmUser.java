@@ -9,18 +9,21 @@ public class SwarmUser {
 	public String password = "";
 	
 	public SwarmUser() {
-		username = "bpascazio";
-		email = "bob@bytefly.com";
-		password = "password";
+		username = "x";
+		email = "x";
+		password = "x";
 	}
 	
 	public static SwarmUser getUserInfo() {
 		Scanner scanner = new Scanner(System.in);
-		System.out.print("Username: ");
+		System.out.print("Username/Email: ");
 		String username = scanner.nextLine();
 		System.out.print("Password: ");
 		String password = scanner.nextLine();
-		return new SwarmUser();
+		SwarmUser su = new SwarmUser();
+		su.email = su.username = new String(username);
+		su.password = new String (password);
+		return su;
 	}
 	
 }

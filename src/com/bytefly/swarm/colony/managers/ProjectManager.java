@@ -64,7 +64,7 @@ public class ProjectManager extends Manager {
 				}
 			} catch (Exception e) {
 				Debug.Log(Debug.INFO,
-						"ProjectManager work queue exception - exiting");
+						"ProjectManager work queue exception - exiting "+e);
 				stop();
 			}
 		}
@@ -73,6 +73,8 @@ public class ProjectManager extends Manager {
 
 	void processList(ProjectList pl) {
 		String pll[] = new String[pl.cv.size()];
+		Debug.Log(Debug.TRACE, "size is "
+				+ pl.cv.size());
 		for (int i = 0; i < pl.cv.size(); i++) {
 			Project p = (Project) pl.cv.get(i);
 
@@ -97,10 +99,14 @@ public class ProjectManager extends Manager {
 			} else {
 
 				String[] tokens1 = p.Repo.split("/");
-				String[] tokens2 = tokens1[1].split("\\.");
-				Debug.Log(Debug.TRACE, "git parsed out base name " + tokens2[0]);
-				p.BaseName = new String(Config.getProjectDir()+"/"+tokens2[0]);
-				p.BaseNameMinimal = new String(tokens2[0]);
+				if (tokens1 !=null && tokens1.length==2) {
+					String[] tokens2 = tokens1[1].split("\\.");
+					Debug.Log(Debug.TRACE, "git parsed out base name " + tokens2[0]);
+					p.BaseName = new String(Config.getProjectDir()+"/"+tokens2[0]);
+					p.BaseNameMinimal = new String(tokens2[0]);
+				} else {
+					p.BaseName=p.BaseNameMinimal="";
+				}
 			}
 
 			// Set generic builder type for now.

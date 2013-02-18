@@ -7,6 +7,8 @@ public class Work {
 	public static final String WORK_ITEM_GIT_SCAN_PROJECTS = "scan-projects-work-item";
 	public static final String WORK_ITEM_BUILD_BUILD_PROJECT = "build-project-work-item";
 	public static final String WORK_ITEM_PROJECT_FETCH_PROJECTS = "fetch-projects-work-item";
+	public static final String WORK_ITEM_CLOUD_CHECK_CONNECTION = "check-cloud-connection";
+	
 	public String name = WORK_ITEM_GENERIC;
 	public Object data;
 	public Work(String n) {

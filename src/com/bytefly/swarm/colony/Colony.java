@@ -14,6 +14,8 @@ import com.bytefly.swarm.colony.util.Version;
 
 public class Colony extends Thread {
 
+	private static SecurityContext mSecurityContext = null;
+	
 	public static void main(String[] args) {
 
 		startServer();
@@ -23,6 +25,10 @@ public class Colony extends Thread {
 		startServer();
 	}
 
+	public static void setSecurityContext(SecurityContext c) {
+		mSecurityContext = c;
+	}
+	
 	public static void startServer() {
 
 		if (getPreference() == true) {
@@ -31,6 +37,9 @@ public class Colony extends Thread {
 			Debug.Log("Swarm Colony Server Starting...");
 			Debug.Log("Version is " + Version.getVersion() + " Build "
 					+ Version.getBuildNum());
+
+			// cloud manager handles connection to cloud
+			CloudManager cm = new CloudManager(mSecurityContext);
 
 			// build manager triggered on commit updates to build product
 			BuildManager bm = new BuildManager();
@@ -42,7 +51,7 @@ public class Colony extends Thread {
 			ProjectManager pm = new ProjectManager(gm);
 
 			// swarm manager manages lifecycle of server
-			SwarmManager sm = new SwarmManager(pm, gm, bm);
+			SwarmManager sm = new SwarmManager(cm, pm, gm, bm);
 			sm.run();
 		} else {
 			Debug.Log("No colony.preferences file found - aborting start...");

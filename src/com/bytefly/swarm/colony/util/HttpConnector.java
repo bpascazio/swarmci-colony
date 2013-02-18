@@ -3,6 +3,7 @@ package com.bytefly.swarm.colony.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.CookieManager;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -41,6 +44,79 @@ public class HttpConnector {
 	public int error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume
 																// communicaton
 																// problem
+	
+	private static HttpClient client = null;
+	
+	public boolean checkConnection(String semail, String spassword) {
+
+		boolean connected = false; // assume failure
+		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
+														// problem
+		BufferedReader in = null;
+
+		try {
+			String url = String
+					.format(Config
+							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
+							Config.getStringValue(Config.SWARM_RAILS_URL), 
+							semail,
+							spassword);
+			
+			Debug.Log(Debug.TRACE, "***SECURITY**** url=" + url);
+
+			if (client==null) client = new DefaultHttpClient();
+			HttpGet request = new HttpGet();
+
+			request.setURI(new URI(url));
+
+			// set the user agent to from the phone os information
+			String useragent = "swarm" + Version.getVersion() + " "
+					+ Version.getBuildNum();
+			request.setHeader("User-Agent", useragent);
+			Debug.Log(Debug.TRACE, "****SECURITY****  useragent=" + useragent);
+
+			// execute the http GET
+			HttpResponse response = client.execute(request);
+
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+			StringBuffer sb = new StringBuffer("");
+			String line = "";
+			String NL = System.getProperty("line.separator");
+			while ((line = in.readLine()) != null) {
+				sb.append(line + NL);
+			}
+			in.close();
+			String page = sb.toString();
+//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + page);
+//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + response.toString());
+			Debug.Log(Debug.TRACE, "***SECURITY****  cookie=" + response.getHeaders("Set-Cookie")[0].toString());
+
+			connected = true;
+
+		} catch (Exception e) {
+
+			//
+			// Note that this exception may be json parsing related or HTTP
+			// related.
+			// That is why we assume a server communication error.
+			//
+			e.printStackTrace();
+
+		} finally {
+
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		return connected;
+	}
 
 	public String getURL(String eurl) {
 
@@ -56,7 +132,7 @@ public class HttpConnector {
 
 			Debug.Log(Debug.TRACE, "url=" + url);
 
-			HttpClient client = new DefaultHttpClient();
+			if (client==null) client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -123,7 +199,7 @@ public class HttpConnector {
 
 			Debug.Log(Debug.TRACE, "url=" + url);
 
-			HttpClient client = new DefaultHttpClient();
+			if (client==null) client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -156,7 +232,6 @@ public class HttpConnector {
 			JSONTokener tokener = new JSONTokener(page);
 			JSONArray res = (JSONArray) tokener.nextValue();
 			Debug.Log(Debug.DEBUG, "entity list size=" + res.size());
-
 			if (entity.equals(new Project().ENTITY_COLLECTION)) {
 				c = new Vector<Entity>();
 				for (int i = 0; i < res.size(); i++) {
@@ -202,7 +277,7 @@ public class HttpConnector {
 		
 		Debug.Log(Debug.TRACE, "url=" + url);
 		
-		HttpClient httpclient = new DefaultHttpClient();
+		if (client==null) client = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
 		BufferedReader in = null;
 		// Add your data
@@ -229,7 +304,7 @@ public class HttpConnector {
 		try {
 			// Execute HTTP Post Request
 			HttpResponse response;
-			response = httpclient.execute(httppost);
+			response = client.execute(httppost);
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
 			StringBuffer sb = new StringBuffer("");
