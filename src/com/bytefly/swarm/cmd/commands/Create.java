@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.cmd.util.HttpConnector;
+import com.bytefly.swarm.cmd.util.SwarmUser;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
 
@@ -20,7 +21,9 @@ public class Create extends Command {
 			checkForSwarmXML();
 			Project p = new Project();
 			p.Repo=repo;
+			SwarmUser sw = SwarmUser.getUserInfo();
 			HttpConnector h = new HttpConnector();
+			h.checkConnection(sw.email, sw.password);
 			h.setEntity(p);
 			System.out.print("Swarm cloud building enabled.\n");
 

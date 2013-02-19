@@ -15,12 +15,16 @@ import net.sf.json.util.JSONTokener;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
 
 import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.colony.models.Build;
@@ -43,8 +47,12 @@ public class HttpConnector {
 	public String infostr = "";
 	public int error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume
 																// communicaton
-																// problem
-
+	static HttpClient httpclient = null;														// problem
+	static BasicHttpContext mHttpContext = new BasicHttpContext();
+	CookieStore mCookieStore      = new BasicCookieStore();        
+	
+//	public HttpConnector() {
+//	}
 	public String getURL(String eurl) {
 
 		boolean updated = false; // assume failure
@@ -59,7 +67,8 @@ public class HttpConnector {
 
 //			Debug.Log(Debug.TRACE, "url=" + url);
 
-			HttpClient client = new DefaultHttpClient();
+			
+			if (httpclient==null) httpclient = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -71,7 +80,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "useragent=" + useragent);
 
 			// execute the http GET
-			HttpResponse response = client.execute(request);
+			HttpResponse response = httpclient.execute(request,mHttpContext);
 
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
@@ -121,12 +130,12 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = "http://swarmbytefly.herokuapp.com" + "/"
+			String url = "http://localhost:3000" + "/"
 					+ entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
 
-			HttpClient client = new DefaultHttpClient();
+			if (httpclient==null) httpclient = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -138,7 +147,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "useragent=" + useragent);
 
 			// execute the http GET
-			HttpResponse response = client.execute(request);
+			HttpResponse response = httpclient.execute(request,mHttpContext);
 
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
@@ -196,16 +205,87 @@ public class HttpConnector {
 
 		return c;
 	}
+	public boolean checkConnection(String semail, String spassword) {
+
+		boolean connected = false; // assume failure
+		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
+														// problem
+		BufferedReader in = null;
+
+		try {
+			String url = String
+					.format(Config
+							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
+							Config.getStringValue(Config.SWARM_RAILS_URL), 
+							semail,
+							spassword);
+			
+			System.out.println("***SECURITY**** url=" + url);
+
+			if (httpclient==null) httpclient = new DefaultHttpClient();
+			HttpGet request = new HttpGet();
+
+			request.setURI(new URI(url));
+
+			// set the user agent to from the phone os information
+			String useragent = "swarm" + Version.getVersion() + " "
+					+ Version.getBuildNum();
+			request.setHeader("User-Agent", useragent);
+			System.out.println("****SECURITY****  useragent=" + useragent);
+
+			// execute the http GET
+			mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+			HttpResponse response = httpclient.execute(request,mHttpContext);
+
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+			StringBuffer sb = new StringBuffer("");
+			String line = "";
+			String NL = System.getProperty("line.separator");
+			while ((line = in.readLine()) != null) {
+				sb.append(line + NL);
+			}
+			in.close();
+			String page = sb.toString();
+//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + page);
+//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + response.toString());
+			Debug.Log(Debug.TRACE, "***SECURITY****  cookie=" + response.getHeaders("Set-Cookie")[0].toString());
+
+			connected = true;
+
+		} catch (Exception e) {
+
+			//
+			// Note that this exception may be json parsing related or HTTP
+			// related.
+			// That is why we assume a server communication error.
+			//
+			e.printStackTrace();
+
+		} finally {
+
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		return connected;
+	}
 
 	public void setEntity(Entity e) {
 		// Create a new HttpClient and Post Header
 		String entitystr = e.ENTITY_COLLECTION;
-		String url = "http://swarmbytefly.herokuapp.com" + "/"
+		String url = "http://localhost:3000" + "/"
 				+ entitystr;
 		
-//		System.out.print("url=" + url);
+		System.out.print("url=" + url);
 		
-		HttpClient httpclient = new DefaultHttpClient();
+		if (httpclient==null) httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
 		BufferedReader in = null;
 		// Add your data
@@ -243,7 +323,8 @@ public class HttpConnector {
 		try {
 			// Execute HTTP Post Request
 			HttpResponse response;
-			response = httpclient.execute(httppost);
+
+			response = httpclient.execute(httppost, mHttpContext);
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
 			StringBuffer sb = new StringBuffer("");
@@ -254,7 +335,7 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-//			Debug.Log(Debug.TRACE, "post response=" + page);
+			Debug.Log(Debug.TRACE, "post response=" + page);
 			if (in != null) {
 				try {
 					in.close();
