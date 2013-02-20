@@ -29,6 +29,7 @@ public class Config {
 	public static final String SWARM_ANDROID_GENERATE_BUILDXML = "SWARM_ANDROID_GENERATE_BUILDXML";
 	public static final String SWARM_CLOUD_CHECK_FREQ = "SWARM_CLOUD_CHECK_FREQ";
 	public static final String SWARM_COLONY_AUTHENTICATION_V1 = "SWARM_COLONY_AUTHENTICATION_V1";
+	public static final String SWARM_COLONY_AUTHENTICATION_TOKEN = "SWARM_COLONY_AUTHENTICATION_TOKEN";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
@@ -158,7 +159,10 @@ public class Config {
 		}	
 		else if (key.equals(SWARM_COLONY_AUTHENTICATION_V1)) {
 			return "%s/colony?email=%s&password=%s";
-		}		
+		}	
+		else if (key.equals(SWARM_COLONY_AUTHENTICATION_TOKEN)) {
+			return "%s/tokens";
+		}	
 		else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";
 		} 

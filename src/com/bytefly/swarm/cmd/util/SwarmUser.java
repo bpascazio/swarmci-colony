@@ -23,11 +23,13 @@ public class SwarmUser {
 	public String username = "";
 	public String email = "";
 	public String password = "";
+	public int uid = 0;
 
 	public SwarmUser() {
 		username = "x";
 		email = "x";
 		password = "x";
+		uid = 0;
 	}
 	public static class ReadXMLFile {
 
@@ -142,7 +144,7 @@ public class SwarmUser {
 		su.email = new String(email);
 		su.username = new String(username);
 		su.password = new String (password);
-		System.out.print("Password:::"+su.email+su.password);
+//		System.out.print("Password:::"+su.email+su.password);
 		return su;
 	}
 	private static final String dotswarmxml = "<?xml version=\"1.0\"?>\n"

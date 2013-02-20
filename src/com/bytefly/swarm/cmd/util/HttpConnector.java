@@ -205,9 +205,9 @@ public class HttpConnector {
 
 		return c;
 	}
-	public boolean checkConnection(String semail, String spassword) {
+	public int checkConnection(String semail, String spassword) {
 
-		boolean connected = false; // assume failure
+		int userid = 0; // assume failure
 		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
 														// problem
 		BufferedReader in = null;
@@ -220,7 +220,7 @@ public class HttpConnector {
 							semail,
 							spassword);
 			
-			System.out.println("***SECURITY**** url=" + url);
+	//		System.out.println("***SECURITY**** url=" + url);
 
 			if (httpclient==null) httpclient = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
@@ -231,7 +231,6 @@ public class HttpConnector {
 			String useragent = "swarm" + Version.getVersion() + " "
 					+ Version.getBuildNum();
 			request.setHeader("User-Agent", useragent);
-			System.out.println("****SECURITY****  useragent=" + useragent);
 
 			// execute the http GET
 			mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
@@ -247,11 +246,48 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + page);
-//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + response.toString());
-			Debug.Log(Debug.TRACE, "***SECURITY****  cookie=" + response.getHeaders("Set-Cookie")[0].toString());
+	//		System.out.println("***SECURITY**** page=" + page);
 
-			connected = true;
+			
+			url = String
+					.format(Config
+							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_TOKEN),
+							Config.getStringValue(Config.SWARM_RAILS_URL), 
+							semail,
+							spassword);
+			
+//			System.out.println("***SECURITY**** url=" + url);
+
+			if (httpclient==null) httpclient = new DefaultHttpClient();
+			request = new HttpGet();
+
+			request.setURI(new URI(url));
+
+			// set the user agent to from the phone os information
+			useragent = "swarm" + Version.getVersion() + " "
+					+ Version.getBuildNum();
+			request.setHeader("User-Agent", useragent);
+
+			// execute the http GET
+			mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+			response = httpclient.execute(request,mHttpContext);
+
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+			sb = new StringBuffer("");
+			line = "";
+			NL = System.getProperty("line.separator");
+			while ((line = in.readLine()) != null) {
+				sb.append(line + NL);
+			}
+			in.close();
+			page = sb.toString();
+	//		System.out.println("***SECURITY**** page=" + page);
+			page = page.replace("\n", "");
+			page = page.replace(" ", "");
+			if (!page.equals("")) {
+				userid = Integer.valueOf(page);
+			}
 
 		} catch (Exception e) {
 
@@ -274,7 +310,7 @@ public class HttpConnector {
 
 		}
 
-		return connected;
+		return userid;
 	}
 
 	public void setEntity(Entity e) {
@@ -283,7 +319,7 @@ public class HttpConnector {
 		String url = "http://localhost:3000" + "/"
 				+ entitystr;
 		
-		System.out.print("url=" + url);
+//		System.out.print("url=" + url);
 		
 		if (httpclient==null) httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
@@ -335,7 +371,7 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-			Debug.Log(Debug.TRACE, "post response=" + page);
+	//		Debug.Log(Debug.TRACE, "post response=" + page);
 			if (in != null) {
 				try {
 					in.close();

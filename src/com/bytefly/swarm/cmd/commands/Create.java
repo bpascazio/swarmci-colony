@@ -23,10 +23,14 @@ public class Create extends Command {
 			p.Repo=repo;
 			SwarmUser sw = SwarmUser.getUserInfo();
 			HttpConnector h = new HttpConnector();
-			h.checkConnection(sw.email, sw.password);
-			h.setEntity(p);
-			System.out.print("Swarm cloud building enabled.\n");
-
+			sw.uid = h.checkConnection(sw.email, sw.password);
+			if (sw.uid==0) {
+				System.out.print("Could not authenticated.\n");
+			} else {
+				p.UserId = sw.uid;
+				h.setEntity(p);
+				System.out.print("Swarm cloud building enabled.\n");
+			}
 		} else {
 			System.out.print("\n");
 		}
