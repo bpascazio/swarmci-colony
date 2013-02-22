@@ -166,7 +166,7 @@ public class Config {
 			return "tools/android update project -p .";
 		}
 		else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
-			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=AndroidBuild";
+			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=Android%20Build";
 		}	
 		else if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
 			return "curl http://swarm.bytefly.com/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";
