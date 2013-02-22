@@ -17,4 +17,5 @@ public class Status {
 	public static long counter_initial_uptime = 0;
 	public static String[] project_list = null;
 	public static boolean cloud_connected = false;
+	public static String cloud_address = "";
 }

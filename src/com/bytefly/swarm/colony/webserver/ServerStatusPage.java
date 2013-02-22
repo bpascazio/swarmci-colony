@@ -25,6 +25,8 @@ public class ServerStatusPage {
 					+ " seconds</td></tr>\n");
 			os.writeBytes("<tr><td>Cloud Connected</td><td>" + Status.cloud_connected
 					+ "</td></tr>\n");
+			os.writeBytes("<tr><td>Cloud Address</td><td>" + Status.cloud_address
+					+ "</td></tr>\n");
 			
 			os.writeBytes("</table>\n");
 

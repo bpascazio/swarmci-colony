@@ -5,6 +5,7 @@ import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.collections.ProjectList;
 import com.bytefly.swarm.colony.managers.work.Work;
 import com.bytefly.swarm.colony.models.Project;
+import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
 import com.bytefly.swarm.colony.util.HttpConnector;
 
@@ -48,7 +49,10 @@ public class CloudManager extends Manager {
 						mTriggerLatch = true;
 					}
 					
-					if (newConnectedState==true) Status.cloud_connected = true;
+					if (newConnectedState==true) {
+						Status.cloud_connected = true;
+						Status.cloud_address = Config.getStringValue(Config.SWARM_RAILS_URL);
+					}
 
 					mconnectedState = newConnectedState;
 				}
