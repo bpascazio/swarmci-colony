@@ -56,7 +56,7 @@ public class Config {
 		return 0;
 	}
 	
-	static String VAL_SWARM_RAILS_URL = "http://localhost:3000";
+	static String VAL_SWARM_RAILS_URL = "http://swarmbeta.herokuapp.com";
 	static String VAL_SWARM_COLONY_UUID = "";
 	static String VAL_SWARM_DEBUG_LOG_FILE = "";
 	static String VAL_SWARM_PROJECT_DIR = ".";
@@ -158,10 +158,10 @@ public class Config {
 			return "curl http://swarm.bytefly.com/femail.php?name=%s&bnum=%d&build=%s&log=buildlog-5.log&owner=%s&repo=%s&to=%s&fname=AndroidBuildFailure";
 		}	
 		else if (key.equals(SWARM_COLONY_AUTHENTICATION_V1)) {
-			return "%s/colony?email=%s&password=%s";
+			return "http://%s/colony?email=%s&password=%s";
 		}	
 		else if (key.equals(SWARM_COLONY_AUTHENTICATION_TOKEN)) {
-			return "%s/tokens";
+			return "http://%s/tokens";
 		}	
 		else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";

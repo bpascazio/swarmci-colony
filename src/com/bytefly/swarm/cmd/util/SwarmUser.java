@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
@@ -16,19 +15,20 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.bytefly.swarm.colony.builders.Builder.ReadXMLFile;
 import com.bytefly.swarm.colony.util.Config;
-import com.bytefly.swarm.colony.util.Debug;
 
 public class SwarmUser {
 
 	public String username = "";
 	public String email = "";
 	public String password = "";
+	public String server = "";
 	public int uid = 0;
 
 	public SwarmUser() {
 		username = "x";
 		email = "x";
 		password = "x";
+		server = "x";
 		uid = 0;
 	}
 	public static class ReadXMLFile {
@@ -38,6 +38,7 @@ public class SwarmUser {
 		String lemail="x";
 		String lusername="x";
 		String lpassword="x";
+		String lserver="x";
 		
 		public void execute(String fname) {
 
@@ -52,6 +53,7 @@ public class SwarmUser {
 					boolean temail = false;
 					boolean tusername = false;
 					boolean tpassword = false;
+					boolean tserver = false;
 
 					public void startElement(String uri, String localName,
 							String qName, org.xml.sax.Attributes attributes)
@@ -65,6 +67,9 @@ public class SwarmUser {
 						}
 						if (qName.equalsIgnoreCase("password")) {
 							tpassword = true;
+						}
+						if (qName.equalsIgnoreCase("server")) {
+							tserver = true;
 						}
 					}
 
@@ -89,6 +94,11 @@ public class SwarmUser {
 						if (tpassword) {
 							tpassword = false;
 							lpassword = new String(ch, start, length);
+						}
+
+						if (tserver) {
+							tserver = false;
+							lserver = new String(ch, start, length);
 						}
 					}
 
@@ -124,6 +134,7 @@ public class SwarmUser {
 		String username="x";
 		String password="x";
 		String email="x";
+		String server="x";
 		ReadXMLFile r = attemptLoadFromFile();
 		if (r==null || !r.success) {
 			Scanner scanner = new Scanner(System.in);
@@ -134,17 +145,23 @@ public class SwarmUser {
 			System.out.print("Password: ");
 			password = scanner.nextLine();
 			password = password.replace("\n", "");
-			writeToFile(username, email, password);
+			email = username;
+			System.out.print("Server [default swarmbeta.herokuapp.com]: ");
+			server = scanner.nextLine();
+			server = server.replace("\n", "");
+			if (server.equals("")) server = Config.getStringValue(Config.SWARM_RAILS_URL);
+			writeToFile(username, email, password, server);
 		} else {
 			username =  r.lusername;
 			password =  r.lpassword;
 			email =  r.lemail;
+			server =  r.lserver;
 		}
 		su = new SwarmUser();
 		su.email = new String(email);
 		su.username = new String(username);
 		su.password = new String (password);
-//		System.out.print("Password:::"+su.email+su.password);
+		su.server = new String (server);
 		return su;
 	}
 	private static final String dotswarmxml = "<?xml version=\"1.0\"?>\n"
@@ -152,24 +169,26 @@ public class SwarmUser {
 			+ "\t<email>%s</email>\n"
 			+ "\t<username>%s</username>\n"
 			+ "\t<password>%s</password>\n"
+			+ "\t<server>%s</server>\n"
 			+ "</swarm>\n";
 	
-	private static void writeToFile(String u, String e, String p) {
-		String xmlfile = String.format(dotswarmxml, e, u, p);
+	private static void writeToFile(String u, String e, String p, String s) {
+		String xmlfile = String.format(dotswarmxml, e, u, p, s);
 		try {
 			
 			String userHome = System.getProperty( "user.home" );
-			System.out.print("userHome "+userHome);
+//			System.out.print("userHome "+userHome);
 			Process pr = Runtime.getRuntime().exec(
 					Config.getStringValue(Config.SWARM_MAKE_DOT_SWARM_DIR), null, new File(userHome));
 			pr.waitFor();
 			String result = getOutAndErrStream(pr).replace("\n", "");
-			System.out.print("resultmk "+result);
+//			System.out.print("resultmk "+result);
 			BufferedWriter bw;
 			bw = new BufferedWriter(new FileWriter(userHome+"/.swarm/swarmcfg.xml", false));
 			bw.write(xmlfile);
 			bw.flush();
 			bw.close();
+			System.out.print("Created local swarm config file.\n");
 		} catch (Exception xe) {
 			// TODO Auto-generated catch block
 			xe.printStackTrace();

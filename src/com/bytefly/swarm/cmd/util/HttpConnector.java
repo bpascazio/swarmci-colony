@@ -130,7 +130,7 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = "http://localhost:3000" + "/"
+			String url = "http://swarmbytefly.herokuapp.com" + "/"
 					+ entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
@@ -205,7 +205,7 @@ public class HttpConnector {
 
 		return c;
 	}
-	public int checkConnection(String semail, String spassword) {
+	public int checkConnection(String sserver, String semail, String spassword) {
 
 		int userid = 0; // assume failure
 		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
@@ -216,11 +216,11 @@ public class HttpConnector {
 			String url = String
 					.format(Config
 							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
-							Config.getStringValue(Config.SWARM_RAILS_URL), 
+							sserver, 
 							semail,
 							spassword);
 			
-	//		System.out.println("***SECURITY**** url=" + url);
+//			System.out.println("***SECURITY**** url=" + url);
 
 			if (httpclient==null) httpclient = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
@@ -252,7 +252,7 @@ public class HttpConnector {
 			url = String
 					.format(Config
 							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_TOKEN),
-							Config.getStringValue(Config.SWARM_RAILS_URL), 
+							sserver, 
 							semail,
 							spassword);
 			
@@ -313,11 +313,10 @@ public class HttpConnector {
 		return userid;
 	}
 
-	public void setEntity(Entity e) {
+	public void setEntity(String sserver, Entity e) {
 		// Create a new HttpClient and Post Header
 		String entitystr = e.ENTITY_COLLECTION;
-		String url = "http://localhost:3000" + "/"
-				+ entitystr;
+		String url = "http://"+sserver+"/"+entitystr;
 		
 //		System.out.print("url=" + url);
 		
