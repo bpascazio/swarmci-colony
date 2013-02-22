@@ -33,6 +33,10 @@ public class Colony extends Thread {
 
 		if (getPreference() == true) {
 			
+			// Setup security context.
+			SecurityContext sc = new SecurityContext();
+			setSecurityContext(sc);
+
 			// Header info
 			Debug.Log("Swarm Colony Server Starting...");
 			Debug.Log("Version is " + Version.getVersion() + " Build "
@@ -82,6 +86,10 @@ public class Colony extends Thread {
 			String asdk = colonyProps.getProperty(Config.SWARM_ANDROID_SDK);
 			Config.setAndroidSDK(asdk);
 			Debug.Log("Android SDK set to :"+asdk);
+			String cfg = colonyProps.getProperty(Config.SWARM_COLONY_CONFIG);
+			if (cfg==null)cfg="";
+			Config.setConfigPath(cfg);			
+			Debug.Log("Swarm config set to :"+cfg);
 			
 			Debug.Log(Debug.TRACE, "Creating directory "+dir);
 			try {

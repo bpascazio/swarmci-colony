@@ -35,6 +35,9 @@ public class Config {
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
 	public static final String SWARM_PROJECT_DIR = "swarm_project_dir";
 	public static final String SWARM_ANDROID_SDK = "swarm_android_sdk";
+	public static final String SWARM_COLONY_CONFIG = "swarm_default_cfg";
+	public static final String SWARM_COLONY_CONFIG_PATH = "SWARM_COLONY_CONFIG_PATH";
+	
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
@@ -61,7 +64,12 @@ public class Config {
 	static String VAL_SWARM_DEBUG_LOG_FILE = "";
 	static String VAL_SWARM_PROJECT_DIR = ".";
 	static String VAL_SWARM_ANDROID_SDK = "/Android/sdk";
-
+	static String VAL_SWARM_COLONY_CONFIG_PATH = "";
+	
+	public static void setConfigPath(String s) {
+		VAL_SWARM_COLONY_CONFIG_PATH = s;
+	}
+	
 	public static void setProjectDir(String s) {
 		VAL_SWARM_PROJECT_DIR = s;
 	}
@@ -103,11 +111,17 @@ public class Config {
 	}
 	
 	public static String getStringValue(String key) {
+		if (key.equals(SWARM_COLONY_CONFIG)) {
+			return SWARM_COLONY_CONFIG;
+		}
 		if (key.equals(SWARM_RAILS_URL)) {
 			return VAL_SWARM_RAILS_URL;
 		}
 		else if (key.equals(SWARM_COLONY_UUID)) {
 			return VAL_SWARM_COLONY_UUID;
+		}
+		else if (key.equals(SWARM_COLONY_CONFIG_PATH)) {
+			return VAL_SWARM_COLONY_CONFIG_PATH;
 		}
 		else if (key.equals(SWARM_GIT_UPDATE_CMD)) {
 			return "git pull";

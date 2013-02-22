@@ -119,9 +119,13 @@ public class SwarmUser {
 	private static ReadXMLFile attemptLoadFromFile() {
 		ReadXMLFile r = null;
 		try {
-			String userHome = System.getProperty( "user.home" );
+			String path = Config.getStringValue(Config.SWARM_COLONY_CONFIG_PATH);
+			if (path.equals("")) {
+				String userHome = System.getProperty( "user.home" );				
+				path = userHome+"/.swarm/swarmcfg.xml";
+			}
 			r = new ReadXMLFile();
-			r.execute(userHome+"/.swarm/swarmcfg.xml");
+			r.execute(path);
 		} catch (Exception e) {
 			System.out.print(
 					"Exception caught running attemptLoadFromFile " + e.toString());

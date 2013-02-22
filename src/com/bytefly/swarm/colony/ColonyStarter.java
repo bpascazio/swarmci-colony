@@ -41,12 +41,8 @@ public class ColonyStarter extends JFrame {
 			listen_port = new Integer(4000);
 		}
 		
-		// Setup security context.
-		SecurityContext sc = new SecurityContext();
-		
 		// Start colony server
 		Colony colony = new Colony();
-		colony.setSecurityContext(sc);
 		colony.start();
 		
 		// create an instance of this class
