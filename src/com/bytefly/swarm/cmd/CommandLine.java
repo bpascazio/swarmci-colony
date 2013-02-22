@@ -3,6 +3,7 @@ package com.bytefly.swarm.cmd;
 import java.util.Scanner;
 
 import com.bytefly.swarm.cmd.commands.Create;
+import com.bytefly.swarm.cmd.commands.Status;
 import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.colony.Info;
 
@@ -14,6 +15,8 @@ public class CommandLine {
 			version();
 		} else if (args[0].equals("create")) {
 			create();
+		} else if (args[0].equals("status")) {
+			status();
 		}
 	}
 	public static void usage() {
@@ -32,5 +35,8 @@ public class CommandLine {
 	}
 	public static void create() {
 		Create c = new Create();
+	}
+	public static void status() {
+		Status c = new Status();
 	}
 }

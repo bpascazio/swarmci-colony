@@ -194,7 +194,7 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
+			String url = "http://"+Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
 					+ entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
