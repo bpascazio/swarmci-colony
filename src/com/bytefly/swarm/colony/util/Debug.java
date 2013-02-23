@@ -55,8 +55,8 @@ public class Debug {
 	}
 
 	public static void Loga(int level, String msg) {
-		if (Config.getLogFile()==null) {
-			System.out.println("" + getLevel(level) + ":" + msg);
+		if (Config.getLogFile()==null||Config.getLogFile().equals("")) {
+	//		System.out.println("" + getLevel(level) + ":" + msg);
 		} else {
 			BufferedWriter bw = null;
 
