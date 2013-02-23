@@ -272,7 +272,7 @@ public class HttpConnector {
 	public void setEntity(Entity e) {
 		// Create a new HttpClient and Post Header
 		String entitystr = e.ENTITY_COLLECTION;
-		String url = Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
+		String url = "http://"+Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
 				+ entitystr;
 		
 		Debug.Log(Debug.TRACE, "url=" + url);

@@ -370,7 +370,7 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-			Debug.Log(Debug.TRACE, "post response=" + page);
+//			Debug.Log(Debug.TRACE, "post response=" + page);
 			if (in != null) {
 				try {
 					in.close();

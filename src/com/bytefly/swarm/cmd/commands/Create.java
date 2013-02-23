@@ -13,7 +13,7 @@ import com.bytefly.swarm.colony.util.Config;
 public class Create extends Command {
 	String repo = "";
 
-	public Create() {
+	public Create(String n) {
 
 		if (checkForGit()) {
 
@@ -21,6 +21,7 @@ public class Create extends Command {
 			checkForSwarmXML();
 			Project p = new Project();
 			p.Repo=repo;
+			p.Name=n;
 			SwarmUser sw = SwarmUser.getUserInfo();
 			HttpConnector h = new HttpConnector();
 			sw.uid = h.checkConnection(sw.server, sw.email, sw.password);

@@ -15,9 +15,9 @@ public class CommandLine {
 			version();
 		} else if (args[0].equals("create")) {
 			if (args.length>1) {
-				create();
+				create(args[1]);
 			} else {
-				Debug.Log(Debug.INFO, "\nProject name is required such as 'swarm create myapp'.");
+				Debug.Log(Debug.INFO, "\n>>>>>>>>>> Project name is required such as 'swarm create myapp'.");
 				usage();
 			}
 		} else if (args[0].equals("status")) {
@@ -48,8 +48,8 @@ public class CommandLine {
 	public static void version() {
 		Debug.Log(Debug.INFO, "Version is "+Info.build_version+" built on "+Info.build_date);		
 	}
-	public static void create() {
-		Create c = new Create();
+	public static void create(String n) {
+		Create c = new Create(n);
 	}
 	public static void status() {
 		Status c = new Status();
