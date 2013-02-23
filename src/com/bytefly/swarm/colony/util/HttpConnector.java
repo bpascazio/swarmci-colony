@@ -244,6 +244,16 @@ public class HttpConnector {
 					c.add(p);
 				}
 			}
+			if (entity.equals(new Build().ENTITY_COLLECTION)) {
+				c = new Vector<Entity>();
+				for (int i = 0; i < res.size(); i++) {
+					JSONObject o = (JSONObject) res.get(i);
+					Build b = new Build();
+					b.created_at = o.getString("created_at");
+					b.project_id = Integer.valueOf(o.getString("project_id"));
+					c.add(b);
+				}
+			}
 
 		} catch (Exception e) {
 

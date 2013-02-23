@@ -3,6 +3,7 @@ package com.bytefly.swarm.cmd;
 import java.util.Scanner;
 
 import com.bytefly.swarm.cmd.commands.Create;
+import com.bytefly.swarm.cmd.commands.Log;
 import com.bytefly.swarm.cmd.commands.Status;
 import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.colony.Info;
@@ -17,8 +18,15 @@ public class CommandLine {
 			if (args.length>1) {
 				create(args[1]);
 			} else {
-				Debug.Log(Debug.INFO, "\n>>>>>>>>>> Project name is required such as 'swarm create myapp'.");
 				usage();
+				Debug.Log(Debug.INFO, ">>>>>>>>>> Project name is required such as 'swarm create myapp'.");
+			}
+		} else if (args[0].equals("log")) {
+			if (args.length>1) {
+				log(args[1]);
+			} else {
+				usage();
+				Debug.Log(Debug.INFO, ">>>>>>>>>> Project name is required such as 'swarm log myproject'.");
 			}
 		} else if (args[0].equals("status")) {
 			status();
@@ -50,6 +58,9 @@ public class CommandLine {
 	}
 	public static void create(String n) {
 		Create c = new Create(n);
+	}
+	public static void log(String n) {
+		Log c = new Log(n);
 	}
 	public static void status() {
 		Status c = new Status();
