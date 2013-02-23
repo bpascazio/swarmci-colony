@@ -112,7 +112,7 @@ public class ProjectManager extends Manager {
 			// Set generic builder type for now.
 			p.BuilderType = Builder.BUILDER_TYPE_GENERIC;
 			Debug.Log(Debug.TRACE, "adding " + p.Name + " " + p.Repo);
-			pll[i]=p.Repo;
+			pll[i]="user "+p.UserId+" repo "+p.Repo;
 		}
 		Status.project_list=pll;
 	}

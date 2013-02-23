@@ -53,7 +53,7 @@ public class HttpConnector {
 		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
 														// problem
 		BufferedReader in = null;
-
+		HttpGet request = null;
 		try {
 			String url = String
 					.format(Config
@@ -65,7 +65,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "***SECURITY**** url=" + url);
 
 			if (client==null) client = new DefaultHttpClient();
-			HttpGet request = new HttpGet();
+			request = new HttpGet();
 
 			request.setURI(new URI(url));
 
@@ -86,7 +86,6 @@ public class HttpConnector {
 			while ((line = in.readLine()) != null) {
 				sb.append(line + NL);
 			}
-			in.close();
 			String page = sb.toString();
 //			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + page);
 //			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + response.toString());
@@ -108,6 +107,7 @@ public class HttpConnector {
 			if (in != null) {
 				try {
 					in.close();
+					request.releaseConnection();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -124,7 +124,7 @@ public class HttpConnector {
 		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
 														// problem
 		BufferedReader in = null;
-
+		HttpGet request = null;
 		try {
 
 			String sstr = java.net.URLEncoder.encode(eurl, "ISO-8859-1");
@@ -133,7 +133,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "url=" + url);
 
 			if (client==null) client = new DefaultHttpClient();
-			HttpGet request = new HttpGet();
+			request = new HttpGet();
 
 			request.setURI(new URI(url));
 
@@ -154,7 +154,6 @@ public class HttpConnector {
 			while ((line = in.readLine()) != null) {
 				sb.append(line + NL);
 			}
-			in.close();
 			String page = sb.toString();
 			Debug.Log(Debug.TRACE, "response=" + page);
 			return page;
@@ -173,6 +172,7 @@ public class HttpConnector {
 			if (in != null) {
 				try {
 					in.close();
+					request.releaseConnection();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -190,6 +190,7 @@ public class HttpConnector {
 														// problem
 		BufferedReader in = null;
 		Vector<Entity> c = null;
+		HttpGet request = null;
 
 		try {
 
@@ -200,7 +201,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "url=" + url);
 
 			if (client==null) client = new DefaultHttpClient();
-			HttpGet request = new HttpGet();
+			request = new HttpGet();
 
 			request.setURI(new URI(url));
 
@@ -221,10 +222,8 @@ public class HttpConnector {
 			while ((line = in.readLine()) != null) {
 				sb.append(line + NL);
 			}
-			in.close();
 			String page = sb.toString();
 			Debug.Log(Debug.TRACE, "response=" + page);
-
 			//
 			// Note that the reponse is JSON.
 			//
@@ -269,6 +268,7 @@ public class HttpConnector {
 			if (in != null) {
 				try {
 					in.close();
+					request.releaseConnection();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -323,12 +323,12 @@ public class HttpConnector {
 			while ((line = in.readLine()) != null) {
 				sb.append(line + NL);
 			}
-			in.close();
 			String page = sb.toString();
 			Debug.Log(Debug.TRACE, "post response=" + page);
 			if (in != null) {
 				try {
 					in.close();
+					httppost.releaseConnection();
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
