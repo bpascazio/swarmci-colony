@@ -23,6 +23,8 @@ public class ServerStatusPage {
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Uptime</td><td>" + u
 					+ " seconds</td></tr>\n");
+			os.writeBytes("<tr><td>Ticker</td><td>" + Status.counter_heartbeat
+					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Cloud Connected</td><td>" + Status.cloud_connected
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Cloud Address</td><td>" + Status.cloud_address

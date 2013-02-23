@@ -13,6 +13,7 @@ public class Status {
 	public static int counter_builds_triggered = 0;
 	public static int counter_builds_success = 0;
 	public static int counter_builds_failure = 0;
+	public static int counter_heartbeat = 0;
 	
 	public static long counter_initial_uptime = 0;
 	public static String[] project_list = null;

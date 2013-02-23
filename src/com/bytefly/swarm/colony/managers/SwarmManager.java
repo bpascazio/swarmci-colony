@@ -133,6 +133,8 @@ public class SwarmManager extends Manager {
 			
 			try {
 
+				Status.counter_heartbeat++;
+				
 				// Time to sleep for a bit.
 				Thread.sleep(Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ));
 
