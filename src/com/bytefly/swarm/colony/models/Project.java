@@ -23,7 +23,7 @@ public class Project extends Entity{
 		debug = true;
 		Version = "1.0";
 		buildNum = 1;
-		triggerBuild = true;
+		triggerBuild = false;
 		buildDirectory = "";
 		UserId = -1;
 		ProjectId = -1;
