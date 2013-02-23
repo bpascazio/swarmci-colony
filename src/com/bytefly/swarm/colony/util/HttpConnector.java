@@ -64,7 +64,7 @@ public class HttpConnector {
 			
 			Debug.Log(Debug.TRACE, "***SECURITY**** url=" + url);
 
-			if (client==null) client = new DefaultHttpClient();
+			client = new DefaultHttpClient();
 			request = new HttpGet();
 
 			request.setURI(new URI(url));
