@@ -50,6 +50,7 @@ public class SwarmManager extends Manager {
 				// send command to git manager
 				w = new Work(Work.WORK_ITEM_CLOUD_CHECK_CONNECTION);
 				try {
+					Debug.Log(Debug.TRACE, "SwarmManager handing to cloud manager.");					
 					cm.put(w);
 				} catch (Exception e) {
 					Debug.Log(Debug.INFO,
@@ -72,6 +73,7 @@ public class SwarmManager extends Manager {
 					// send command to project manager
 					w = new Work(Work.WORK_ITEM_PROJECT_FETCH_PROJECTS);
 					try {
+						Debug.Log(Debug.TRACE, "SwarmManager handing to project manager.");
 						pm.put(w);
 					} catch (Exception e) {
 						Debug.Log(Debug.INFO,
@@ -101,6 +103,7 @@ public class SwarmManager extends Manager {
 					// send command to git manager
 					w = new Work(Work.WORK_ITEM_GIT_SCAN_PROJECTS);
 					try {
+						Debug.Log(Debug.TRACE, "SwarmManager handing to git manager.");
 						gm.put(w);
 					} catch (Exception e) {
 						Debug.Log(Debug.INFO,
@@ -143,5 +146,6 @@ public class SwarmManager extends Manager {
 			}
 
 		}
+		Debug.Log(Debug.INFO, "SwarmManager no longer running.");
 	}
 }
