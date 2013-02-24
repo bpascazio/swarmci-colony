@@ -3,6 +3,9 @@ package com.bytefly.swarm.colony.util;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Debug {
 
@@ -55,15 +58,18 @@ public class Debug {
 	}
 
 	public static void Loga(int level, String msg) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		String timestame=dateFormat.format(date);
 		if (Config.getLogFile()==null||Config.getLogFile().equals("")) {
-			System.out.println("" + getLevel(level) + ":" + msg);
+			System.out.println(timestame+":" + getLevel(level) + ":" + msg);
 		} else {
 			BufferedWriter bw = null;
 
 			try {
 				bw = new BufferedWriter(new FileWriter(Config.getLogFile(),
 						true));
-				bw.write("" + getLevel(level) + ":" + msg);
+				bw.write(timestame+":" + getLevel(level) + ":" + msg);
 				bw.newLine();
 				bw.flush();
 			} catch (IOException ioe) {
