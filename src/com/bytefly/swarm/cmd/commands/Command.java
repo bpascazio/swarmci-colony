@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.cmd.util.SwarmUser;
@@ -73,7 +74,14 @@ public class Command {
 		}
 		if (!sxmlFound) {
 			// Create it and commit it.
-			System.out.print("\nNot found - creating swarm.xml.\n");
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("\nswarm.xml not found - create and push? (Y/n): ");
+			String resp = scanner.nextLine();
+			resp = resp.replace("\n", "");
+			if (resp.equals("n")||resp.equals("N")) {
+				sxmlok = false;
+			}
+			
 			SwarmUser u = SwarmUser.getUserInfo();
 			String xmlfile = String.format(swarmxml, u.email, u.email);
 			try {
