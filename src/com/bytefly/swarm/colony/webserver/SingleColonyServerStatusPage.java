@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import com.bytefly.swarm.colony.Info;
 import com.bytefly.swarm.colony.Status;
 
-public class ServerStatusPage {
+public class SingleColonyServerStatusPage {
 
 	public static void sendStatus(DataOutputStream os) {
 		try {

@@ -36,6 +36,8 @@ public class Config {
 	public static final String SWARM_PROJECT_DIR = "swarm_project_dir";
 	public static final String SWARM_ANDROID_SDK = "swarm_android_sdk";
 	public static final String SWARM_COLONY_CONFIG = "swarm_default_cfg";
+	public static final String SWARM_SUPERCOLONY_MODE = "swarm_supercolony_mode";
+	
 	public static final String SWARM_COLONY_CONFIG_PATH = "SWARM_COLONY_CONFIG_PATH";
 	
 	
@@ -65,6 +67,11 @@ public class Config {
 	static String VAL_SWARM_PROJECT_DIR = ".";
 	static String VAL_SWARM_ANDROID_SDK = "/Android/sdk";
 	static String VAL_SWARM_COLONY_CONFIG_PATH = "";
+	static String VAL_SWARM_SUPERCOLONY_MODE = "";
+	
+	public static void setSuperColonyMode(String s) {
+		VAL_SWARM_SUPERCOLONY_MODE = s;
+	}
 	
 	public static void setConfigPath(String s) {
 		VAL_SWARM_COLONY_CONFIG_PATH = s;
@@ -94,6 +101,10 @@ public class Config {
 		VAL_SWARM_ANDROID_SDK = s;
 	}
 
+	public static String getSuperColonyMode() {
+		return VAL_SWARM_SUPERCOLONY_MODE;
+	}
+
 	public static String getAndroidSDK() {
 		return VAL_SWARM_ANDROID_SDK;
 	}
@@ -111,6 +122,10 @@ public class Config {
 	}
 	
 	public static String getStringValue(String key) {
+		
+		if (key.equals(SWARM_SUPERCOLONY_MODE)) {
+			return VAL_SWARM_SUPERCOLONY_MODE;
+		}
 		if (key.equals(SWARM_COLONY_CONFIG)) {
 			return SWARM_COLONY_CONFIG;
 		}

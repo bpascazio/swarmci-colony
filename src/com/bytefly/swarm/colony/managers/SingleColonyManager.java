@@ -5,14 +5,14 @@ import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
 import com.bytefly.swarm.colony.Status;
 
-public class SwarmManager extends Manager {
+public class SingleColonyManager extends Manager {
 
 	Manager cm;
 	Manager pm;
 	Manager gm;
 	Manager bm;
 
-	public SwarmManager(Manager _cm, Manager _pm, Manager _gm, Manager _bm) {
+	public SingleColonyManager(Manager _cm, Manager _pm, Manager _gm, Manager _bm) {
 		super(false);
 		cm = _cm;
 		pm = _pm;
@@ -21,7 +21,7 @@ public class SwarmManager extends Manager {
 	}
 
 	public void run() {
-		Debug.Log(Debug.INFO, "SwarmManager started.");
+		Debug.Log(Debug.INFO, "SingleColonyManager started.");
 		Status.counter_initial_uptime = System.currentTimeMillis();
 		start();
 
@@ -50,11 +50,11 @@ public class SwarmManager extends Manager {
 				// send command to git manager
 				w = new Work(Work.WORK_ITEM_CLOUD_CHECK_CONNECTION);
 				try {
-					Debug.Log(Debug.TRACE, "SwarmManager handing to cloud manager.");					
+					Debug.Log(Debug.TRACE, "SingleColonyManager handing to cloud manager.");					
 					cm.put(w);
 				} catch (Exception e) {
 					Debug.Log(Debug.INFO,
-							"SwarmManager exception putting work item - stopping.");
+							"SingleColonyManager exception putting work item - stopping.");
 					stop();
 				}
 				// reset the counter
@@ -73,17 +73,17 @@ public class SwarmManager extends Manager {
 					// send command to project manager
 					w = new Work(Work.WORK_ITEM_PROJECT_FETCH_PROJECTS);
 					try {
-						Debug.Log(Debug.TRACE, "SwarmManager handing to project manager.");
+						Debug.Log(Debug.TRACE, "SingleColonyManager handing to project manager.");
 						pm.put(w);
 					} catch (Exception e) {
 						Debug.Log(Debug.INFO,
-								"SwarmManager exception putting work item - stopping.");
+								"SingleColonyManager exception putting work item - stopping.");
 						stop();
 					}
 
 				} else {
 					Debug.Log(Debug.INFO,
-							"SwarmManager not pulling projects, cloud is not connected.");
+							"SingleColonyManager not pulling projects, cloud is not connected.");
 					
 				}
 
@@ -103,17 +103,17 @@ public class SwarmManager extends Manager {
 					// send command to git manager
 					w = new Work(Work.WORK_ITEM_GIT_SCAN_PROJECTS);
 					try {
-						Debug.Log(Debug.TRACE, "SwarmManager handing to git manager.");
+						Debug.Log(Debug.TRACE, "SingleColonyManager handing to git manager.");
 						gm.put(w);
 					} catch (Exception e) {
 						Debug.Log(Debug.INFO,
-								"SwarmManager exception putting work item - stopping.");
+								"SingleColonyManager exception putting work item - stopping.");
 						stop();
 					}
 
 				} else {
 					Debug.Log(Debug.INFO,
-							"SwarmManager not scanning projects, cloud is not connected.");
+							"SingleColonyManager not scanning projects, cloud is not connected.");
 					
 				}
 
@@ -131,7 +131,7 @@ public class SwarmManager extends Manager {
 				cproject = cscan = 0;
 				
 				Debug.Log(Debug.INFO,
-						"SwarmManager resetting due to new connection state.");
+						"SingleColonyManager resetting due to new connection state.");
 			}
 			
 			try {
@@ -142,10 +142,10 @@ public class SwarmManager extends Manager {
 				Thread.sleep(Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ));
 
 			} catch (Exception e) {
-				Debug.Log(Debug.INFO, "SwarmManager thread wake.");
+				Debug.Log(Debug.INFO, "SingleColonyManager thread wake.");
 			}
 
 		}
-		Debug.Log(Debug.INFO, "SwarmManager no longer running.");
+		Debug.Log(Debug.INFO, "SingleColonyManager no longer running.");
 	}
 }

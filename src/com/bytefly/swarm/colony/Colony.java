@@ -37,26 +37,41 @@ public class Colony extends Thread {
 			SecurityContext sc = new SecurityContext();
 			setSecurityContext(sc);
 
-			// Header info
-			Debug.Log("Swarm Colony Server Starting...");
-			Debug.Log("Version is " + Version.getVersion() + " Build "
+			if (Config.getSuperColonyMode().equals("")) {
+			
+				// Header info
+				Debug.Log("Swarm Colony Server Starting...");
+				Debug.Log("Version is " + Version.getVersion() + " Build "
 					+ Version.getBuildNum());
 
-			// cloud manager handles connection to cloud
-			CloudManager cm = new CloudManager(mSecurityContext);
+				// cloud manager handles connection to cloud
+				CloudManager cm = new CloudManager(mSecurityContext);
 
-			// build manager triggered on commit updates to build product
-			BuildManager bm = new BuildManager();
+				// build manager triggered on commit updates to build product
+				BuildManager bm = new BuildManager();
 
-			// git manager scans all projects for commit updates
-			GitManager gm = new GitManager(bm);
+				// git manager scans all projects for commit updates
+				GitManager gm = new GitManager(bm);
 
-			// project manager pulls all projects from api
-			ProjectManager pm = new ProjectManager(gm);
+				// project manager pulls all projects from api
+				ProjectManager pm = new ProjectManager(gm);
 
-			// swarm manager manages lifecycle of server
-			SwarmManager sm = new SwarmManager(cm, pm, gm, bm);
-			sm.run();
+				// swarm single manager manages lifecycle of a single colony server
+				SingleColonyManager sm = new SingleColonyManager(cm, pm, gm, bm);
+				sm.run();
+			
+			} else {
+				
+				// Header info
+				Debug.Log("Swarm SUPER COLONY Starting...");
+				Debug.Log("Version is " + Version.getVersion() + " Build "
+					+ Version.getBuildNum());
+
+				// swarm single manager manages lifecycle of a single colony server
+				SuperColonyManager scm = new SuperColonyManager();
+				scm.run();
+				
+			}
 		} else {
 			Debug.Log("No colony.preferences file found - aborting start...");
 		}
@@ -90,6 +105,16 @@ public class Colony extends Thread {
 			if (cfg==null)cfg="";
 			Config.setConfigPath(cfg);			
 			Debug.Log("Swarm config set to :"+cfg);
+
+			String scm = colonyProps.getProperty(Config.SWARM_SUPERCOLONY_MODE);
+			if (scm==null)scm="";
+			Config.setSuperColonyMode(scm);	
+			if (scm.equals("")) {
+				Debug.Log("Swarm Standard Colony Server Created");
+			} else {
+				Debug.Log("Swarm SUPER COLONY Created servers="+scm);
+			}
+
 			
 			Debug.Log(Debug.TRACE, "Creating directory "+dir);
 			try {

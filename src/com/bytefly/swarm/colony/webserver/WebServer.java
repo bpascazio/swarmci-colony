@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import com.bytefly.swarm.colony.ColonyStarter;
+import com.bytefly.swarm.colony.util.Config;
 
 public class WebServer extends Thread {
 
@@ -151,7 +152,11 @@ public class WebServer extends Thread {
 			s("not found returning status page");
 			try {
 				output.writeBytes(construct_http_header(200, 5));
-				ServerStatusPage.sendStatus(output);
+				if (Config.getSuperColonyMode().equals("")) {		
+					SingleColonyServerStatusPage.sendStatus(output);
+				} else {
+					SuperColonyServerStatusPage.sendStatus(output);
+				}
 				output.close();
 			} catch (Exception e1) {
 			}
