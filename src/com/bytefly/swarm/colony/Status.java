@@ -20,4 +20,9 @@ public class Status {
 	public static boolean cloud_connected = false;
 	public static String cloud_address = "";
 	public static boolean colony_alive = true;
+	
+	public static int qsize_build_mgr = -1;
+	public static int qsize_cloud_mgr = -1;
+	public static int qsize_git_mgr = -1;
+	public static int qsize_proj_mgr = -1;
 }

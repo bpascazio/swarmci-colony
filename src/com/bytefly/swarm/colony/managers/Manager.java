@@ -15,6 +15,15 @@ public abstract class Manager implements Runnable {
 	Manager() {
 		this(true);
 	}
+	
+	int getQSize() {
+		if (workq!=null) {
+			return workq.size();
+		}
+		
+		// Return -1 to flag this as invalid data, not 0 which is valid.
+		return -1;
+	}
 
 	Manager(boolean autostart) {
 		workq = new LinkedList<Work>();

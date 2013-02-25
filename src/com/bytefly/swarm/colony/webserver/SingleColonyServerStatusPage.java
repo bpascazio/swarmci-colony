@@ -13,15 +13,15 @@ public class SingleColonyServerStatusPage {
 			os.writeBytes("<head><meta http-equiv=\"refresh\" content=\"5\" ></head>\n");
 			os.writeBytes("<body>\n");
 			os.writeBytes("<b>Colony Server Status Page</b>\n");
-			String u = ""
-					+ (System.currentTimeMillis() - Status.counter_initial_uptime)
-					/ 1000;
+			long elapsed;
+			elapsed = ((System.currentTimeMillis() - Status.counter_initial_uptime) / 1000);
+			String displayUT = String.format("%02d:%02d:%02d", elapsed / 3600, (elapsed % 3600) / 60, (elapsed % 60));
 			os.writeBytes("<p><table border=\"0\">\n");
 			os.writeBytes("<tr><td>Version</td><td>" + Info.build_version
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Build Date</td><td>" + Info.build_date
 					+ "</td></tr>\n");
-			os.writeBytes("<tr><td>Uptime</td><td>" + u
+			os.writeBytes("<tr><td>Uptime</td><td>" + displayUT
 					+ " seconds</td></tr>\n");
 			os.writeBytes("<tr><td>Ticker</td><td>" + Status.counter_heartbeat
 					+ "</td></tr>\n");
@@ -69,6 +69,17 @@ public class SingleColonyServerStatusPage {
 				os.writeBytes("</table>\n");
 			}
 
+			os.writeBytes("<p><table border=\"1\">\n");
+			os.writeBytes("<tr><td>QSize Build Manager</td><td>"
+					+ Status.qsize_build_mgr + "</td></tr>\n");
+			os.writeBytes("<tr><td>QSize Git Manager</td><td>"
+					+ Status.qsize_git_mgr + "</td></tr>\n");
+			os.writeBytes("<tr><td>QSize Cloud Manager</td><td>"
+					+ Status.qsize_cloud_mgr + "</td></tr>\n");
+			os.writeBytes("<tr><td>QSize Project Manager</td><td>"
+					+ Status.qsize_proj_mgr + "</td></tr>\n");
+			os.writeBytes("</table>\n");
+	
 			os.writeBytes("</body>\n");
 			os.writeBytes("</html>\n");
 		} catch (Exception e) {

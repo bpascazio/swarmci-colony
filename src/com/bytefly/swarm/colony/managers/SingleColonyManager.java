@@ -31,7 +31,10 @@ public class SingleColonyManager extends Manager {
 		Work w = null;
 
 		while (running) {
-
+			Status.qsize_build_mgr = bm.getQSize();
+			Status.qsize_cloud_mgr = cm.getQSize();
+			Status.qsize_git_mgr = gm.getQSize();
+			Status.qsize_proj_mgr = pm.getQSize();
 			//
 			// Swarm main processing is a thread that waks up 4 times a second
 			// (for now).
