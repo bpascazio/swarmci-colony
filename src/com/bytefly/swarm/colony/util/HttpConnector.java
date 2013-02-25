@@ -189,7 +189,7 @@ public class HttpConnector {
 		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
 														// problem
 		BufferedReader in = null;
-		Vector<Entity> c = null;
+		Vector<Entity> c = new Vector<Entity>();
 		HttpGet request = null;
 
 		try {
@@ -261,7 +261,7 @@ public class HttpConnector {
 			// related.
 			// That is why we assume a server communication error.
 			//
-			e.printStackTrace();
+			Debug.Log(Debug.TRACE, "httpconnector exception" + e);
 
 		} finally {
 
@@ -270,7 +270,7 @@ public class HttpConnector {
 					in.close();
 					request.releaseConnection();
 				} catch (IOException e) {
-					e.printStackTrace();
+					Debug.Log(Debug.TRACE, "httpconnector ioexception "+e);
 				}
 			}
 

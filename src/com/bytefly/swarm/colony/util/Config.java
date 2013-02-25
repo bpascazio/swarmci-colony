@@ -41,13 +41,13 @@ public class Config {
 	
 	public static int getIntValue(String key) {
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
-			return 60000; // fetch projects from rails server every 60 seconds
+			return 30000; // fetch projects from rails server every 60 seconds
 		}
 		if (key.equals(SWARM_CLOUD_CHECK_FREQ)) {
 			return 45000; // check connection to the cloud every 45 seconds
 		}
 		if (key.equals(SWARM_GIT_CHECK_FREQ)) {
-			return 30000; // scan for updated git repositories every 15 seconds
+			return 15000; // scan for updated git repositories every 15 seconds
 		}
 		if (key.equals(SWARM_MGR_CHECK_FREQ)) {
 			return 250; // swarm manager checks for commands every 4 times a second

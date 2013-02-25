@@ -39,6 +39,7 @@ public class ProjectManager extends Manager {
 					Work nw = new Work(Work.WORK_ITEM_UPDATE_PROJECTS);
 					nw.data = pl;
 					try {
+						Debug.Log(Debug.TRACE, "ProjectManager handing to git manager project update.");
 						gm.put(nw);
 					} catch (Exception e) {
 						Debug.Log(Debug.INFO,
@@ -53,6 +54,7 @@ public class ProjectManager extends Manager {
 						// send command to git manager
 						Work gw = new Work(Work.WORK_ITEM_GIT_SCAN_PROJECTS);
 						try {
+							Debug.Log(Debug.TRACE, "ProjectManager handing to git manager scan projects.");
 							gm.put(gw);
 						} catch (Exception e) {
 							Debug.Log(Debug.INFO,
