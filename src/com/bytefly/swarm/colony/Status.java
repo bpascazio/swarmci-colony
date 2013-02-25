@@ -19,4 +19,5 @@ public class Status {
 	public static String[] project_list = null;
 	public static boolean cloud_connected = false;
 	public static String cloud_address = "";
+	public static boolean colony_alive = true;
 }

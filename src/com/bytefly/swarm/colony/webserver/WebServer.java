@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import com.bytefly.swarm.colony.ColonyStarter;
+import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.util.Config;
 
 public class WebServer extends Thread {
@@ -134,80 +135,88 @@ public class WebServer extends Thread {
 		} // catch any exception
 
 		// path do now have the filename to what to the file it wants to open
-		s("\nClient requested:" + new File(path).getAbsolutePath() + "\n");
-		FileInputStream requestedfile = null;
-
-		try {
-			// NOTE that there are several security consideration when passing
-			// the untrusted string "path" to FileInputStream.
-			// You can access all files the current user has read access to!!!
-			// current user is the user running the javaprogram.
-			// you can do this by passing "../" in the url or specify absoulute
-			// path
-			// or change drive (win)
-
-			// try to open the file,
-			requestedfile = new FileInputStream(path);
-		} catch (Exception e) {
-			s("not found returning status page");
+		s("\nPath is:" + path + "\n");
+		
+		if (path.equals("colonystatus")) {
 			try {
+				output.writeBytes(""+Status.colony_alive);
+				output.close();
+			} catch (Exception e) {
+			}
+		} else {	
+			s("\nClient requested:" + new File(path).getAbsolutePath() + "\n");
+			FileInputStream requestedfile = null;
+
+			try {
+				// NOTE that there are several security consideration when passing
+				// the untrusted string "path" to FileInputStream.
+				// You can access all files the current user has read access to!!!
+				// current user is the user running the javaprogram.
+				// you can do this by passing "../" in the url or specify absoulute
+				// path
+				// or change drive (win)
+
+				// try to open the file,
+				requestedfile = new FileInputStream(path);
+			} catch (Exception e) {
+				s("not found returning status page");
+				try {
+					output.writeBytes(construct_http_header(200, 5));
+					if (Config.getSuperColonyMode().equals("")) {		
+						SingleColonyServerStatusPage.sendStatus(output);
+					} else {
+						SuperColonyServerStatusPage.sendStatus(output);
+					}
+					output.close();
+				} catch (Exception e1) {
+				}
+				/*
+				 * try { // if you could not open the file send a 404
+				 * output.writeBytes(construct_http_header(404, 0)); // close the
+				 * stream output.close(); } catch (Exception e2) { } s("error" +
+				 * e.getMessage());
+				 */
+			} // print error to gui
+
+			// happy day scenario
+			try {
+				int type_is = 0;
+				// find out what the filename ends with,
+				// so you can construct a the right content type
+				if (path.endsWith(".zip")) {
+					type_is = 3;
+				}
+				if (path.endsWith(".jpg") || path.endsWith(".jpeg")) {
+					type_is = 1;
+				}
+				if (path.endsWith(".gif")) {
+					type_is = 2;
+				}
+				if (path.endsWith(".ico")) {
+					type_is = 3;
+				}
+				// write out the header, 200 ->everything is ok we are all happy.
 				output.writeBytes(construct_http_header(200, 5));
-				if (Config.getSuperColonyMode().equals("")) {		
-					SingleColonyServerStatusPage.sendStatus(output);
-				} else {
-					SuperColonyServerStatusPage.sendStatus(output);
+
+				// if it was a HEAD request, we don't print any BODY
+				if (method == 1) { // 1 is GET 2 is head and skips the body
+					byte[] buffer = new byte[1024];
+					while (true) {
+						// read the file from filestream, and print out through the
+						// client-outputstream on a byte per byte base.
+						int b = requestedfile.read(buffer, 0, 1024);
+						if (b == -1) {
+							break; // end of file
+						}
+						output.write(buffer, 0, b);
+					}
+					// clean up the files, close open handles
+
 				}
 				output.close();
-			} catch (Exception e1) {
+				requestedfile.close();
+			} catch (Exception e) {
 			}
-			/*
-			 * try { // if you could not open the file send a 404
-			 * output.writeBytes(construct_http_header(404, 0)); // close the
-			 * stream output.close(); } catch (Exception e2) { } s("error" +
-			 * e.getMessage());
-			 */
-		} // print error to gui
-
-		// happy day scenario
-		try {
-			int type_is = 0;
-			// find out what the filename ends with,
-			// so you can construct a the right content type
-			if (path.endsWith(".zip")) {
-				type_is = 3;
-			}
-			if (path.endsWith(".jpg") || path.endsWith(".jpeg")) {
-				type_is = 1;
-			}
-			if (path.endsWith(".gif")) {
-				type_is = 2;
-			}
-			if (path.endsWith(".ico")) {
-				type_is = 3;
-			}
-			// write out the header, 200 ->everything is ok we are all happy.
-			output.writeBytes(construct_http_header(200, 5));
-
-			// if it was a HEAD request, we don't print any BODY
-			if (method == 1) { // 1 is GET 2 is head and skips the body
-				byte[] buffer = new byte[1024];
-				while (true) {
-					// read the file from filestream, and print out through the
-					// client-outputstream on a byte per byte base.
-					int b = requestedfile.read(buffer, 0, 1024);
-					if (b == -1) {
-						break; // end of file
-					}
-					output.write(buffer, 0, b);
-				}
-				// clean up the files, close open handles
-
-			}
-			output.close();
-			requestedfile.close();
-		}
-
-		catch (Exception e) {
 		}
 
 	}

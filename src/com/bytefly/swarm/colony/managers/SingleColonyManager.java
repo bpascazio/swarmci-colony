@@ -13,7 +13,7 @@ public class SingleColonyManager extends Manager {
 	Manager bm;
 
 	public SingleColonyManager(Manager _cm, Manager _pm, Manager _gm, Manager _bm) {
-		super(false);
+		super(true);
 		cm = _cm;
 		pm = _pm;
 		gm = _gm;

@@ -28,6 +28,7 @@ public class Config {
 	public static final String SWARM_MAKE_DOT_SWARM_DIR = "SWARM_MAKE_DOT_SWARM_DIR";
 	public static final String SWARM_ANDROID_GENERATE_BUILDXML = "SWARM_ANDROID_GENERATE_BUILDXML";
 	public static final String SWARM_CLOUD_CHECK_FREQ = "SWARM_CLOUD_CHECK_FREQ";
+	public static final String SWARM_STATUS_CHECK_FREQ = "SWARM_STATUS_CHECK_FREQ";
 	public static final String SWARM_COLONY_AUTHENTICATION_V1 = "SWARM_COLONY_AUTHENTICATION_V1";
 	public static final String SWARM_COLONY_AUTHENTICATION_TOKEN = "SWARM_COLONY_AUTHENTICATION_TOKEN";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
@@ -50,6 +51,9 @@ public class Config {
 		}
 		if (key.equals(SWARM_GIT_CHECK_FREQ)) {
 			return 15000; // scan for updated git repositories every 15 seconds
+		}
+		if (key.equals(SWARM_STATUS_CHECK_FREQ)) {
+			return 15000; // check server status 15 seconds
 		}
 		if (key.equals(SWARM_MGR_CHECK_FREQ)) {
 			return 250; // swarm manager checks for commands every 4 times a second

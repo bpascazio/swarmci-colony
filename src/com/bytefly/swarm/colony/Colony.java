@@ -58,7 +58,10 @@ public class Colony extends Thread {
 
 				// swarm single manager manages lifecycle of a single colony server
 				SingleColonyManager sm = new SingleColonyManager(cm, pm, gm, bm);
-				sm.run();
+				
+				// status monitor
+				StatusManager stm = new StatusManager(sm);
+				stm.run();
 			
 			} else {
 				
