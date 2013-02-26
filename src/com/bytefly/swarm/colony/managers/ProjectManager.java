@@ -37,44 +37,36 @@ public class ProjectManager extends Manager {
 					pl = new ProjectList();
 					processList(pl);
 
-					// It is not uncommon for the server to respond with an
-					// error. In this case we do not
-					// pass on the empty list of projects. While this does not
-					// handle the corner case of
-					// the last project being removed from a cloud server... it
-					// should be updated to look
-					// at a status return value in the future.
-					if (pl != null && pl.cv != null && pl.cv.size() != 0) {
-						Work nw = new Work(Work.WORK_ITEM_UPDATE_PROJECTS);
-						nw.data = pl;
+					Work nw = new Work(Work.WORK_ITEM_UPDATE_PROJECTS);
+					nw.data = pl;
+					try {
+						Debug.Log(Debug.TRACE,
+								"ProjectManager handing to git manager project update.");
+						gm.put(nw);
+					} catch (Exception e) {
+						Debug.Log(Debug.INFO,
+								"ProjectManager exception putting work item - stopping.");
+						stop();
+					}
+					if (Status.counter_loaded_projects == 0
+							&& pl.cv.size() != 0) {
+						Debug.Log(Debug.TRACE,
+								"ProjectManager projects initial load ");
+
+						// send command to git manager
+						Work gw = new Work(Work.WORK_ITEM_GIT_SCAN_PROJECTS);
 						try {
 							Debug.Log(Debug.TRACE,
-									"ProjectManager handing to git manager project update.");
-							gm.put(nw);
+									"ProjectManager handing to git manager scan projects.");
+							gm.put(gw);
 						} catch (Exception e) {
 							Debug.Log(Debug.INFO,
 									"ProjectManager exception putting work item - stopping.");
 							stop();
 						}
-						if (Status.counter_loaded_projects == 0
-								&& pl.cv.size() != 0) {
-							Debug.Log(Debug.TRACE,
-									"ProjectManager projects initial load ");
-
-							// send command to git manager
-							Work gw = new Work(Work.WORK_ITEM_GIT_SCAN_PROJECTS);
-							try {
-								Debug.Log(Debug.TRACE,
-										"ProjectManager handing to git manager scan projects.");
-								gm.put(gw);
-							} catch (Exception e) {
-								Debug.Log(Debug.INFO,
-										"ProjectManager exception putting work item - stopping.");
-								stop();
-							}
-						}
-						Status.counter_loaded_projects = pl.cv.size();
 					}
+					Status.counter_loaded_projects = pl.cv.size();
+
 				}
 			} catch (Exception e) {
 				Debug.Log(Debug.INFO,

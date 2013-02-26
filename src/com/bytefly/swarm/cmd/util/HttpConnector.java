@@ -346,7 +346,7 @@ public class HttpConnector {
 					""+b.project_id));
 			nameValuePairs.add(new BasicNameValuePair("build[user_id]",
 					""+b.user_id));
-			System.out.print("adding entity "+b.project_id+" "+b.user_id+" "+b.success);
+//			System.out.print("adding entity "+b.project_id+" "+b.user_id+" "+b.success);
 		}
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

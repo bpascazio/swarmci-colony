@@ -65,7 +65,7 @@ public class GitManager extends Manager {
 						// so compare with checker val
 						if (gc.lastCheckin.equals(existingval)) {
 							Debug.Log(Debug.INFO, "GitManager not changed for "+p.Name);
-							p.busy=false;
+							p.setBusy(" gr not changed "+p.Name, false);
 						} else {
 							Debug.Log(Debug.INFO,
 									"Change detected kick off build for "+p.Name);
@@ -87,7 +87,7 @@ public class GitManager extends Manager {
 								"GitManager not building - not in repo hash yet "
 										+ p.Repo);
 						mg.put(p.Repo, gc.lastCheckin);
-						p.busy=false;
+						p.setBusy(" gr not in hash "+p.Name, false);
 					}
 				}
 
@@ -95,9 +95,38 @@ public class GitManager extends Manager {
 				Debug.Log(Debug.INFO,
 						"GitManager exception in worker thread - exiting "+e);
 				stop();
-				p.busy=false;
+				p.setBusy(" gr exception "+p.Name, false);
 			}
 		}
+	}
+	
+	ProjectList mergeProjects(Object _pl) {
+		ProjectList newList = (ProjectList) _pl;
+		
+		// If we are given a totally empty list, but the current size is non-empty then we keep what we have.
+		// This will keep the last project lingering BUGBUG but prevent projects from thrashing.
+		if (newList.cv.size()==0 && pl!=null && pl.cv!=null && pl.cv.size()>0) {
+			return pl;
+		}
+		
+		// Go through all projects in the new list
+		for (int i=0;i<newList.cv.size();i++) {
+
+			Project pii=(Project) newList.cv.elementAt(i);
+			
+			if (pl!=null&&pl.cv!=null) {
+				for (int j=0;j<pl.cv.size();j++) {
+					Project cp=(Project) pl.cv.elementAt(j);
+					if(cp.ProjectId==pii.ProjectId) {
+						//copy over
+						pii.setBusy(" copy busy ", cp.getBusy());
+						pii.buildNum=cp.buildNum;
+						Debug.Log(Debug.TRACE, "mergeProjects found "+pii.ProjectId);
+					}
+				}
+			}
+		}
+		return newList;
 	}
 
 	public void run() {
@@ -113,7 +142,7 @@ public class GitManager extends Manager {
 					// told to stop
 					stop();
 				} else if (w.name.equals(Work.WORK_ITEM_UPDATE_PROJECTS)) {
-					pl = (ProjectList) w.data;
+					pl = mergeProjects(w.data);
 				} else if (w.name.equals(Work.WORK_ITEM_GIT_SCAN_PROJECTS)) {
 					Debug.Log(Debug.DEBUG,
 							"GitManager scanning projects on github for changes...");
@@ -122,11 +151,13 @@ public class GitManager extends Manager {
 					if (pl != null && pl.cv != null)
 						for (int i = 0; i < pl.cv.size(); i++) {
 							Project p = (Project) pl.cv.get(i);
-							if (p.busy==false) {
-								p.busy=true;
+							if (p.getBusy()==false) {
+								p.setBusy(" gitrun "+p.Name, true);
 								GitRunnable gr = new GitRunnable(p);
 								Thread gth = new Thread(gr);
 								gth.start();
+							} else {
+								Debug.Log(Debug.TRACE, "GitManager ignoring busy project "+p.Name);
 							}
 						}
 				}

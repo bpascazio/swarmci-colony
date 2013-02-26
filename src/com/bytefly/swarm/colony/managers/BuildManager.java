@@ -51,7 +51,7 @@ class BuildRunnable implements Runnable {
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO, "BuildRunnable X " + e.toString());
 		}
-		p.busy=false;
+		p.setBusy(" end build run "+p.Name, false);
 	}
 }
 

@@ -44,7 +44,7 @@ public class Builder {
 							.getStringValue(Config.SWARM_SEND_FAILURE_EMAIL),
 							name, p.buildNum, this.p.BaseName + ".apk", owner,
 							repo, to);
-			Debug.Log(Debug.TRACE, "Executing " + cmd);
+			Debug.Log(Debug.TRACE, "Executing " + cmd+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(cmd, null,
 					new File(this.p.BaseName));
 			pr.waitFor();
@@ -76,7 +76,7 @@ public class Builder {
 					Debug.TRACE,
 					"Executing "
 							+ Config.getStringValue(Config.SWARM_CLEAN_REPO_CMD)
-							+ " " + p.BaseName);
+							+ " " + p.BaseName+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(
 					Config.getStringValue(Config.SWARM_CLEAN_REPO_CMD) + " "
 							+ p.BaseName);
@@ -94,7 +94,7 @@ public class Builder {
 			Debug.Log(
 					Debug.TRACE,
 					"Executing "
-							+ Config.getStringValue(Config.SWARM_GIT_UPDATE_CMD));
+							+ Config.getStringValue(Config.SWARM_GIT_UPDATE_CMD)+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(
 					Config.getStringValue(Config.SWARM_GIT_UPDATE_CMD), null,
 					new File(this.p.BaseName));
