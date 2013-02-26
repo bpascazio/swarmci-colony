@@ -35,7 +35,7 @@ public class GitManager extends Manager {
 		}
 
 		public void run() {
-			Debug.Log(Debug.TRACE,
+			Debug.Log(Debug.DEBUG,
 					"GitManager checking for updates project repo " + p.Repo);
 
 			try {
