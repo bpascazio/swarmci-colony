@@ -16,10 +16,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -44,9 +47,20 @@ public class HttpConnector {
 	public int error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume
 																// communicaton
 																// problem
-	
+
 	private static HttpClient client = null;
-	
+
+	public static DefaultHttpClient getThreadSafeClient() {
+
+		DefaultHttpClient client = new DefaultHttpClient();
+		ClientConnectionManager mgr = client.getConnectionManager();
+		HttpParams params = client.getParams();
+		client = new DefaultHttpClient(new ThreadSafeClientConnManager(params,
+
+		mgr.getSchemeRegistry()), params);
+		return client;
+	}
+
 	public boolean checkConnection(String semail, String spassword) {
 
 		boolean connected = false; // assume failure
@@ -55,16 +69,14 @@ public class HttpConnector {
 		BufferedReader in = null;
 		HttpGet request = null;
 		try {
-			String url = String
-					.format(Config
-							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
-							Config.getStringValue(Config.SWARM_RAILS_URL), 
-							semail,
-							spassword);
-			
+			String url = String.format(Config
+					.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
+					Config.getStringValue(Config.SWARM_RAILS_URL), semail,
+					spassword);
+
 			Debug.Log(Debug.TRACE, "***SECURITY**** url=" + url);
 
-			client = new DefaultHttpClient();
+			client = getThreadSafeClient();
 			request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -87,9 +99,13 @@ public class HttpConnector {
 				sb.append(line + NL);
 			}
 			String page = sb.toString();
-//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + page);
-//			Debug.Log(Debug.TRACE, "***SECURITY****  response=" + response.toString());
-			Debug.Log(Debug.TRACE, "***SECURITY****  cookie=" + response.getHeaders("Set-Cookie")[0].toString());
+			// Debug.Log(Debug.TRACE, "***SECURITY****  response=" + page);
+			// Debug.Log(Debug.TRACE, "***SECURITY****  response=" +
+			// response.toString());
+			Debug.Log(
+					Debug.TRACE,
+					"***SECURITY****  cookie="
+							+ response.getHeaders("Set-Cookie")[0].toString());
 
 			connected = true;
 
@@ -132,7 +148,8 @@ public class HttpConnector {
 
 			Debug.Log(Debug.TRACE, "url=" + url);
 
-			if (client==null) client = new DefaultHttpClient();
+			if (client == null)
+				client = getThreadSafeClient();
 			request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -195,12 +212,14 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = "http://"+Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
+			String url = "http://"
+					+ Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
 					+ entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
 
-			if (client==null) client = new DefaultHttpClient();
+			if (client == null)
+				client = getThreadSafeClient();
 			request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -270,7 +289,7 @@ public class HttpConnector {
 					in.close();
 					request.releaseConnection();
 				} catch (IOException e) {
-					Debug.Log(Debug.TRACE, "httpconnector ioexception "+e);
+					Debug.Log(Debug.TRACE, "httpconnector ioexception " + e);
 				}
 			}
 
@@ -280,66 +299,76 @@ public class HttpConnector {
 	}
 
 	public void setEntity(Entity e) {
-		// Create a new HttpClient and Post Header
-		String entitystr = e.ENTITY_COLLECTION;
-		String url = "http://"+Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
-				+ entitystr;
-		
-		Debug.Log(Debug.TRACE, "url=" + url);
-		
-		if (client==null) client = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(url);
-		BufferedReader in = null;
-		// Add your data
-		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-
-		if (e instanceof Build) {
-
-			Build b = (Build)e;
-			nameValuePairs
-					.add(new BasicNameValuePair("build[success]", b.success?"1":"0"));
-			nameValuePairs.add(new BasicNameValuePair("build[project_id]",
-					""+b.project_id));
-			nameValuePairs.add(new BasicNameValuePair("build[user_id]",
-					""+b.user_id));
-			Debug.Log(Debug.TRACE, "adding entity "+b.project_id+" "+b.user_id+" "+b.success);
-		}
-		try {
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
 
 		try {
-			// Execute HTTP Post Request
-			HttpResponse response;
-			response = client.execute(httppost);
-			in = new BufferedReader(new InputStreamReader(response.getEntity()
-					.getContent()));
-			StringBuffer sb = new StringBuffer("");
-			String line = "";
-			String NL = System.getProperty("line.separator");
-			while ((line = in.readLine()) != null) {
-				sb.append(line + NL);
+
+			// Create a new HttpClient and Post Header
+			String entitystr = e.ENTITY_COLLECTION;
+			String url = "http://"
+					+ Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
+					+ entitystr;
+
+			Debug.Log(Debug.TRACE, "url=" + url);
+
+			if (client == null)
+				client = getThreadSafeClient();
+			HttpPost httppost = new HttpPost(url);
+			BufferedReader in = null;
+			// Add your data
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+
+			if (e instanceof Build) {
+
+				Build b = (Build) e;
+				nameValuePairs.add(new BasicNameValuePair("build[success]",
+						b.success ? "1" : "0"));
+				nameValuePairs.add(new BasicNameValuePair("build[project_id]",
+						"" + b.project_id));
+				nameValuePairs.add(new BasicNameValuePair("build[user_id]", ""
+						+ b.user_id));
+				Debug.Log(Debug.TRACE, "adding entity " + b.project_id + " "
+						+ b.user_id + " " + b.success);
 			}
-			String page = sb.toString();
-			Debug.Log(Debug.TRACE, "post response=" + page);
-			if (in != null) {
-				try {
-					in.close();
-					httppost.releaseConnection();
-				} catch (IOException ex) {
-					ex.printStackTrace();
+			try {
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			} catch (Exception ex) {
+				// TODO Auto-generated catch block
+				Debug.Log(Debug.ERROR, "setEntity e " + ex);
+			}
+
+			try {
+				// Execute HTTP Post Request
+				HttpResponse response;
+				response = client.execute(httppost);
+				in = new BufferedReader(new InputStreamReader(response
+						.getEntity().getContent()));
+				StringBuffer sb = new StringBuffer("");
+				String line = "";
+				String NL = System.getProperty("line.separator");
+				while ((line = in.readLine()) != null) {
+					sb.append(line + NL);
 				}
-			}
-		} catch (ClientProtocolException epx) {
-			// TODO Auto-generated catch block
-			epx.printStackTrace();
-		} catch (IOException ioe) {
-			// TODO Auto-generated catch block
-			ioe.printStackTrace();
+				String page = sb.toString();
+				Debug.Log(Debug.TRACE, "post response=" + page);
+				if (in != null) {
+					try {
+						in.close();
+						httppost.releaseConnection();
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			} catch (ClientProtocolException epx) {
+				// TODO Auto-generated catch block
+				Debug.Log(Debug.ERROR, "setEntity e " + epx);
+			} catch (IOException ioe) {
+				// TODO Auto-generated catch block
+				Debug.Log(Debug.ERROR, "setEntity e " + ioe);
 
+			}
+
+		} catch (Exception excc) {
+			Debug.Log(Debug.ERROR, "setEntity e " + excc);
 		}
 	}
 
