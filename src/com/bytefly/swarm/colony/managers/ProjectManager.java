@@ -35,38 +35,41 @@ public class ProjectManager extends Manager {
 					Debug.Log(Debug.DEBUG,
 							"ProjectManager getting project list.");
 					pl = new ProjectList();
-					processList(pl);
-
-					Work nw = new Work(Work.WORK_ITEM_UPDATE_PROJECTS);
-					nw.data = pl;
-					try {
-						Debug.Log(Debug.TRACE,
-								"ProjectManager handing to git manager project update.");
-						gm.put(nw);
-					} catch (Exception e) {
-						Debug.Log(Debug.INFO,
-								"ProjectManager exception putting work item - stopping.");
-						stop();
-					}
-					if (Status.counter_loaded_projects == 0
-							&& pl.cv.size() != 0) {
-						Debug.Log(Debug.TRACE,
-								"ProjectManager projects initial load ");
-
-						// send command to git manager
-						Work gw = new Work(Work.WORK_ITEM_GIT_SCAN_PROJECTS);
+					if (pl.valid == true) {
+						processList(pl);
+						Work nw = new Work(Work.WORK_ITEM_UPDATE_PROJECTS);
+						nw.data = pl;
 						try {
 							Debug.Log(Debug.TRACE,
-									"ProjectManager handing to git manager scan projects.");
-							gm.put(gw);
+									"ProjectManager handing to git manager project update.");
+							gm.put(nw);
 						} catch (Exception e) {
 							Debug.Log(Debug.INFO,
 									"ProjectManager exception putting work item - stopping.");
 							stop();
 						}
-					}
-					Status.counter_loaded_projects = pl.cv.size();
+						if (Status.counter_loaded_projects == 0
+								&& pl.cv.size() != 0) {
+							Debug.Log(Debug.TRACE,
+									"ProjectManager projects initial load ");
 
+							// send command to git manager
+							Work gw = new Work(Work.WORK_ITEM_GIT_SCAN_PROJECTS);
+							try {
+								Debug.Log(Debug.TRACE,
+										"ProjectManager handing to git manager scan projects.");
+								gm.put(gw);
+							} catch (Exception e) {
+								Debug.Log(Debug.INFO,
+										"ProjectManager exception putting work item - stopping.");
+								stop();
+							}
+						}
+						Status.counter_loaded_projects = pl.cv.size();
+					} else {
+						Debug.Log(Debug.WARNING,
+								"ProjectManager invalid project list.");
+					}
 				}
 			} catch (Exception e) {
 				Debug.Log(Debug.INFO,
@@ -118,7 +121,8 @@ public class ProjectManager extends Manager {
 			// Set generic builder type for now.
 			p.BuilderType = Builder.BUILDER_TYPE_GENERIC;
 			Debug.Log(Debug.TRACE, "adding " + p.Name + " " + p.Repo);
-			pll[i] = "user " + p.UserId + " repo " + p.Repo + "busy " +p.getBusy();
+			pll[i] = "user " + p.UserId + " repo " + p.Repo + " busy "
+					+ p.getBusy();
 		}
 		Status.project_list = pll;
 	}

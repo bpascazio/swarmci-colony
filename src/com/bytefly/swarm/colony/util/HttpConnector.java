@@ -283,6 +283,7 @@ public class HttpConnector {
 			// That is why we assume a server communication error.
 			//
 			Debug.Log(Debug.INFO, "getEntityList X " + e);
+			return null;
 
 		} finally {
 

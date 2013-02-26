@@ -103,9 +103,7 @@ public class GitManager extends Manager {
 	ProjectList mergeProjects(Object _pl) {
 		ProjectList newList = (ProjectList) _pl;
 		
-		// If we are given a totally empty list, but the current size is non-empty then we keep what we have.
-		// This will keep the last project lingering BUGBUG but prevent projects from thrashing.
-		if (newList.cv.size()==0 && pl!=null && pl.cv!=null && pl.cv.size()>0) {
+		if (newList.cv.size()==0) {
 			return pl;
 		}
 		

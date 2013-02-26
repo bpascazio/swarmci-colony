@@ -6,4 +6,5 @@ import com.bytefly.swarm.colony.models.Entity;
 
 public class Collection {
 	public Vector<Entity> cv;
+	public boolean valid;
 }
