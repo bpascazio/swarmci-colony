@@ -64,10 +64,10 @@ public class GitManager extends Manager {
 
 						// so compare with checker val
 						if (gc.lastCheckin.equals(existingval)) {
-							Debug.Log(Debug.TRACE, "GitManager not changed.");
+							Debug.Log(Debug.INFO, "GitManager not changed for "+p.Name);
 						} else {
-							Debug.Log(Debug.TRACE,
-									"Change detected kick off build.");
+							Debug.Log(Debug.INFO,
+									"Change detected kick off build for "+p.Name);
 							
 
 							// set the new key val
