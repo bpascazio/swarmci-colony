@@ -43,10 +43,10 @@ public class Logfile {
 		fname = name;
 		fullname = dir+"/"+name;
 		fdir = dir;
-		System.out.print("starting log file...");
+		Debug.Log(Debug.TRACE, "starting log file...");
 
 		// Create it and commit it.
-		System.out.print("\ncreating log file " + fullname + "dir");
+		Debug.Log(Debug.TRACE, "creating log file " + fullname + "dir");
 		try {
 			bw = new BufferedWriter(new FileWriter(fullname, true));
 		} catch (IOException e) {
