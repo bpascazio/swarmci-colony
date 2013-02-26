@@ -18,7 +18,7 @@ public class Status extends Command {
 				ProjectList pl = new ProjectList();
 				for (int i=0;i<pl.cv.size();i++) {
 					Project p = (Project) pl.cv.elementAt(i);
-					System.out.print(p.Name+" last build "+p.buildNum+".\n");
+					System.out.print(p.Name+" last build "+p.buildNum+". ["+p.Repo+"]\n");
 				}
 			} else {
 				System.out.print("Could not connect to server.\n");
