@@ -29,5 +29,6 @@ public class Project extends Entity{
 		ProjectId = -1;
 		BaseNameMinimal = "";
 		logFile = null;
+		busy = false;
 	}
 }

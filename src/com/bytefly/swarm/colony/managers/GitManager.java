@@ -65,6 +65,7 @@ public class GitManager extends Manager {
 						// so compare with checker val
 						if (gc.lastCheckin.equals(existingval)) {
 							Debug.Log(Debug.INFO, "GitManager not changed for "+p.Name);
+							p.busy=false;
 						} else {
 							Debug.Log(Debug.INFO,
 									"Change detected kick off build for "+p.Name);
@@ -86,6 +87,7 @@ public class GitManager extends Manager {
 								"GitManager not building - not in repo hash yet "
 										+ p.Repo);
 						mg.put(p.Repo, gc.lastCheckin);
+						p.busy=false;
 					}
 				}
 
@@ -93,8 +95,8 @@ public class GitManager extends Manager {
 				Debug.Log(Debug.INFO,
 						"GitManager exception in worker thread - exiting "+e);
 				stop();
+				p.busy=false;
 			}
-
 		}
 	}
 
@@ -120,9 +122,12 @@ public class GitManager extends Manager {
 					if (pl != null && pl.cv != null)
 						for (int i = 0; i < pl.cv.size(); i++) {
 							Project p = (Project) pl.cv.get(i);
-							GitRunnable gr = new GitRunnable(p);
-							Thread gth = new Thread(gr);
-							gth.start();
+							if (p.busy==false) {
+								p.busy=true;
+								GitRunnable gr = new GitRunnable(p);
+								Thread gth = new Thread(gr);
+								gth.start();
+							}
 						}
 				}
 			} catch (Exception e) {
