@@ -116,7 +116,7 @@ public class HttpConnector {
 			// related.
 			// That is why we assume a server communication error.
 			//
-			e.printStackTrace();
+			Debug.Log(Debug.INFO, "checkConnection X " + e);
 
 		} finally {
 
@@ -125,7 +125,9 @@ public class HttpConnector {
 					in.close();
 					request.releaseConnection();
 				} catch (IOException e) {
-					e.printStackTrace();
+
+					Debug.Log(Debug.INFO, "checkConnection X " + e);
+
 				}
 			}
 
@@ -182,7 +184,7 @@ public class HttpConnector {
 			// related.
 			// That is why we assume a server communication error.
 			//
-			e.printStackTrace();
+			Debug.Log(Debug.INFO, "getURL X " + e);
 
 		} finally {
 
@@ -191,7 +193,7 @@ public class HttpConnector {
 					in.close();
 					request.releaseConnection();
 				} catch (IOException e) {
-					e.printStackTrace();
+					Debug.Log(Debug.INFO, "getURL X " + e);
 				}
 			}
 
@@ -280,7 +282,7 @@ public class HttpConnector {
 			// related.
 			// That is why we assume a server communication error.
 			//
-			Debug.Log(Debug.TRACE, "httpconnector exception" + e);
+			Debug.Log(Debug.INFO, "getEntityList X " + e);
 
 		} finally {
 
@@ -289,7 +291,7 @@ public class HttpConnector {
 					in.close();
 					request.releaseConnection();
 				} catch (IOException e) {
-					Debug.Log(Debug.TRACE, "httpconnector ioexception " + e);
+					Debug.Log(Debug.INFO, "getEntityList X " + e);
 				}
 			}
 
@@ -333,7 +335,7 @@ public class HttpConnector {
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			} catch (Exception ex) {
 				// TODO Auto-generated catch block
-				Debug.Log(Debug.ERROR, "setEntity e " + ex);
+				Debug.Log(Debug.INFO, "setEntity X " + ex);
 			}
 
 			try {
@@ -360,15 +362,15 @@ public class HttpConnector {
 				}
 			} catch (ClientProtocolException epx) {
 				// TODO Auto-generated catch block
-				Debug.Log(Debug.ERROR, "setEntity e " + epx);
+				Debug.Log(Debug.INFO, "setEntity X " + epx);
 			} catch (IOException ioe) {
 				// TODO Auto-generated catch block
-				Debug.Log(Debug.ERROR, "setEntity e " + ioe);
+				Debug.Log(Debug.INFO, "setEntity X " + ioe);
 
 			}
 
 		} catch (Exception excc) {
-			Debug.Log(Debug.ERROR, "setEntity e " + excc);
+			Debug.Log(Debug.INFO, "setEntity X " + excc);
 		}
 	}
 
