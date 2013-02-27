@@ -29,8 +29,6 @@ public class SingleColonyServerStatusPage {
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Cloud Address</td><td>" + Status.cloud_address
 					+ "</td></tr>\n");
-			os.writeBytes("<tr><td>Zombie Projects/td><td>" + Status.counter_zombie_projects
-					+ "</td></tr>\n");
 			
 			os.writeBytes("</table>\n");
 
@@ -58,6 +56,8 @@ public class SingleColonyServerStatusPage {
 					+ Status.counter_builds_success + "</td></tr>\n");
 			os.writeBytes("<tr><td>Git Builds Failure</td><td>"
 					+ Status.counter_builds_failure + "</td></tr>\n");
+			os.writeBytes("<tr><td>Zombie Projects</td><td>" + Status.counter_zombie_projects
+					+ "</td></tr>\n");
 			os.writeBytes("</table>\n");
 
 			if (Status.project_list != null) {
