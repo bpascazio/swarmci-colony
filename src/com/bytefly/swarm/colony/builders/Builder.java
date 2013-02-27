@@ -35,15 +35,18 @@ public class Builder {
 	public void sendFailureEmail() {
 
 		try {
-			String name = p.BaseName + "-" + p.Version + "-";
-			String owner = "bytefly";
-			String repo = p.BaseName;
+			String name = p.BaseNameMinimal+"("+p.buildNum+")";
+			String owner = "owner";
+			String repo = p.BaseNameMinimal;
 			String to = toFailList;
+			String log = this.p.BaseNameMinimal+this.p.buildNum+".log";
 			String cmd = String
 					.format(Config
 							.getStringValue(Config.SWARM_SEND_FAILURE_EMAIL),
-							name, p.buildNum, this.p.BaseName + ".apk", owner,
-							repo, to);
+							name, p.buildNum, this.p.BaseName + ".apk", log, owner,
+							repo, to, p.commit);
+			
+			
 			Debug.Log(Debug.TRACE, "Executing " + cmd+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(cmd, null,
 					new File(this.p.BaseName));

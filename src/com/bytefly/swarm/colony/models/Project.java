@@ -15,6 +15,7 @@ public class Project extends Entity{
 	public boolean triggerBuild;
 	public String buildDirectory;
 	public Logfile logFile;
+	public String commit;
 	
 	public Project() {
 		ENTITY = "Project";
@@ -29,6 +30,7 @@ public class Project extends Entity{
 		ProjectId = -1;
 		BaseNameMinimal = "";
 		logFile = null;
+		commit = "";
 		this.setBusy(" project creation ", false);
 	}
 }

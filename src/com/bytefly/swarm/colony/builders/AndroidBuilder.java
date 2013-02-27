@@ -153,7 +153,7 @@ public class AndroidBuilder extends Builder {
 			String log = this.p.BaseNameMinimal+this.p.buildNum+".log";
 			String cmd = 
 					String.format(Config.getStringValue(Config.SWARM_ANDROID_SEND_EMAIL_APK), 
-							name, p.buildNum, this.p.BaseNameMinimal+this.p.buildNum+".apk", log, owner, repo, to);
+							name, p.buildNum, this.p.BaseNameMinimal+this.p.buildNum+".apk", log, owner, repo, to, p.commit);
 			Debug.Log(Debug.TRACE, "Executing "+cmd);
 			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
 			pr.waitFor(); 

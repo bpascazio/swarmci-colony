@@ -43,6 +43,7 @@ public class GitManager extends Manager {
 				GitChecker gc = new GitChecker();
 				gc.p = p;
 				gc.runAll();
+				gc.p.commit=gc.lastCheckin;
 				Status.counter_git_updates++;
 
 				if (p.triggerBuild) {
