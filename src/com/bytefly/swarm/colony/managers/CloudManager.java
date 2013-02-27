@@ -62,7 +62,7 @@ public class CloudManager extends Manager {
 				stop();
 			}
 		}
-		Debug.Log(Debug.INFO, "ProjectManager stopped.");
+		Debug.Log(Debug.INFO, "CloudManager stopped.");
 	}	
 	private boolean mTriggerLatch = false;
 	

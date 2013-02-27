@@ -29,6 +29,8 @@ public class SingleColonyServerStatusPage {
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Cloud Address</td><td>" + Status.cloud_address
 					+ "</td></tr>\n");
+			os.writeBytes("<tr><td>Zombie Projects/td><td>" + Status.counter_zombie_projects
+					+ "</td></tr>\n");
 			
 			os.writeBytes("</table>\n");
 

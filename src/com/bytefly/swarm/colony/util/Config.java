@@ -31,6 +31,7 @@ public class Config {
 	public static final String SWARM_STATUS_CHECK_FREQ = "SWARM_STATUS_CHECK_FREQ";
 	public static final String SWARM_COLONY_AUTHENTICATION_V1 = "SWARM_COLONY_AUTHENTICATION_V1";
 	public static final String SWARM_COLONY_AUTHENTICATION_TOKEN = "SWARM_COLONY_AUTHENTICATION_TOKEN";
+	public static final String SWARM_COLONY_MAX_BUSY = "SWARM_COLONY_MAX_BUSY";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
@@ -42,7 +43,10 @@ public class Config {
 	public static final String SWARM_COLONY_CONFIG_PATH = "SWARM_COLONY_CONFIG_PATH";
 	
 	
-	public static int getIntValue(String key) {
+	public static int getIntValue(String key) {	
+		if (key.equals(SWARM_COLONY_MAX_BUSY)) {
+			return 1000*60*5; // max busy time for system entity
+		}
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
 			return 90000; // fetch projects from rails server every 60 seconds
 		}
