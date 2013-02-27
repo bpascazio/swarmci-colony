@@ -150,9 +150,10 @@ public class SwarmUser {
 			password = scanner.nextLine();
 			password = password.replace("\n", "");
 			email = username;
-			System.out.print("Server [default swarmbeta.herokuapp.com]: ");
-			server = scanner.nextLine();
-			server = server.replace("\n", "");
+//			System.out.print("Server [default ]: ");
+//			server = scanner.nextLine();
+//			server = server.replace("\n", "");
+			server="";
 			if (server.equals("")) server = Config.getStringValue(Config.SWARM_RAILS_URL);
 			writeToFile(username, email, password, server);
 		} else {

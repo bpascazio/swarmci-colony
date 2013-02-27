@@ -130,7 +130,7 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = "http://swarmbytefly.herokuapp.com" + "/"
+			String url = "http://www.swarmbuilt.com" + "/"
 					+ entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
