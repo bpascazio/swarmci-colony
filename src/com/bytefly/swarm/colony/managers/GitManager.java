@@ -101,11 +101,18 @@ public class GitManager extends Manager {
 	}
 	
 	ProjectList mergeProjects(Object _pl) {
+		
 		ProjectList newList = (ProjectList) _pl;
+		
+		Debug.Log(Debug.TRACE, "mergeProject sz is "+newList.cv.size());
 		
 		if (newList.cv.size()==0) {
 			return pl;
 		}
+		
+		if (pl==null) return newList;
+		
+		boolean found = false;
 		
 		// Go through all projects in the new list
 		for (int i=0;i<newList.cv.size();i++) {
@@ -113,14 +120,20 @@ public class GitManager extends Manager {
 			Project pii=(Project) newList.cv.elementAt(i);
 			
 			if (pl!=null&&pl.cv!=null) {
+				found = false;
 				for (int j=0;j<pl.cv.size();j++) {
 					Project cp=(Project) pl.cv.elementAt(j);
 					if(cp.ProjectId==pii.ProjectId) {
-						//copy over
-						pii.setBusy(" copy busy ", cp.getBusy());
-						pii.buildNum=cp.buildNum;
-						Debug.Log(Debug.TRACE, "mergeProjects found "+pii.ProjectId);
+						//already there, we should copy the repo and name change 
+						Debug.Log(Debug.TRACE, "mergeProjects existing project found "+pii.ProjectId);
+						found=true;
+						break;
 					}
+				}
+				if (!found) {
+					//new project add to the list
+					pl.cv.add(pii);
+					Debug.Log(Debug.TRACE, "mergeProjects NEW project found "+pii.ProjectId);
 				}
 			}
 		}
