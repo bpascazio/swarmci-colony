@@ -33,6 +33,6 @@ public class Project extends Entity{
 		logFile = null;
 		commit = "";
 		reason = "";
-		this.setBusy(" project creation ", false);
+		this.setBusy("", false);
 	}
 }

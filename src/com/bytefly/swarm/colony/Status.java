@@ -17,6 +17,7 @@ public class Status {
 	public static int counter_zombie_projects = 0;
 	public static int counter_cloud_comm_success = 0;
 	public static int counter_cloud_comm_failure = 0;
+	public static int counter_busy_count = 0;
 	
 	public static long counter_initial_uptime = 0;
 	public static String[] project_list = null;

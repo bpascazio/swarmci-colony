@@ -22,7 +22,7 @@ public class SingleColonyServerStatusPage {
 			os.writeBytes("<tr><td>Build Date</td><td>" + Info.build_date
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Uptime</td><td>" + displayUT
-					+ " seconds</td></tr>\n");
+					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Ticker</td><td>" + Status.counter_heartbeat
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Cloud Connected</td><td>" + Status.cloud_connected
@@ -74,17 +74,6 @@ public class SingleColonyServerStatusPage {
 				}
 				os.writeBytes("</table>\n");
 			}
-
-			os.writeBytes("<p><table border=\"1\">\n");
-			os.writeBytes("<tr><td>QSize Build Manager</td><td>"
-					+ Status.qsize_build_mgr + "</td></tr>\n");
-			os.writeBytes("<tr><td>QSize Git Manager</td><td>"
-					+ Status.qsize_git_mgr + "</td></tr>\n");
-			os.writeBytes("<tr><td>QSize Cloud Manager</td><td>"
-					+ Status.qsize_cloud_mgr + "</td></tr>\n");
-			os.writeBytes("<tr><td>QSize Project Manager</td><td>"
-					+ Status.qsize_proj_mgr + "</td></tr>\n");
-			os.writeBytes("</table>\n");
 	
 			os.writeBytes("</body>\n");
 			os.writeBytes("</html>\n");
