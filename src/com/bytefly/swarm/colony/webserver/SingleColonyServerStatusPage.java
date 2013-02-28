@@ -58,6 +58,8 @@ public class SingleColonyServerStatusPage {
 					+ Status.counter_builds_failure + "</td></tr>\n");
 			os.writeBytes("<tr><td>Zombie Projects</td><td>" + Status.counter_zombie_projects
 					+ "</td></tr>\n");
+			os.writeBytes("<tr><td>Server Busy Counter</td><td>" + Status.counter_busy_count
+					+ "</td></tr>\n");		
 			os.writeBytes("<tr><td>Cloud Communication Success</td><td>" + Status.counter_cloud_comm_success
 					+ "</td></tr>\n");
 			os.writeBytes("<tr><td>Cloud Communication Failure</td><td>" + Status.counter_cloud_comm_failure
