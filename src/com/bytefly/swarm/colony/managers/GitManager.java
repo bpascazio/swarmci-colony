@@ -107,15 +107,17 @@ public class GitManager extends Manager {
 		
 		Debug.Log(Debug.TRACE, "mergeProject sz is "+newList.cv.size());
 		
+		// Nothing returned in the new list, lets stick with what we have.
 		if (newList.cv.size()==0) {
 			return pl;
 		}
 		
+		// Something in new list and we have nothing, lets stick with newlist.
 		if (pl==null) return newList;
 		
 		boolean found = false;
 		
-		// Go through all projects in the new list
+		// Go through all projects in the new list and merge into current list
 		for (int i=0;i<newList.cv.size();i++) {
 
 			Project pii=(Project) newList.cv.elementAt(i);
@@ -125,20 +127,42 @@ public class GitManager extends Manager {
 				for (int j=0;j<pl.cv.size();j++) {
 					Project cp=(Project) pl.cv.elementAt(j);
 					if(cp.ProjectId==pii.ProjectId) {
-						//already there, we should copy the repo and name change 
+						
+						// Already there, we should copy the repo, build num, name change, etc.
 						Debug.Log(Debug.TRACE, "mergeProjects existing project found "+pii.ProjectId);
 						found=true;
 						break;
 					}
 				}
 				if (!found) {
-					//new project add to the list
+					
+					//New project add to the list.
 					pl.cv.add(pii);
 					Debug.Log(Debug.TRACE, "mergeProjects NEW project found "+pii.ProjectId);
 				}
 			}
 		}
-		return newList;
+		
+		// Loop through projects and remove any old ones
+		for (int j=0;j<pl.cv.size();j++) {
+			Project cp=(Project) pl.cv.elementAt(j);
+			
+			// Make sure the project is in the new list
+			for (int i=0;i<newList.cv.size();i++) {
+				Project pii=(Project) newList.cv.elementAt(i);
+				if(cp.ProjectId==pii.ProjectId) {
+					found=true;
+					break;
+				}
+			}
+			if (!found) {
+				pl.cv.removeElementAt(j);
+				Debug.Log(Debug.TRACE, "mergeProjects REMOVED project "+cp.ProjectId);
+				break;
+			}
+		}
+		
+		return pl;
 	}
 
 	public void run() {

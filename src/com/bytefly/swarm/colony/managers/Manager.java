@@ -16,7 +16,7 @@ public abstract class Manager implements Runnable {
 		this(true);
 	}
 	
-	int getQSize() {
+	protected int getQSize() {
 		if (workq!=null) {
 			return workq.size();
 		}
@@ -55,15 +55,15 @@ public abstract class Manager implements Runnable {
 		return item;
 	}
 
-	void stop() {
+	protected void stop() {
 		running = false;
 	}
 
-	void start() {
+	protected void start() {
 		running = true;
 	}
 
-	public Thread create() {
+	protected Thread create() {
 		Thread t = new Thread(this);
 		t.start();
 		return t;
