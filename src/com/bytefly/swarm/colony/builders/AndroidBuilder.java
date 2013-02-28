@@ -39,6 +39,7 @@ public class AndroidBuilder extends Builder {
 		if (apkName.equals("")) {
 			Debug.Log(Debug.TRACE, "no apk found");			
 			Status.counter_builds_failure++;
+			p.reason="Failed%20during%20compile.";
 			p.logFile.stopLogFile();
 			sendFailureEmail();
 		} else {

@@ -43,6 +43,7 @@ class BuildRunnable implements Runnable {
 				Builder b = new Builder();
 				b.p = p;
 				b.loadSwarmXML();
+				p.reason="No%20valid%20project%20found.";
 				b.sendFailureEmail();
 				Status.counter_builds_failure++;
 				Debug.Log(Debug.DEBUG,

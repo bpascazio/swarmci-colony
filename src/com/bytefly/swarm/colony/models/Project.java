@@ -16,6 +16,7 @@ public class Project extends Entity{
 	public String buildDirectory;
 	public Logfile logFile;
 	public String commit;
+	public String reason;
 	
 	public Project() {
 		ENTITY = "Project";
@@ -31,6 +32,7 @@ public class Project extends Entity{
 		BaseNameMinimal = "";
 		logFile = null;
 		commit = "";
+		reason = "";
 		this.setBusy(" project creation ", false);
 	}
 }

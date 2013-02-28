@@ -40,11 +40,12 @@ public class Builder {
 			String repo = p.BaseNameMinimal;
 			String to = toFailList;
 			String log = this.p.BaseNameMinimal+this.p.buildNum+".log";
+			String reason = p.reason;
 			String cmd = String
 					.format(Config
 							.getStringValue(Config.SWARM_SEND_FAILURE_EMAIL),
 							name, p.buildNum, this.p.BaseName + ".apk", log, owner,
-							repo, to, p.commit);
+							repo, to, p.commit, reason);
 			
 			
 			Debug.Log(Debug.TRACE, "Executing " + cmd+ " " + p.Repo);
