@@ -8,6 +8,7 @@ import com.bytefly.swarm.colony.managers.GitManager.GitRunnable;
 import com.bytefly.swarm.colony.managers.work.Work;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Debug;
+import com.bytefly.swarm.colony.util.HttpConnector;
 
 // Work is to build an app and send out.
 
@@ -53,6 +54,8 @@ class BuildRunnable implements Runnable {
 			Debug.Log(Debug.INFO, "BuildRunnable X " + e.toString());
 		}
 		p.buildNum++;
+		HttpConnector h = new HttpConnector();
+		h.updateEntity(p, p.ProjectId);
 		p.setBusy(" end build run "+p.Name, false);
 	}
 }

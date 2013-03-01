@@ -36,25 +36,30 @@ public class GitManager extends Manager {
 
 		public void run() {
 			Debug.Log(Debug.DEBUG,
-					"GitManager checking for updates project repo " + p.Repo);
-
+					"GitManager thread on " + p.Name);
+			String msg = "gitrun not";
 			try {
 				// Check for git updates with hashmap
-				GitChecker gc = new GitChecker();
-				gc.p = p;
-				gc.runAll();
-				gc.p.commit=gc.lastCheckin;
-				Status.counter_git_updates++;
-
-				if (p.triggerBuild) {
+				GitChecker gc = null;
+				if (p.buildState>0) {
+					Debug.Log(Debug.DEBUG,
+							"GitManager checking for updates project repo " + p.Repo);
+					gc = new GitChecker();
+					gc.p = p;
+					gc.runAll();
+					gc.p.commit=gc.lastCheckin;
+					Status.counter_git_updates++;
+				}
+				
+				if (p.buildTrigger==1) {
 					
 					Debug.Log(Debug.TRACE, "Build triggered by project.");
 					Status.counter_builds_triggered++;
-					p.triggerBuild = false;
+					p.buildTrigger = 0;
 					Work bw = new Work(Work.WORK_ITEM_BUILD_BUILD_PROJECT);
 					bw.data = p;
 					bm.put(bw);
-				} else if (gc.lastCheckin != null) {
+				} else if (p.buildState>0 && gc!=null && gc.lastCheckin != null) {
 					
 					if (mg.containsKey(p.Repo)) {
 
@@ -66,7 +71,7 @@ public class GitManager extends Manager {
 						// so compare with checker val
 						if (gc.lastCheckin.equals(existingval)) {
 							Debug.Log(Debug.INFO, "GitManager not changed for "+p.Name);
-							p.setBusy(" gr not changed "+p.Name, false);
+							msg=" gr not changed "+p.Name;
 						} else {
 							Debug.Log(Debug.INFO,
 									"Change detected kick off build for "+p.Name);
@@ -88,7 +93,7 @@ public class GitManager extends Manager {
 								"GitManager not building - not in repo hash yet "
 										+ p.Repo);
 						mg.put(p.Repo, gc.lastCheckin);
-						p.setBusy(" gr not in hash "+p.Name, false);
+						msg=" gr not in hash "+p.Name;
 					}
 				}
 
@@ -96,8 +101,9 @@ public class GitManager extends Manager {
 				Debug.Log(Debug.INFO,
 						"GitManager exception in worker thread - exiting "+e);
 				stop();
-				p.setBusy(" gr exception "+p.Name, false);
+				msg=" gr exception "+p.Name;
 			}
+			p.setBusy(msg, false);
 		}
 	}
 	
@@ -128,7 +134,8 @@ public class GitManager extends Manager {
 					Project cp=(Project) pl.cv.elementAt(j);
 					if(cp.ProjectId==pii.ProjectId) {
 						
-						// Already there, we should copy the repo, build num, name change, etc.
+						cp.buildState=pii.buildState;
+						cp.buildTrigger=pii.buildTrigger;
 						Debug.Log(Debug.TRACE, "mergeProjects existing project found "+pii.ProjectId);
 						found=true;
 						break;
