@@ -35,22 +35,19 @@ public class CommandLine {
 	public static void usage() {
 		Debug.Log(Debug.INFO, "\nCloud Based Continuous Integration for Mobile Apps.");
 		Debug.Log(Debug.INFO, "\nUsage:\n\tswarm [options] <project name> <profile filename> <comment>");
-		Debug.Log(Debug.INFO, "\nDescription: To begin using swarm run 'swarm create <project name>' while in the subdirectory\ncontaining your git repository.  The project will initially be in the paused state (only you get emails).");
-		Debug.Log(Debug.INFO, "For build settings review the swarm.xml which is created in the repository subdirectory.");
-		Debug.Log(Debug.INFO, "Initially the project is set to compile on a push to the remote git repository. After successful");
-		Debug.Log(Debug.INFO, "compilation run 'swarm start <project name>' to begin normal continuous integration.");
+		Debug.Log(Debug.INFO, "\nDescription: To begin using swarm run 'swarm create <project name>' while in\nthe subdirectory containing your git repository.  The project will initially\nbe in the off state and not compile builds on git commits.");
+		Debug.Log(Debug.INFO, "\nFor build settings, review the swarm.xml which should be created in the repository\nsubdirectory.");
+		Debug.Log(Debug.INFO, "\nNext use 'swarm run <project name> to test the cloud compilation. After successful");
+		Debug.Log(Debug.INFO, "compilation run 'swarm on <project name>' to begin normal continuous integration.");
 		Debug.Log(Debug.INFO, "\nOptions:\n");
 		Debug.Log(Debug.INFO, "create <project name> - Create and configure a new project.");		
 		Debug.Log(Debug.INFO, "remove <project name> - Removes a project from swarm.");		
 		Debug.Log(Debug.INFO, "profile <project name> <profile filename> - Uploads Apple iOS profile to swarm cloud.");
-		Debug.Log(Debug.INFO, "\nstart <project name> - Start normal continuous integration for project. ");
-		Debug.Log(Debug.INFO, "stop  <project name> - Stops continuous integration running.");
-		Debug.Log(Debug.INFO, "pause <project name> - Paused state, build results only sent to current swarm user.");
-		Debug.Log(Debug.INFO, "\ntest  <project name> <comment> - Run a test build and send results only to current swarm user.");
-		Debug.Log(Debug.INFO, "build <project name> <comment> - Run a full build and distribute normally.");
-		Debug.Log(Debug.INFO, "\n<comment> must be a put in \"quotes\"");
-		Debug.Log(Debug.INFO, "\nlog     - Displays log file for a project.");
-		Debug.Log(Debug.INFO, "status  - Displays list of projects and their status.");
+		Debug.Log(Debug.INFO, "run    <project name> - Run a single build of the project.");
+		Debug.Log(Debug.INFO, "on     <project name> - Start normal continuous integration for project.");
+		Debug.Log(Debug.INFO, "off    <project name> - Stops continous integration.");
+		Debug.Log(Debug.INFO, "\nstatus  - Displays list of projects and their status.");
+		Debug.Log(Debug.INFO, "log     - Displays log file for a project.");
 		Debug.Log(Debug.INFO, "version - Displays version information.\n");
 	}
 	public static void version() {
