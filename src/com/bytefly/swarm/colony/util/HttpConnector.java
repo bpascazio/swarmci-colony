@@ -260,11 +260,11 @@ public class HttpConnector {
 					Project p = new Project();
 					p.Name = o.getString("name");
 					p.Repo = o.getString("repo");
-					p.UserId = Integer.valueOf(o.getString("user_id"));
-					p.ProjectId = Integer.valueOf(o.getString("id"));
-					p.buildState = Integer.valueOf(o.getString("state"));
-					p.buildTrigger = Integer.valueOf(o.getString("trigger"));
-					p.buildNum = Integer.valueOf(o.getString("build"));
+					p.UserId = o.getInt("user_id");
+					p.ProjectId = o.getInt("id");
+					p.buildState = o.getInt("state");
+					p.buildTrigger =  o.getInt("trigger");
+					p.buildNum =  o.getInt("build");
 					c.add(p);
 				}
 			}
