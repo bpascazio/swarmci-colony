@@ -12,7 +12,11 @@ import com.bytefly.swarm.colony.util.Debug;
 
 public class CommandLine {
 	public static void main(String[] args) {
-		Debug.logSurpress();
+		if (args.length==3&&args[2].equals("v")) {
+			;
+		} else {
+			Debug.logSurpress();
+		}
 		if (args.length==0) {
 			usage();
 		} else if (args[0].equals("version")) {
