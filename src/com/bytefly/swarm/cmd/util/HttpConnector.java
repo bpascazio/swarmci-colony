@@ -26,11 +26,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 
-import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.models.Entity;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
+import com.bytefly.swarm.colony.util.Debug;
 import com.bytefly.swarm.colony.util.Version;
 
 //

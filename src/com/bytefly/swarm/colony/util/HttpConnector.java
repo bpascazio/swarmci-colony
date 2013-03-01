@@ -16,6 +16,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
@@ -261,6 +262,9 @@ public class HttpConnector {
 					p.Repo = o.getString("repo");
 					p.UserId = Integer.valueOf(o.getString("user_id"));
 					p.ProjectId = Integer.valueOf(o.getString("id"));
+					p.buildState = Integer.valueOf(o.getString("state"));
+					p.buildTrigger = Integer.valueOf(o.getString("trigger"));
+					p.buildNum = Integer.valueOf(o.getString("build"));
 					c.add(p);
 				}
 			}
@@ -357,6 +361,82 @@ public class HttpConnector {
 					try {
 						in.close();
 						httppost.releaseConnection();
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			} catch (ClientProtocolException epx) {
+				// TODO Auto-generated catch block
+				Debug.Log(Debug.INFO, "setEntity X " + epx);
+			} catch (IOException ioe) {
+				// TODO Auto-generated catch block
+				Debug.Log(Debug.INFO, "setEntity X " + ioe);
+
+			}
+
+		} catch (Exception excc) {
+			Debug.Log(Debug.INFO, "setEntity X " + excc);
+		}
+	}
+
+
+	public void updateEntity(Entity e, int id) {
+
+		try {
+
+			// Create a new HttpClient and Post Header
+			String entitystr = e.ENTITY_COLLECTION.toLowerCase();
+			String surl = "http://"
+					+ Config.getStringValue(Config.SWARM_RAILS_URL) + "/"
+					+ entitystr + "/" + id;
+
+			Debug.Log(Debug.TRACE, "url=" + surl);
+
+			if (client == null)
+				client = getThreadSafeClient();
+
+			HttpPut put= new HttpPut(surl);
+			BufferedReader in = null;
+			// Add your data
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+
+			if (e instanceof Project) {
+
+				Project p = (Project) e;
+				nameValuePairs.add(new BasicNameValuePair("project[build]",
+						"" + p.buildNum));
+				nameValuePairs.add(new BasicNameValuePair("project[state]",
+						"" + p.buildState));
+				nameValuePairs.add(new BasicNameValuePair("project[trigger]",
+						"" + p.buildTrigger));
+				Debug.Log(Debug.TRACE, "updating entity " + p.Name);
+			}
+			try {
+				put.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			} catch (Exception ex) {
+				// TODO Auto-generated catch block
+				Debug.Log(Debug.INFO, "setEntity X " + ex);
+			}
+
+			try {
+				// Execute HTTP Post Request
+				HttpResponse response;
+				response = client.execute(put);
+				in = new BufferedReader(new InputStreamReader(response
+						.getEntity().getContent()));
+				StringBuffer sb = new StringBuffer("");
+				String line = "";
+				String NL = System.getProperty("line.separator");
+				while ((line = in.readLine()) != null) {
+					sb.append(line + NL);
+				}
+				String page = sb.toString();
+				Debug.Log(Debug.TRACE, "put response=" + page);
+				Debug.Log(Debug.TRACE, "put response=" + response.toString());
+				if (in != null) {
+					try {
+						in.close();
+						put.releaseConnection();
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}

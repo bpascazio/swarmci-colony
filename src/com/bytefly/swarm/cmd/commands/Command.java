@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.cmd.util.SwarmUser;
 import com.bytefly.swarm.colony.util.Config;
+import com.bytefly.swarm.colony.util.Debug;
 
 public class Command {
 
@@ -39,8 +39,7 @@ public class Command {
 				gitFound = true;
 			}
 		} catch (Exception e) {
-			if (Debug.verbose)
-				System.out.print("git search exception: " + e);
+			System.out.print("git search exception: " + e);
 		}
 		if (!gitFound) {
 			System.out
@@ -69,7 +68,6 @@ public class Command {
 				success = sxmlok = true;
 			}
 		} catch (Exception e) {
-			if (Debug.verbose)
 				System.out.print("swarm.xml search exception: " + e);
 		}
 		if (!sxmlFound) {
@@ -107,8 +105,7 @@ public class Command {
 						gitadd = true;
 					}
 				} catch (Exception e) {
-					if (Debug.verbose)
-						System.out.print("add search exception: " + e);
+					System.out.print("add search exception: " + e);
 				}
 			}
 
@@ -124,8 +121,7 @@ public class Command {
 						gitcommit = true;
 //					}
 				} catch (Exception e) {
-					if (Debug.verbose)
-						System.out.print("commit search exception: " + e);
+					System.out.print("commit search exception: " + e);
 				}
 			}
 
@@ -141,8 +137,7 @@ public class Command {
 						success = true;
 //					}
 				} catch (Exception e) {
-					if (Debug.verbose)
-						System.out.print("push exception: " + e);
+					System.out.print("push exception: " + e);
 				}
 			}
 			System.out.print("\n");

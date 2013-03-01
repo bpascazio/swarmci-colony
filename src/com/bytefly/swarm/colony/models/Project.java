@@ -17,6 +17,8 @@ public class Project extends Entity{
 	public Logfile logFile;
 	public String commit;
 	public String reason;
+	public int buildState;
+	public int buildTrigger;
 	
 	public Project() {
 		ENTITY = "Project";
@@ -33,6 +35,8 @@ public class Project extends Entity{
 		logFile = null;
 		commit = "";
 		reason = "";
+		buildState = 0;
+		buildTrigger = 0;
 		this.setBusy("", false);
 	}
 }

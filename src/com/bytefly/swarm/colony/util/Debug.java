@@ -17,6 +17,7 @@ public class Debug {
 	static public final int ERROR = 5;
 
 	private static int log_level = TRACE;
+	private static boolean log_surpress = false;
 
 	public static void setLevel(int l) {
 		log_level = l;
@@ -56,13 +57,17 @@ public class Debug {
 			Loga(level, msg);
 		}
 	}
+	
+	public static void logSurpress() {
+		log_surpress = true;
+	}
 
 	public static void Loga(int level, String msg) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		String timestame=dateFormat.format(date);
 		if (Config.getLogFile()==null||Config.getLogFile().equals("")) {
-			System.out.println(timestame+":" + getLevel(level) + ":" + msg);
+			if(!log_surpress)System.out.println(timestame+":" + getLevel(level) + ":" + msg);
 		} else {
 			BufferedWriter bw = null;
 

@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import com.bytefly.swarm.cmd.util.Debug;
 import com.bytefly.swarm.cmd.util.HttpConnector;
 import com.bytefly.swarm.cmd.util.SwarmUser;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
+import com.bytefly.swarm.colony.util.Debug;
 
 public class Create extends Command {
 	String repo = "";
@@ -61,8 +61,7 @@ public class Create extends Command {
 			}
 			
 		} catch (Exception e) {
-			if (Debug.verbose)
-				System.out.print("git repo exception: " + e);
+			System.out.print("git repo exception: " + e);
 		}
 	}
 }
