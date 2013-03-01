@@ -43,14 +43,21 @@ public class CommandLine {
 				run(args[1],true);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm create myapp'.");
+				System.out.println(">>>>>>>>>> Project name is required such as 'swarm run myapp'.");
+			}
+		}  else if (args[0].equals("stop")) {
+			if (args.length>1) {
+				run(args[1],false);
+			} else {
+				usage();
+				System.out.println(">>>>>>>>>> Project name is required such as 'swarm stop myapp'.");
 			}
 		} else if (args[0].equals("log")) {
 			if (args.length>1) {
 				log(args[1]);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm log myproject'.");
+				System.out.println(">>>>>>>>>> Project name is required such as 'swarm log myapp'.");
 			}
 		} else if (args[0].equals("status")) {
 			status();
