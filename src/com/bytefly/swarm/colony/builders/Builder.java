@@ -247,10 +247,10 @@ public class Builder {
 			tfGroup = tfGroup.replace("\n", "");
 			tfDist = tfDist.replace("\n", "");
 			
-			Debug.Log(Debug.TRACE, "toList " + toList);
-			Debug.Log(Debug.TRACE, "toFailList " + toFailList);
-			Debug.Log(Debug.TRACE, "tfGroup " + tfGroup);
-			Debug.Log(Debug.TRACE, "tfDist " + tfDist);
+			Debug.Log(Debug.TRACE, "to " + toList);
+			Debug.Log(Debug.TRACE, "fail " + toFailList);
+			Debug.Log(Debug.TRACE, "tf group " + tfGroup);
+			Debug.Log(Debug.TRACE, "tf dist " + tfDist);
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
 					"Exception caught running repoGet " + e.toString());

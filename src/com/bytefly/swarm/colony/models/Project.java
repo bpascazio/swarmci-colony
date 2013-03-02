@@ -19,6 +19,7 @@ public class Project extends Entity{
 	public String reason;
 	public int buildState;
 	public int buildTrigger;
+	public String Owner;
 	
 	public Project() {
 		ENTITY = "Project";
@@ -37,6 +38,7 @@ public class Project extends Entity{
 		reason = "";
 		buildState = 0;
 		buildTrigger = 0;
+		Owner = "";
 		this.setBusy("", false);
 	}
 }

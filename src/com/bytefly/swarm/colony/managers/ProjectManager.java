@@ -116,6 +116,15 @@ public class ProjectManager extends Manager {
 				} else {
 					p.BaseName = p.BaseNameMinimal = "";
 				}
+				
+				tokens1 = p.Repo.split(":");
+				if (tokens1 != null && tokens1.length == 2) {
+					String[] tokens2 = tokens1[1].split("/");
+					Debug.Log(Debug.TRACE, "git parsed out owner name "
+							+ tokens2[0]);
+					p.Owner = tokens2[0];
+				}
+				
 			}
 
 			// Set generic builder type for now.

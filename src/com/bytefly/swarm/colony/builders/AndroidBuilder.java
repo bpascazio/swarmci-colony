@@ -148,7 +148,7 @@ public class AndroidBuilder extends Builder {
 
 		try {
 			String name = p.BaseNameMinimal+"-"+p.Version+"."+p.buildNum;
-			String owner = "bytefly";
+			String owner = p.Owner;
 			String repo = p.BaseName;
 			String to = this.toList;
 			String log = this.p.BaseNameMinimal+this.p.buildNum+".log";
