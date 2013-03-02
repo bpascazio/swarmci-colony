@@ -24,6 +24,7 @@ public class Command {
 			+ "\t<testflight_token></testflight_token>\n"
 			+ "\t<!-- xcode+testflight only distribution group name from testflight -->\n"
 			+ "\t<testflight_distribution_group></testflight_distribution_group>\n"
+			+ "\t<email_git_info>true</email_git_info>\n"
 			+ "</swarm>\n";
 
 	public boolean checkForGit() {

@@ -27,6 +27,8 @@ public class Builder {
 
 	String tfGroup = "x";
 	String tfDist= "y";
+	
+	String emailGit = "true";
 
 	public static final int BUILDER_TYPE_GENERIC = 0;
 	public static final int BUILDER_TYPE_XCODE = 1;
@@ -36,16 +38,23 @@ public class Builder {
 
 		try {
 			String name = p.BaseNameMinimal+"("+p.buildNum+")";
-			String owner = "owner";
+			String owner = p.Owner;
 			String repo = p.BaseNameMinimal;
 			String to = toFailList;
-			String log = this.p.BaseNameMinimal+this.p.buildNum+".log";
+			String log = "none";		
 			String reason = p.reason;
+			String commit = "none";
+			if (emailGit.equals("true")) {
+				commit=p.commit;
+			}
+			if (p.logFile!=null) {
+				log = this.p.BaseNameMinimal+this.p.buildNum+".log";
+			}
 			String cmd = String
 					.format(Config
 							.getStringValue(Config.SWARM_SEND_FAILURE_EMAIL),
 							name, p.buildNum, this.p.BaseName + ".apk", log, owner,
-							repo, to, p.commit, reason);
+							repo, to, commit, reason);
 			
 			
 			Debug.Log(Debug.TRACE, "Executing " + cmd+ " " + p.Repo);
@@ -172,6 +181,7 @@ public class Builder {
 					boolean tof = false;
 					boolean tfg = false; //group
 					boolean tfd = false; //distribution list
+					boolean tegit = false; 
 
 					public void startElement(String uri, String localName,
 							String qName, org.xml.sax.Attributes attributes)
@@ -191,6 +201,10 @@ public class Builder {
 						if (qName.equalsIgnoreCase("testflight_distribution_group")) {
 							tfd = true;
 						}
+
+						if (qName.equalsIgnoreCase("email_git_info")) {
+							tegit = true;
+						}
 					}
 
 					public void endElement(String uri, String localName,
@@ -200,6 +214,11 @@ public class Builder {
 
 					public void characters(char ch[], int start, int length)
 							throws SAXException {
+
+						if (tegit) {
+							tegit = false;
+							emailGit = new String(ch, start, length);
+						}
 
 						if (tos) {
 							tos = false;
@@ -246,11 +265,13 @@ public class Builder {
 			toFailList = toFailList.replace("\n", "");
 			tfGroup = tfGroup.replace("\n", "");
 			tfDist = tfDist.replace("\n", "");
+			emailGit = emailGit.replace("\n", "");
 			
 			Debug.Log(Debug.TRACE, "to " + toList);
 			Debug.Log(Debug.TRACE, "fail " + toFailList);
 			Debug.Log(Debug.TRACE, "tf group " + tfGroup);
 			Debug.Log(Debug.TRACE, "tf dist " + tfDist);
+			Debug.Log(Debug.TRACE, "email git " + emailGit);
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
 					"Exception caught running repoGet " + e.toString());
