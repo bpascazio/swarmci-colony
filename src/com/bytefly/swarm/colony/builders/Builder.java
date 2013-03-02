@@ -23,7 +23,7 @@ public class Builder {
 	public Project p;
 
 	String toList = "null@null.com";
-	String toFailList= "null@null.com";
+	public String toFailList= "null@null.com";
 
 	String tfGroup = "x";
 	String tfDist= "y";
@@ -59,11 +59,11 @@ public class Builder {
 			
 			Debug.Log(Debug.TRACE, "Executing " + cmd+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(cmd, null,
-					new File(this.p.BaseName));
+					new File("."));
 			pr.waitFor();
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
-					"Exception caught running repoGet " + e.toString());
+					"Exception caught running sendFailureEmail " + e.toString());
 		}
 	}
 
@@ -135,7 +135,7 @@ public class Builder {
 			Debug.Log(Debug.TRACE, "repoClone result=" + getOutAndErrStream(pr));
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
-					"Exception caught running repoGet " + e.toString());
+					"Exception caught running repoClone " + e.toString());
 		}
 	}
 
@@ -259,6 +259,7 @@ public class Builder {
 		try {
 
 			ReadXMLFile r = new ReadXMLFile();
+			toList = toFailList = "";
 			r.execute(this.p.BaseName + "/swarm.xml");
 			
 			toList=toList.replace("\n", "");
@@ -274,7 +275,8 @@ public class Builder {
 			Debug.Log(Debug.TRACE, "email git " + emailGit);
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO,
-					"Exception caught running repoGet " + e.toString());
+					"Exception caught running loadSwarmXML " + e.toString());
+			toList = toFailList = "";
 		}
 	}
 }

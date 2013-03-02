@@ -9,8 +9,10 @@ import com.bytefly.swarm.colony.util.Debug;
 public class GitChecker extends Builder {
 
 	public String lastCheckin = null;
+	public boolean invalidGit = false;
 	
 	public void runAll() {
+		invalidGit = false;
 		File f = new File(p.BaseName);
 		if(f.exists()) { 
 			Debug.Log(Debug.TRACE, "Git repo exists");
@@ -36,7 +38,8 @@ public class GitChecker extends Builder {
 			lastCheckin = lastCheckin.replace("\n", "");
 			Debug.Log(Debug.TRACE, "lastCheckin="+lastCheckin);
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
+			Debug.Log(Debug.INFO, "Exception caught running gitChecker "+e.toString());
+			invalidGit = true;
 		}
 	}
 	
@@ -82,6 +85,7 @@ public class GitChecker extends Builder {
 			
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO, "Exception caught running buildTypeChecker "+e.toString());
+			invalidGit = true;
 		}
 	}
 

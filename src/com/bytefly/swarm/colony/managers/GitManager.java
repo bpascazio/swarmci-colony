@@ -47,8 +47,19 @@ public class GitManager extends Manager {
 					gc = new GitChecker();
 					gc.p = p;
 					gc.runAll();
-					gc.p.commit=gc.lastCheckin;
-					Status.counter_git_updates++;
+					if (gc.invalidGit) {
+						p.setBusy("bad git", false);
+						Work bw = new Work(
+								Work.WORK_ITEM_BUILD_BUILD_PROJECT);
+						bw.data = p;
+						p.badGit = true;
+						bm.put(bw);
+						return;
+					} else {	
+						p.badGit = false;
+						gc.p.commit=gc.lastCheckin;
+						Status.counter_git_updates++;
+					}
 				}
 				
 				if (p.buildTrigger==1) {

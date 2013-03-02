@@ -102,6 +102,13 @@ public class ProjectManager extends Manager {
 
 				p.BaseName = new String(Config.getProjectDir() + "/" + parsed);
 				p.BaseNameMinimal = new String(parsed);
+				
+				tokens1 = p.Repo.split("/");
+				parsed = tokens1[tokens1.length - 2];
+				tokens2 = parsed.split("/");
+				Debug.Log(Debug.TRACE, "git parsed out owner name "
+							+ tokens2[0]);
+				p.Owner = tokens2[0];
 
 			} else {
 

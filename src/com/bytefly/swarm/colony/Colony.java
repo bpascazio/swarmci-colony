@@ -48,7 +48,7 @@ public class Colony extends Thread {
 				CloudManager cm = new CloudManager(mSecurityContext);
 
 				// build manager triggered on commit updates to build product
-				BuildManager bm = new BuildManager();
+				BuildManager bm = new BuildManager(mSecurityContext);
 
 				// git manager scans all projects for commit updates
 				GitManager gm = new GitManager(bm);

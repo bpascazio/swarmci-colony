@@ -126,7 +126,7 @@ public class AndroidBuilder extends Builder {
 			apkName = apkName.replace("\n", "");
 			Debug.Log(Debug.TRACE, "apkName="+apkName);
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
+			Debug.Log(Debug.INFO, "Exception caught running androidGetAPKName "+e.toString());
 		}
 	}
 	
@@ -140,7 +140,7 @@ public class AndroidBuilder extends Builder {
 			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
 			pr.waitFor(); 
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
+			Debug.Log(Debug.INFO, "Exception caught running androidUploadBuild "+e.toString());
 		}
 	}
 	
@@ -166,7 +166,7 @@ public class AndroidBuilder extends Builder {
 			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
 			pr.waitFor(); 
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
+			Debug.Log(Debug.INFO, "Exception caught running androidSendEmail "+e.toString());
 		}	
 	}
 }

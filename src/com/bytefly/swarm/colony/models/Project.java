@@ -20,6 +20,7 @@ public class Project extends Entity{
 	public int buildState;
 	public int buildTrigger;
 	public String Owner;
+	public boolean badGit;
 	
 	public Project() {
 		ENTITY = "Project";
@@ -39,6 +40,7 @@ public class Project extends Entity{
 		buildState = 0;
 		buildTrigger = 0;
 		Owner = "";
+		badGit = false;
 		this.setBusy("", false);
 	}
 }

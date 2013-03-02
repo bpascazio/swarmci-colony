@@ -29,7 +29,7 @@ public class XCodeBuilder extends Builder {
 			pr.waitFor(); 
 			Debug.Log(Debug.TRACE, "result="+getOutAndErrStream(pr));
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO, "Exception caught running repoGet "+e.toString());
+			Debug.Log(Debug.INFO, "Exception caught running xcodeBuild "+e.toString());
 		}
 	}
 

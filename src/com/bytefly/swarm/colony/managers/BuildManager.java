@@ -1,5 +1,6 @@
 package com.bytefly.swarm.colony.managers;
 
+import com.bytefly.swarm.colony.SecurityContext;
 import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.builders.AndroidBuilder;
 import com.bytefly.swarm.colony.builders.Builder;
@@ -15,9 +16,11 @@ import com.bytefly.swarm.colony.util.HttpConnector;
 class BuildRunnable implements Runnable {
 
 	Project p;
+	SecurityContext sc;
 
-	public BuildRunnable(Project _p) {
+	public BuildRunnable(Project _p, SecurityContext _sc) {
 		p = _p;
+		sc = _sc;
 	}
 
 	public void run() {
@@ -44,7 +47,13 @@ class BuildRunnable implements Runnable {
 				Builder b = new Builder();
 				b.p = p;
 				b.loadSwarmXML();
+				if (b.toFailList.equals(""))b.toFailList=sc.getSecureEmail();
 				p.reason="No%20valid%20project%20found.";
+				if (b.p.badGit) {
+					p.reason="Failed%20clone%20from%20github.";
+					p.commit="none";
+					p.buildState=0;
+				}
 				b.sendFailureEmail();
 				Status.counter_builds_failure++;
 				Debug.Log(Debug.DEBUG,
@@ -62,7 +71,12 @@ class BuildRunnable implements Runnable {
 
 public class BuildManager extends Manager {
 	int fake_count = 0;
+	SecurityContext sc;
 
+	public BuildManager(SecurityContext _sc) {
+		sc = _sc;
+	}
+	
 	public void run() {
 		this.start();
 		Debug.Log(Debug.INFO, "BuildManager started.");
@@ -78,7 +92,7 @@ public class BuildManager extends Manager {
 					stop();
 				} else if (w.name.equals(Work.WORK_ITEM_BUILD_BUILD_PROJECT)) {
 					Project p = (Project) w.data;
-					BuildRunnable gr = new BuildRunnable(p);
+					BuildRunnable gr = new BuildRunnable(p,sc);
 					Thread gth = new Thread(gr);
 					gth.start();
 				}
