@@ -24,6 +24,7 @@ class BuildRunnable implements Runnable {
 	}
 
 	public void run() {
+		if (p!=null)p.buildNum++;
 		try {
 			Debug.Log(Debug.DEBUG, "BuildRunnable forked repo " + p.Repo);
 			// pull code from git here then queue a build
@@ -61,8 +62,7 @@ class BuildRunnable implements Runnable {
 			}
 		} catch (Exception e) {
 			Debug.Log(Debug.INFO, "BuildRunnable X " + e.toString());
-		}
-		p.buildNum++;
+		}		
 		HttpConnector h = new HttpConnector();
 		h.updateEntity(p, p.ProjectId);
 		p.setBusy(" end build run "+p.Name, false);
