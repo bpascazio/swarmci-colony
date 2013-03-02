@@ -149,12 +149,19 @@ public class AndroidBuilder extends Builder {
 		try {
 			String name = p.BaseNameMinimal+"-"+p.Version+"."+p.buildNum;
 			String owner = p.Owner;
-			String repo = p.BaseName;
+			String repo = p.BaseNameMinimal;
 			String to = this.toList;
-			String log = this.p.BaseNameMinimal+this.p.buildNum+".log";
+			String log = "none";		
+			String commit = "none";
+			if (emailGit.equals("true")) {
+				commit=p.commit;
+			}
+			if (p.logFile!=null) {
+				log = this.p.BaseNameMinimal+this.p.buildNum+".log";
+			}
 			String cmd = 
 					String.format(Config.getStringValue(Config.SWARM_ANDROID_SEND_EMAIL_APK), 
-							name, p.buildNum, this.p.BaseNameMinimal+this.p.buildNum+".apk", log, owner, repo, to, p.commit);
+							name, p.buildNum, this.p.BaseNameMinimal+this.p.buildNum+".apk", log, owner, repo, to, commit);
 			Debug.Log(Debug.TRACE, "Executing "+cmd);
 			Process pr = Runtime.getRuntime().exec(cmd,null,new File(this.p.BaseName));
 			pr.waitFor(); 
