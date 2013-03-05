@@ -48,7 +48,6 @@ public class GitManager extends Manager {
 					gc.p = p;
 					gc.runAll();
 					if (gc.invalidGit) {
-						p.setBusy(" setbusy bad git", false);
 						Work bw = new Work(
 								Work.WORK_ITEM_BUILD_BUILD_PROJECT);
 						bw.data = p;

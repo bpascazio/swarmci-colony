@@ -24,6 +24,7 @@ class BuildRunnable implements Runnable {
 	}
 
 	public void run() {
+		boolean updateEntity=false;
 		if (p!=null)p.buildNum++;
 		try {
 			Debug.Log(Debug.DEBUG, "BuildRunnable forked repo " + p.Repo);
@@ -54,6 +55,7 @@ class BuildRunnable implements Runnable {
 					p.reason="Failed%20clone%20from%20github.";
 					p.commit="none";
 					p.buildState=0;
+					updateEntity=true;
 				}
 				b.sendFailureEmail();
 				Status.counter_builds_failure++;
@@ -64,7 +66,7 @@ class BuildRunnable implements Runnable {
 			Debug.Log(Debug.INFO, "BuildRunnable X " + e.toString());
 		}		
 		HttpConnector h = new HttpConnector();
-		if(p.buildTriggerCleared==1) {
+		if(updateEntity||p.buildTriggerCleared==1) {
 			p.buildTrigger=0;
 			boolean suc=h.updateEntity(p, p.ProjectId);
 			if (suc==true) {
