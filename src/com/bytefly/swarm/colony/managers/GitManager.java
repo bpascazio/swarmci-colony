@@ -48,7 +48,7 @@ public class GitManager extends Manager {
 					gc.p = p;
 					gc.runAll();
 					if (gc.invalidGit) {
-						p.setBusy("bad git", false);
+						p.setBusy(" setbusy bad git", false);
 						Work bw = new Work(
 								Work.WORK_ITEM_BUILD_BUILD_PROJECT);
 						bw.data = p;
@@ -62,11 +62,23 @@ public class GitManager extends Manager {
 					}
 				}
 				
-				if (p.buildTrigger==1) {
+				// We only reset the build trigger cleared if the build trigger goes to 0.
+				// So what could have happened is a failure to update the trigger to 0 on
+				// the last build.  buildtriggercleared is still 1 luckily.  if buildtrigger
+				// is 1 at thispoint we can't trust it since we could be sending out multiple
+				// builds.  the user will have to swarm stop then swarm run to reset this
+				// situation.
+				
+				if (p.buildTriggerCleared==1 && p.buildTrigger==0) {
+					p.buildTriggerCleared = 0;
+				}
+				
+				// We can trigger if we are not currently in a cleared state and triggered.
+				if (p.buildTriggerCleared==0 && p.buildTrigger==1) {
 					
 					Debug.Log(Debug.TRACE, "Build triggered by project.");
 					Status.counter_builds_triggered++;
-					p.buildTrigger = 0;
+					p.buildTriggerCleared = 1;
 					Work bw = new Work(Work.WORK_ITEM_BUILD_BUILD_PROJECT);
 					bw.data = p;
 					bm.put(bw);
@@ -148,6 +160,7 @@ public class GitManager extends Manager {
 						cp.buildState=pii.buildState;
 						cp.buildTrigger=pii.buildTrigger;
 						Debug.Log(Debug.TRACE, "mergeProjects existing project found "+pii.ProjectId);
+						cp.setBusy("setbusy merge", cp.getBusy());
 						found=true;
 						break;
 					}
@@ -206,7 +219,7 @@ public class GitManager extends Manager {
 						for (int i = 0; i < pl.cv.size(); i++) {
 							Project p = (Project) pl.cv.get(i);
 							if (p.getBusy()==false) {
-								p.setBusy(" gitrun "+p.Name, true);
+								p.setBusy(" setbusy gitrun "+p.Name, true);
 								GitRunnable gr = new GitRunnable(p);
 								Thread gth = new Thread(gr);
 								gth.start();

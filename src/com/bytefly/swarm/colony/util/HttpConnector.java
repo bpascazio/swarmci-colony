@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -380,8 +381,9 @@ public class HttpConnector {
 	}
 
 
-	public void updateEntity(Entity e, int id) {
+	public boolean updateEntity(Entity e, int id) {
 
+		boolean success=false;
 		try {
 
 			// Create a new HttpClient and Post Header
@@ -431,8 +433,10 @@ public class HttpConnector {
 					sb.append(line + NL);
 				}
 				String page = sb.toString();
-				Debug.Log(Debug.TRACE, "put response=" + page);
-				Debug.Log(Debug.TRACE, "put response=" + response.toString());
+				Debug.Log(Debug.TRACE, "putresponse=" + page);
+				Debug.Log(Debug.TRACE, "putresponse=" + response.toString());
+				StatusLine resp=response.getStatusLine();
+				Debug.Log(Debug.TRACE, "putstatus =" + resp);
 				if (in != null) {
 					try {
 						in.close();
@@ -440,6 +444,9 @@ public class HttpConnector {
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}
+				}
+				if (resp.toString().equals("HTTP/1.1 302 Found")) {
+					success=true;
 				}
 			} catch (ClientProtocolException epx) {
 				// TODO Auto-generated catch block
@@ -453,6 +460,7 @@ public class HttpConnector {
 		} catch (Exception excc) {
 			Debug.Log(Debug.INFO, "setEntity X " + excc);
 		}
+		return success;
 	}
 
 }

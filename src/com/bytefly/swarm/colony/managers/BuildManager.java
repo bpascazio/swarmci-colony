@@ -64,8 +64,17 @@ class BuildRunnable implements Runnable {
 			Debug.Log(Debug.INFO, "BuildRunnable X " + e.toString());
 		}		
 		HttpConnector h = new HttpConnector();
-		h.updateEntity(p, p.ProjectId);
-		p.setBusy(" end build run "+p.Name, false);
+		if(p.buildTriggerCleared==1) {
+			p.buildTrigger=0;
+			boolean suc=h.updateEntity(p, p.ProjectId);
+			if (suc==true) {
+				p.buildTriggerCleared=0;
+				Debug.Log(Debug.INFO, "triggercleared");
+			} else {
+				Debug.Log(Debug.INFO, "trigger not cleared - a problem");
+			}
+		}
+		p.setBusy(" setbusy end build run "+p.Name, false);
 	}
 }
 
