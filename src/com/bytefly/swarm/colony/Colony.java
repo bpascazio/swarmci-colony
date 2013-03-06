@@ -51,7 +51,7 @@ public class Colony extends Thread {
 				BuildManager bm = new BuildManager(mSecurityContext);
 
 				// git manager scans all projects for commit updates
-				GitManager gm = new GitManager(bm);
+				GitManager gm = new GitManager(mSecurityContext, bm);
 
 				// project manager pulls all projects from api
 				ProjectManager pm = new ProjectManager(gm);

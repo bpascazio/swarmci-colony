@@ -265,7 +265,12 @@ public class HttpConnector {
 					p.ProjectId = o.getInt("id");
 					p.buildState = o.getInt("state");
 					p.buildTrigger =  o.getInt("trigger");
-					p.buildNum =  o.getInt("build");
+					try {
+					p.buildNum =  o.getInt("bldnum");
+					} catch (Exception e) {
+						p.buildNum = 0;
+					}
+					p.Builder =  o.getString("builder");
 					c.add(p);
 				}
 			}
@@ -405,7 +410,7 @@ public class HttpConnector {
 			if (e instanceof Project) {
 
 				Project p = (Project) e;
-				nameValuePairs.add(new BasicNameValuePair("project[build]",
+				nameValuePairs.add(new BasicNameValuePair("project[bldnum]",
 						"" + p.buildNum));
 				nameValuePairs.add(new BasicNameValuePair("project[state]",
 						"" + p.buildState));
