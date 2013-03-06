@@ -21,7 +21,7 @@ public class Status extends Command {
 					String bld = "";
 					if (p.buildNum==0)bld="not run";
 					else bld=""+p.buildNum;
-					System.out.print(p.Name+" build-number["+bld+"] status["+((p.buildState==1)?"ON":"OFF")+"] "+((p.buildTrigger==1)?"RUNNING ":"")+"repo["+p.Repo+"]\n");
+					System.out.print(p.Name+" build-number["+bld+"] status["+((p.buildState==1)?"ON":"OFF")+"] "+((p.buildTrigger==1)?"RUNNING ":"")+"repo["+p.Repo+"] builder["+p.Builder+"]\n");
 				}
 			} else {
 				System.out.print("Could not connect to server.\n");

@@ -335,6 +335,8 @@ public class HttpConnector {
 					""+b.Repo));
 			nameValuePairs.add(new BasicNameValuePair("project[user_id]",
 					""+b.UserId));
+			nameValuePairs.add(new BasicNameValuePair("project[builder]",
+					""+b.Builder));
 		}
 
 		if (e instanceof Build) {

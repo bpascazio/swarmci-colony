@@ -2,6 +2,7 @@ package com.bytefly.swarm.cmd;
 
 import java.util.Scanner;
 
+import com.bytefly.swarm.cmd.commands.Builder;
 import com.bytefly.swarm.cmd.commands.Create;
 import com.bytefly.swarm.cmd.commands.Log;
 import com.bytefly.swarm.cmd.commands.OnOff;
@@ -63,8 +64,24 @@ public class CommandLine {
 				usage();
 				System.out.println(">>>>>>>>>> Project name is required such as 'swarm log myapp'.");
 			}
+		} else if (args[0].equals("colony")) {
+			if (args.length>1) {
+				builder(args[1], "colony");
+			} else {
+				usage();
+				System.out.println(">>>>>>>>>> Project name is required such as 'swarm colony myapp'.");
+			}
+		} else if (args[0].equals("cloud")) {
+			if (args.length>1) {
+				builder(args[1], "cloud");
+			} else {
+				usage();
+				System.out.println(">>>>>>>>>> Project name is required such as 'swarm cloud myapp'.");
+			}
 		} else if (args[0].equals("status")) {
 			status();
+		} else {
+			usage();
 		}
 	}
 	public static void usage() {
@@ -82,6 +99,8 @@ public class CommandLine {
 		System.out.println("stop   <project name> - Stop a running project.");
 		System.out.println("on     <project name> - Start normal continuous integration for project.");
 		System.out.println("off    <project name> - Stops continous integration.");
+		System.out.println("colony <project name> - Run builds on personal Colony Server.");
+		System.out.println("cloud  <project name> - Run builds on the SwarmBuild Cloud Server.");
 		System.out.println("\nstatus  - Displays list of projects and their status.");
 		System.out.println("log     - Displays log file for a project.");
 		System.out.println("version - Displays version information.\n");
@@ -103,5 +122,8 @@ public class CommandLine {
 	}
 	public static void run(String n, boolean s) {
 		Run c = new Run(n,s);
+	}
+	public static void builder(String n, String c) {
+		Builder cm = new Builder(n,c);
 	}
 }

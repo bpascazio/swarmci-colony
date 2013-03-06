@@ -43,7 +43,7 @@ public class Project extends Entity{
 		buildTrigger = 0;
 		buildTriggerCleared = 0;
 		Owner = "";
-		Builder = "";
+		Builder = "cloud";
 		badGit = false;
 		this.setBusy("", false);
 	}

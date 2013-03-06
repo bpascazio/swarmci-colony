@@ -416,6 +416,8 @@ public class HttpConnector {
 						"" + p.buildState));
 				nameValuePairs.add(new BasicNameValuePair("project[trigger]",
 						"" + p.buildTrigger));
+				nameValuePairs.add(new BasicNameValuePair("project[builder]",
+						"" + p.Builder));
 				Debug.Log(Debug.TRACE, "updating entity " + p.Name);
 			}
 			try {
