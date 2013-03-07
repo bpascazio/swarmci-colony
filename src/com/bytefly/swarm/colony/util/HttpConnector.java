@@ -339,6 +339,14 @@ public class HttpConnector {
 						"" + b.project_id));
 				nameValuePairs.add(new BasicNameValuePair("build[user_id]", ""
 						+ b.user_id));
+				nameValuePairs.add(new BasicNameValuePair("build[info]", ""
+						+ b.info));
+				nameValuePairs.add(new BasicNameValuePair("build[logs]", ""
+						+ b.logs));
+				nameValuePairs.add(new BasicNameValuePair("build[project_name]", ""
+						+ b.project_name));
+				nameValuePairs.add(new BasicNameValuePair("build[bldnum]", ""
+						+ b.bldnum));
 				Debug.Log(Debug.TRACE, "adding entity " + b.project_id + " "
 						+ b.user_id + " " + b.success);
 			}

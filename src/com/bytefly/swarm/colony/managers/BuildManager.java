@@ -7,7 +7,9 @@ import com.bytefly.swarm.colony.builders.Builder;
 import com.bytefly.swarm.colony.builders.XCodeBuilder;
 import com.bytefly.swarm.colony.managers.GitManager.GitRunnable;
 import com.bytefly.swarm.colony.managers.work.Work;
+import com.bytefly.swarm.colony.models.Build;
 import com.bytefly.swarm.colony.models.Project;
+import com.bytefly.swarm.colony.util.Config;
 import com.bytefly.swarm.colony.util.Debug;
 import com.bytefly.swarm.colony.util.HttpConnector;
 
@@ -57,6 +59,20 @@ class BuildRunnable implements Runnable {
 					p.buildState=0;
 					updateEntity=true;
 				}
+				Build bd = new Build();
+				bd.user_id = p.UserId;
+				bd.project_id = p.ProjectId;
+				bd.success = false;
+				bd.info=p.reason;
+				if (bd.info.equals("No%20valid%20project%20found."))bd.info="No valid project found.";
+				if (bd.info.equals("Failed%20clone%20from%20github."))bd.info="Failed clone from github.";
+				if (p.logFile!=null) {
+					bd.logs = Config.getStringValue(Config.SWARM_LOG_PREFIX)+this.p.BaseNameMinimal+this.p.buildNum+".log";
+				}
+				bd.project_name=p.Name;
+				bd.bldnum = p.buildNum;
+				HttpConnector h = new HttpConnector();
+				h.setEntity(bd);
 				b.sendFailureEmail();
 				Status.counter_builds_failure++;
 				Debug.Log(Debug.DEBUG,

@@ -48,8 +48,16 @@ public class AndroidBuilder extends Builder {
 			androidUploadBuild();
 			p.logFile.stopLogFile();
 			androidSendEmail();
+			p.reason="Built.";
 			bd.success = true;
 		}
+		bd.info=p.reason;
+		if (bd.info.equals("Failed%20during%20compile."))bd.info="Failed during compile.";
+		if (p.logFile!=null) {
+			bd.logs = Config.getStringValue(Config.SWARM_LOG_PREFIX)+this.p.BaseNameMinimal+this.p.buildNum+".log";
+		}
+		bd.project_name=p.Name;
+		bd.bldnum = p.buildNum;
 		HttpConnector h = new HttpConnector();
 		h.setEntity(bd);
 	}
