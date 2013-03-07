@@ -23,6 +23,7 @@ public class Project extends Entity{
 	public String Builder;
 	public boolean badGit;
 	public int buildTriggerCleared;
+	public int bldtype;
 	
 	public Project() {
 		ENTITY = "Project";
@@ -46,5 +47,6 @@ public class Project extends Entity{
 		Builder = "cloud";
 		badGit = false;
 		this.setBusy("", false);
+		bldtype = Build.BUILD_TYPE_UNKNOWN;
 	}
 }

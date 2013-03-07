@@ -9,6 +9,11 @@ public class Build extends Entity {
 	public String info;
 	public String project_name;
 	public int bldnum;
+	public int bldtype;
+	
+	public static final int BUILD_TYPE_UNKNOWN = 0;
+	public static final int BUILD_TYPE_ANDROID = 1;
+	public static final int BUILD_TYPE_IOS = 2;
 
 	public Build() {
 		ENTITY = "Build";
@@ -21,5 +26,6 @@ public class Build extends Entity {
 		info = "";
 		project_name = "";
 		bldnum = 0;
+		bldtype = BUILD_TYPE_UNKNOWN;
 	}
 }

@@ -40,11 +40,13 @@ class BuildRunnable implements Runnable {
 				xcb.p = p;
 				xcb.loadSwarmXML();
 				xcb.runAll();
+				p.bldtype = Build.BUILD_TYPE_IOS;
 			} else if (p.BuilderType == Builder.BUILDER_TYPE_ANDROID) {
 				Debug.Log(Debug.TRACE, "BuildRunnable executing android project");
 				Status.counter_builds_android++;
 				AndroidBuilder ab = new AndroidBuilder();
 				ab.p = p;
+				p.bldtype = Build.BUILD_TYPE_ANDROID;
 				ab.loadSwarmXML();
 				ab.runAll();
 			} else {
@@ -52,6 +54,7 @@ class BuildRunnable implements Runnable {
 				b.p = p;
 				b.loadSwarmXML();
 				if (b.toFailList.equals(""))b.toFailList=sc.getSecureEmail();
+				p.bldtype = Build.BUILD_TYPE_UNKNOWN;
 				p.reason="No%20valid%20project%20found.";
 				if (b.p.badGit) {
 					p.reason="Failed%20clone%20from%20github.";
@@ -73,6 +76,7 @@ class BuildRunnable implements Runnable {
 				bd.bldnum = p.buildNum;
 				HttpConnector h = new HttpConnector();
 				h.setEntity(bd);
+				bd.bldtype = Build.BUILD_TYPE_UNKNOWN;	
 				b.sendFailureEmail();
 				Status.counter_builds_failure++;
 				Debug.Log(Debug.DEBUG,
