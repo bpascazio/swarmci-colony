@@ -58,6 +58,7 @@ public class AndroidBuilder extends Builder {
 		}
 		bd.project_name=p.Name;
 		bd.bldnum = p.buildNum;
+		bd.bldtype = Build.BUILD_TYPE_ANDROID;
 		HttpConnector h = new HttpConnector();
 		h.setEntity(bd);
 	}
