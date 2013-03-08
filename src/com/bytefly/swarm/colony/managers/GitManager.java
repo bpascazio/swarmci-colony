@@ -89,6 +89,7 @@ public class GitManager extends Manager {
 					Work bw = new Work(Work.WORK_ITEM_BUILD_BUILD_PROJECT);
 					bw.data = p;
 					bm.put(bw);
+					return;
 				} else if (p.buildState > 0 && gc != null
 						&& gc.lastCheckin != null) {
 
@@ -117,6 +118,7 @@ public class GitManager extends Manager {
 									Work.WORK_ITEM_BUILD_BUILD_PROJECT);
 							bw.data = p;
 							bm.put(bw);
+							return;
 						}
 					} else {
 
@@ -169,6 +171,9 @@ public class GitManager extends Manager {
 
 						cp.buildState = pii.buildState;
 						cp.buildTrigger = pii.buildTrigger;
+						if (cp.getBusy()==false) {
+							cp.buildNum = pii.buildNum;
+						}
 						cp.Builder = pii.Builder;
 						Debug.Log(Debug.TRACE,
 								"mergeProjects existing project found "

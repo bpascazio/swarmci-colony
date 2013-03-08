@@ -190,10 +190,10 @@ public class Config {
 			return "tools/android update project -p .";
 		}
 		else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
-			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=Android%%20Build&vcs=%s";
+			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=Android%%20Build&vcs=%s&builder=%s";
 		}	
 		else if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
-			return "curl http://swarm.bytefly.com/femail.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=Build%%20Failure%%20Notice&vcs=%s&reason=%s";
+			return "curl http://swarm.bytefly.com/femail.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=Build%%20Failure%%20Notice&vcs=%s&reason=%s&builder=%s";
 		}	
 		else if (key.equals(SWARM_COLONY_AUTHENTICATION_V1)) {
 			return "http://%s/colony?email=%s&password=%s";

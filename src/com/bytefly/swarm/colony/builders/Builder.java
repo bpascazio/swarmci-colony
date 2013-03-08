@@ -44,6 +44,7 @@ public class Builder {
 			String log = "none";		
 			String reason = p.reason;
 			String commit = "none";
+			String builder = p.Builder+"-"+Config.getColonyUUID();
 			if (emailGit.equals("true")) {
 				commit=p.commit;
 			}
@@ -54,7 +55,7 @@ public class Builder {
 					.format(Config
 							.getStringValue(Config.SWARM_SEND_FAILURE_EMAIL),
 							name, p.buildNum, this.p.BaseName + ".apk", log, owner,
-							repo, to, commit, reason);
+							repo, to, commit, reason, builder);
 			
 			
 			Debug.Log(Debug.TRACE, "Executing " + cmd+ " " + p.Repo);

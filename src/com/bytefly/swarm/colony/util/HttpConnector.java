@@ -271,6 +271,7 @@ public class HttpConnector {
 						p.buildNum = 0;
 					}
 					p.Builder =  o.getString("builder");
+					Debug.Log(Debug.TRACE, "Builder is =" + p.Builder);
 					c.add(p);
 				}
 			}

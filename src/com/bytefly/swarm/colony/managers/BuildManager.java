@@ -49,6 +49,7 @@ class BuildRunnable implements Runnable {
 				p.bldtype = Build.BUILD_TYPE_ANDROID;
 				ab.loadSwarmXML();
 				ab.runAll();
+				updateEntity=true;
 			} else {
 				Builder b = new Builder();
 				b.p = p;
@@ -91,7 +92,7 @@ class BuildRunnable implements Runnable {
 			boolean suc=h.updateEntity(p, p.ProjectId);
 			if (suc==true) {
 				p.buildTriggerCleared=0;
-				Debug.Log(Debug.INFO, "triggercleared");
+				Debug.Log(Debug.INFO, "triggercleared "+p.buildNum);
 			} else {
 				Debug.Log(Debug.INFO, "trigger not cleared - a problem");
 			}
