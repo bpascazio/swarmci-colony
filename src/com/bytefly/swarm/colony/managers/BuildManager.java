@@ -44,6 +44,7 @@ class BuildRunnable implements Runnable {
 				xcb.loadSwarmXML();
 				xcb.runAll();
 				p.bldtype = Build.BUILD_TYPE_IOS;
+				updateEntity=true;
 			} else if (p.BuilderType == Builder.BUILDER_TYPE_ANDROID) {
 				Debug.Log(Debug.TRACE, "BuildRunnable executing android project");
 				Status.counter_builds_android++;

@@ -36,6 +36,7 @@ public class Config {
 	public static final String SWARM_COPY_ANDROID_SCRIPTS = "SWARM_COPY_ANDROID_SCRIPTS";
 	public static final String SWARM_ANDROID_UPDATE_VERSION = "SWARM_ANDROID_UPDATE_VERSION";
 	public static final String SWARM_PWD = "SWARM_PWD";
+	public static final String SWARM_XCODE_FIND_XCODEPROJ = "SWARM_XCODE_FIND_XCODEPROJ";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
@@ -176,6 +177,9 @@ public class Config {
 		}
 		else if (key.equals(SWARM_ANDROID_FIND_MANIFEST)) {
 			return "find . -name AndroidManifest.xml -print -quit";
+		}
+		else if (key.equals(SWARM_XCODE_FIND_XCODEPROJ)) {
+			return "find . -name *.xcodeproj -print -quit";
 		}
 		else if (key.equals(SWARM_ANDROID_FIND_BUILDXML)) {
 			return "find . -name build.xml -print -quit";

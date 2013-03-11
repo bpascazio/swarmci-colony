@@ -53,13 +53,33 @@ public class GitChecker extends Builder {
 			if (androidManifestPath.equals("")) {
 				
 				// No android path found, look for xcode
-				Debug.Log(Debug.TRACE, "android manifest not found looking for xcode");
+				Debug.Log(Debug.TRACE, "buildTypeChecker android manifest not found looking for xcode");
+				
+				Debug.Log(Debug.TRACE, "buildTypeChecker Executing "+Config.getStringValue(Config.SWARM_XCODE_FIND_XCODEPROJ)+"");
+				pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_XCODE_FIND_XCODEPROJ),null,new File(this.p.BaseName));
+				pr.waitFor(); 
+				String xcodeProjectPath = new String(getOutAndErrStream(pr));
+				xcodeProjectPath = xcodeProjectPath.replace("\n", "");
+
+				Debug.Log(Debug.TRACE, "buildTypeChecker result is "+xcodeProjectPath);
+
+				if (!xcodeProjectPath.equals("")) {
+
+					// Get the android build directory from the repo.
+					String[] tokens1 = xcodeProjectPath.split("/");
+					String[] tokens2 = xcodeProjectPath.split(tokens1[tokens1.length-1]);
+					Debug.Log(Debug.TRACE, "buildTypeChecker parsed out build path " + tokens2[0]);
+					p.buildDirectory =  this.p.BaseName+"/"+tokens2[0];
+					Debug.Log(Debug.TRACE, "buildTypeChecker buildDirectory="+p.buildDirectory);
+					p.BuilderType =  Builder.BUILDER_TYPE_XCODE;
+				}
+				
 			} else {
-				Debug.Log(Debug.TRACE, "androidManifestPath="+androidManifestPath);
+				Debug.Log(Debug.TRACE, "buildTypeChecker androidManifestPath="+androidManifestPath);
 				
 				// Get the android build directory from the repo.
 				String[] tokens1 = androidManifestPath.split("AndroidManifest\\.xml");
-				Debug.Log(Debug.TRACE, "parsed out build path " + tokens1[0]);
+				Debug.Log(Debug.TRACE, "buildTypeChecker parsed out build path " + tokens1[0]);
 				p.buildDirectory =  tokens1[0];
 				
 				// Make sure build.xml is there.
@@ -72,15 +92,15 @@ public class GitChecker extends Builder {
 				if (buildXMLPath.equals("")) {
 					
 					// no build file found
-					Debug.Log(Debug.DEBUG, p.Name+"no AndroidManifest.xml file found not valid android build");
+					Debug.Log(Debug.DEBUG, p.Name+"no AndroidManifest.xml file found not valid android build buildTypeChecker");
 				} else {
 					p.BuilderType =  Builder.BUILDER_TYPE_ANDROID;
 				}
 			}
 			if (p.BuilderType == Builder.BUILDER_TYPE_GENERIC) {
-				Debug.Log(Debug.DEBUG, "flagging project "+p.Name+" as invalid in cloud due to no build files.");
+				Debug.Log(Debug.DEBUG, "flagging project "+p.Name+" as invalid in cloud due to no build files. buildTypeChecker");
 			} else {
-				Debug.Log(Debug.TRACE, p.Name+" ready to build if necessary.");
+				Debug.Log(Debug.TRACE, p.Name+" ready to build if necessary. buildTypeChecker");
 			}
 			
 		} catch (Exception e) {
