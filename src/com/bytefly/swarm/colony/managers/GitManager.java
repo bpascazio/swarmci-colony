@@ -245,6 +245,10 @@ public class GitManager extends Manager {
 								if (p.Builder.equals("colony")) {
 									buildit = false;
 								}
+							} else {
+								if (p.Builder.equals("cloud")) {
+									buildit = false;
+								}
 							}
 							Debug.Log(Debug.TRACE, "buildit is " + buildit);
 							Debug.Log(Debug.TRACE, "builder is " + p.Builder);
