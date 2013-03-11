@@ -28,6 +28,9 @@ class BuildRunnable implements Runnable {
 	public void run() {
 		boolean updateEntity=false;
 		if (p!=null)p.buildNum++;
+		HttpConnector hs = new HttpConnector();
+		p.buildTrigger=1;
+		hs.updateEntity(p, p.ProjectId);
 		try {
 			Debug.Log(Debug.DEBUG, "BuildRunnable forked repo " + p.Repo);
 			// pull code from git here then queue a build
