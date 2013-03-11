@@ -33,6 +33,9 @@ public class Config {
 	public static final String SWARM_COLONY_AUTHENTICATION_TOKEN = "SWARM_COLONY_AUTHENTICATION_TOKEN";
 	public static final String SWARM_COLONY_MAX_BUSY = "SWARM_COLONY_MAX_BUSY";
 	public static final String SWARM_LOG_PREFIX = "SWARM_LOG_PREFIX";
+	public static final String SWARM_COPY_ANDROID_SCRIPTS = "SWARM_COPY_ANDROID_SCRIPTS";
+	public static final String SWARM_ANDROID_UPDATE_VERSION = "SWARM_ANDROID_UPDATE_VERSION";
+	public static final String SWARM_PWD = "SWARM_PWD";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
@@ -203,6 +206,15 @@ public class Config {
 		}	
 		else if (key.equals(SWARM_LOG_PREFIX)) {
 			return "http://www.bytefly.com/builds/";
+		}		
+		else if (key.equals(SWARM_COPY_ANDROID_SCRIPTS)) {
+			return "cp %s/scripts/android/update_version.sh %s";
+		}		
+		else if (key.equals(SWARM_ANDROID_UPDATE_VERSION)) {
+			return "./update_version.sh %d";
+		}		
+		else if (key.equals(SWARM_PWD)) {
+			return "pwd";
 		}		
 		else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";

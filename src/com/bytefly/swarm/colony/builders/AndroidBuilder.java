@@ -29,6 +29,7 @@ public class AndroidBuilder extends Builder {
 		p.logFile.startLogFile(p.BaseNameMinimal+p.buildNum+".log", p.BaseName);
 		androidSetSDK();
 		androidVerifyCreateBuildXml();
+		androidRunScripts();
 		andoidBuild();
 		apkName="";
 		androidGetAPKName();
@@ -107,6 +108,41 @@ public class AndroidBuilder extends Builder {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Debug.Log(Debug.INFO, "Exception caught running androidVerifyCreateBuildXml "+e.toString());
+		}
+	}
+	
+	public void androidRunScripts() {
+		Process pr;
+		try {
+			pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_PWD),null,new File("."));
+			pr.waitFor(); 
+			String androidxPath = new String(getOutAndErrStream(pr));
+			androidxPath = androidxPath.replace("\n", "");
+			Debug.Log(Debug.TRACE, "androidRunScripts current dir "+androidxPath);
+
+			String cpscr = 
+					String.format(Config.getStringValue(Config.SWARM_COPY_ANDROID_SCRIPTS), 
+							androidxPath, androidxPath+"/"+this.p.BaseName+"/"+this.p.buildDirectory);
+			Debug.Log(Debug.TRACE, "androidRunScripts Executing "+cpscr);
+			pr = Runtime.getRuntime().exec(cpscr, null, new File(androidxPath));
+			pr.waitFor(); 
+			String ars = new String(getOutAndErrStream(pr));
+			ars = ars.replace("\n", "");
+			Debug.Log(Debug.TRACE, "androidRunScripts cp result "+ars);
+			
+			String scr2 = 
+					String.format(Config.getStringValue(Config.SWARM_ANDROID_UPDATE_VERSION), 
+							this.p.buildNum);
+			Debug.Log(Debug.TRACE, "androidRunScripts Executing2 "+scr2+" in "+androidxPath+"/"+this.p.BaseName+"/"+this.p.buildDirectory);
+			pr = Runtime.getRuntime().exec(scr2, null, new File(androidxPath+"/"+this.p.BaseName+"/"+this.p.buildDirectory));
+			pr.waitFor(); 
+			ars = new String(getOutAndErrStream(pr));
+			ars = ars.replace("\n", "");
+			Debug.Log(Debug.TRACE, "androidRunScripts ver2 result "+ars);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Debug.Log(Debug.INFO, "Exception caught running androidRunScripts "+e.toString());
 		}
 	}
 	
