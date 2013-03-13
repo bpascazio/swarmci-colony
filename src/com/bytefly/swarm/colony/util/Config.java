@@ -34,9 +34,12 @@ public class Config {
 	public static final String SWARM_COLONY_MAX_BUSY = "SWARM_COLONY_MAX_BUSY";
 	public static final String SWARM_LOG_PREFIX = "SWARM_LOG_PREFIX";
 	public static final String SWARM_COPY_ANDROID_SCRIPTS = "SWARM_COPY_ANDROID_SCRIPTS";
+	public static final String SWARM_COPY_BUILD_IPA_SCRIPTS = "SWARM_COPY_BUILD_IPA_SCRIPTS";
 	public static final String SWARM_ANDROID_UPDATE_VERSION = "SWARM_ANDROID_UPDATE_VERSION";
+	public static final String SWARM_XCODE_CREATE_IPA = "SWARM_XCODE_CREATE_IPA";
 	public static final String SWARM_PWD = "SWARM_PWD";
 	public static final String SWARM_XCODE_FIND_XCODEPROJ = "SWARM_XCODE_FIND_XCODEPROJ";
+	public static final String SWARM_XCODE_APP_NAME = "SWARM_XCODE_APP_NAME";	
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
@@ -158,7 +161,7 @@ public class Config {
 			return "git clone";
 		}
 		else if (key.equals(SWARM_XCODE_BUILD_CMD)) {
-			return "/usr/bin/xcodebuild -sdk iphoneos6.0 -configuration Release OBJROOT=\"build_intermediates\" SYMROOT=\"build_results\" IPHONEOS_DEPLOYMENT_TARGET=5.0 clean build";
+			return "/usr/bin/xcodebuild -sdk iphoneos6.0 -configuration Debug OBJROOT=build_intermediates SYMROOT=build_results IPHONEOS_DEPLOYMENT_TARGET=5.0 clean build";
 		}
 		else if (key.equals(SWARM_ANDROID_BUILD_CMD)) {
 			return "ant";
@@ -187,6 +190,9 @@ public class Config {
 		else if (key.equals(SWARM_ANDROID_APP_NAME)) {
 			return "find . -name *.apk -print -quit";
 		}
+		else if (key.equals(SWARM_XCODE_APP_NAME)) {
+			return "find . -name *.app -print -quit";
+		}	
 		else if (key.equals(SWARM_ANDROID_UPLOAD_APK)) {
 			return "scp -P 22123 %s bpascazio@www.bytefly.com:builds/%s";
 		}
@@ -214,8 +220,14 @@ public class Config {
 		else if (key.equals(SWARM_COPY_ANDROID_SCRIPTS)) {
 			return "cp %s/scripts/android/update_version.sh %s";
 		}		
+		else if (key.equals(SWARM_COPY_BUILD_IPA_SCRIPTS)) {
+			return "cp %s/scripts/xcode/create_ipa.sh %s";
+		}			
 		else if (key.equals(SWARM_ANDROID_UPDATE_VERSION)) {
 			return "./update_version.sh %d";
+		}		
+		else if (key.equals(SWARM_XCODE_CREATE_IPA)) {
+			return "./create_ipa.sh %s";
 		}		
 		else if (key.equals(SWARM_PWD)) {
 			return "pwd";

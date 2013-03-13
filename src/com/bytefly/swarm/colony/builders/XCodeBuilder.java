@@ -14,7 +14,9 @@ import com.bytefly.swarm.colony.util.Debug;
 import com.bytefly.swarm.colony.util.HttpConnector;
 
 public class XCodeBuilder extends Builder {
-
+	
+	String appName;
+	
 	public void runAll() {
 		File f = new File(p.BaseName);
 		if(f.exists()) { 
@@ -29,29 +31,27 @@ public class XCodeBuilder extends Builder {
 		xcodeBuild();
 //		androidSetSDK();
 //		androidVerifyCreateBuildXml();
-//		androidRunScripts();
 //		andoidBuild();
-//		apkName="";
-//		androidGetAPKName();
+		appName="";
+		xcodeGetAppName();
 		Build bd = new Build();
 		bd.user_id = p.UserId;
 		bd.project_id = p.ProjectId;
 		bd.success = false;
-//		if (apkName.equals("")) {
-			Debug.Log(Debug.TRACE, "XCodeBuilder no apk found");			
+		if (appName.equals("")) {
+			Debug.Log(Debug.TRACE, "XCodeBuilder no app found");			
 			Status.counter_builds_failure++;
 			p.reason="Failed%20during%20compile.";
 			p.logFile.stopLogFile();
 			sendFailureEmail();
-//		} else {
-//			Debug.Log(Debug.TRACE, "apk found uploading and emailing");						
-//			Status.counter_builds_success++;
-//			androidUploadBuild();
-//			p.logFile.stopLogFile();
-//			androidSendEmail();
-//			p.reason="Built.";
-//			bd.success = true;
-//		}
+		} else {
+			Debug.Log(Debug.TRACE, "app found uploading to testflight");						
+			Status.counter_builds_success++;
+			p.logFile.stopLogFile();
+			xcodeRunScripts();
+			p.reason="Built.";
+			bd.success = true;
+		}
 		bd.info=p.reason;
 		if (bd.info.equals("Failed%20during%20compile."))bd.info="Failed during compile.";
 		if (p.logFile!=null) {
@@ -64,7 +64,53 @@ public class XCodeBuilder extends Builder {
 		h.setEntity(bd);
 
 	}
-	
+	public void xcodeGetAppName() {
+		
+		try {
+			Debug.Log(Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_XCODE_APP_NAME));
+			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_XCODE_APP_NAME),null,new File(this.p.BaseName));
+			pr.waitFor(); 
+			appName = new String(getOutAndErrStream(pr));
+			appName = appName.replace("\n", "");
+			Debug.Log(Debug.TRACE, "appName="+appName);
+		} catch (Exception e) {
+			Debug.Log(Debug.INFO, "Exception caught running androidGetAPKName "+e.toString());
+		}
+	}
+	public void xcodeRunScripts() {
+		Process pr;
+		try {
+			pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_PWD),null,new File("."));
+			pr.waitFor(); 
+			String androidxPath = new String(getOutAndErrStream(pr));
+			androidxPath = androidxPath.replace("\n", "");
+			Debug.Log(Debug.TRACE, "xcodeRunScripts current dir "+androidxPath);
+
+			String cpscr = 
+					String.format(Config.getStringValue(Config.SWARM_COPY_BUILD_IPA_SCRIPTS), 
+							androidxPath, androidxPath+"/"+this.p.BaseName+"/"+this.p.buildDirectory);
+			Debug.Log(Debug.TRACE, "xcodeRunScripts Executing "+cpscr);
+			pr = Runtime.getRuntime().exec(cpscr, null, new File(androidxPath));
+			pr.waitFor(); 
+			String ars = new String(getOutAndErrStream(pr));
+			ars = ars.replace("\n", "");
+			Debug.Log(Debug.TRACE, "xcodeRunScripts cp result "+ars);
+			
+			String scr2 = 
+					String.format(Config.getStringValue(Config.SWARM_XCODE_CREATE_IPA), 
+							this.p.BaseNameMinimal);
+			Debug.Log(Debug.TRACE, "xcodeRunScripts Executing2 "+scr2+" in "+androidxPath+"/"+this.p.BaseName+"/"+this.p.buildDirectory);
+			pr = Runtime.getRuntime().exec(scr2, null, new File(androidxPath+"/"+this.p.BaseName+"/"+this.p.buildDirectory));
+			pr.waitFor(); 
+			ars = new String(getOutAndErrStream(pr));
+			ars = ars.replace("\n", "");
+			Debug.Log(Debug.TRACE, "xcodeRunScripts ver2 result "+ars);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Debug.Log(Debug.INFO, "Exception caught running xcodeRunScripts "+e.toString());
+		}
+	}
 	public void xcodeBuild() {
 		try {
 			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_PWD),null,new File("."));
