@@ -25,6 +25,7 @@ public class Builder {
 	String toList = "null@null.com";
 	public String toFailList= "null@null.com";
 
+	String tfAPI = "z";
 	String tfGroup = "x";
 	String tfDist= "y";
 	
@@ -180,7 +181,8 @@ public class Builder {
 
 					boolean tos = false;
 					boolean tof = false;
-					boolean tfg = false; //group
+					boolean tfag = false; //group
+					boolean tftg = false; //group
 					boolean tfd = false; //distribution list
 					boolean tegit = false; 
 
@@ -195,8 +197,11 @@ public class Builder {
 						if (qName.equalsIgnoreCase("to_failure")) {
 							tof = true;
 						}
-						if (qName.equalsIgnoreCase("testflight_token")) {
-							tfg = true;
+						if (qName.equalsIgnoreCase("testflight_api_token")) {
+							tfag = true;
+						}
+						if (qName.equalsIgnoreCase("testflight_team_token")) {
+							tftg = true;
 						}
 
 						if (qName.equalsIgnoreCase("testflight_distribution_group")) {
@@ -231,8 +236,13 @@ public class Builder {
 							toFailList = new String(ch, start, length);
 						}
 
-						if (tfg) {
-							tfg = false;
+						if (tfag) {
+							tfag = false;
+							tfAPI = new String(ch, start, length);
+						}
+
+						if (tfag) {
+							tfag = false;
 							tfGroup = new String(ch, start, length);
 						}
 
@@ -248,7 +258,8 @@ public class Builder {
 				saxParser.parse(fname, handler);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				Debug.Log(Debug.INFO,
+						"Exception caught running loadSwarmXML " + e.toString());
 			}
 
 		}
@@ -272,6 +283,7 @@ public class Builder {
 			Debug.Log(Debug.TRACE, "to " + toList);
 			Debug.Log(Debug.TRACE, "fail " + toFailList);
 			Debug.Log(Debug.TRACE, "tf group " + tfGroup);
+			Debug.Log(Debug.TRACE, "tf api " + tfAPI);
 			Debug.Log(Debug.TRACE, "tf dist " + tfDist);
 			Debug.Log(Debug.TRACE, "email git " + emailGit);
 		} catch (Exception e) {
