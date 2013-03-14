@@ -1,9 +1,16 @@
 package com.bytefly.swarm.cmd.util;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Console;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
@@ -13,7 +20,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.bytefly.swarm.colony.builders.Builder.ReadXMLFile;
 import com.bytefly.swarm.colony.util.Config;
 
 public class SwarmUser {
@@ -23,6 +29,13 @@ public class SwarmUser {
 	public String password = "";
 	public String server = "";
 	public int uid = 0;
+	private static byte[] linebreak = {}; // Remove Base64 encoder default
+											// linebreak
+	private static String secret = "tvnw63ufg9gh5392"; // secret key length must
+														// be 16
+	private static SecretKey key;
+	private static Cipher cipher;
+	private static Base64 coder;
 
 	public SwarmUser() {
 		username = "x";
@@ -30,19 +43,40 @@ public class SwarmUser {
 		password = "x";
 		server = "x";
 		uid = 0;
+		try {
+			key = new SecretKeySpec(secret.getBytes(), "AES");
+			cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
+			coder = new Base64(32, linebreak, true);
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
+
+	public String encrypt(String plainText) throws Exception {
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		byte[] cipherText = cipher.doFinal(plainText.getBytes());
+		return new String(coder.encode(cipherText));
+	}
+
+	public String decrypt(String codedText) throws Exception {
+		byte[] encypted = coder.decode(codedText.getBytes());
+		cipher.init(Cipher.DECRYPT_MODE, key);
+		byte[] decrypted = cipher.doFinal(encypted);
+		return new String(decrypted);
+	}
+
 	public static class ReadXMLFile {
 
-		public static boolean success=false;
-		
-		String lemail="x";
-		String lusername="x";
-		String lpassword="x";
-		String lserver="x";
-		
+		public static boolean success = false;
+
+		String lemail = "x";
+		String lusername = "x";
+		String lpassword = "x";
+		String lserver = "x";
+
 		public void execute(String fname) {
 
-			success=false;
+			success = false;
 			try {
 
 				SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -105,10 +139,10 @@ public class SwarmUser {
 				};
 
 				saxParser.parse(fname, handler);
-				success=true;
+				success = true;
 
 			} catch (Exception e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 		}
@@ -119,77 +153,138 @@ public class SwarmUser {
 	private static ReadXMLFile attemptLoadFromFile() {
 		ReadXMLFile r = null;
 		try {
-			String path = Config.getStringValue(Config.SWARM_COLONY_CONFIG_PATH);
+			String path = Config
+					.getStringValue(Config.SWARM_COLONY_CONFIG_PATH);
 			if (path.equals("")) {
-				String userHome = System.getProperty( "user.home" );				
-				path = userHome+"/.swarm/swarmcfg.xml";
+				String userHome = System.getProperty("user.home");
+				path = userHome + "/.swarm/swarmcfg.xml";
 			}
 			r = new ReadXMLFile();
 			r.execute(path);
 		} catch (Exception e) {
-			System.out.print(
-					"Exception caught running attemptLoadFromFile " + e.toString());
+			System.out.print("Exception caught running attemptLoadFromFile "
+					+ e.toString());
 		}
 		return r;
 	}
 
+	class EraserThread implements Runnable {
+		private boolean stop;
+
+		/**
+		 * @param The
+		 *            prompt displayed to the user
+		 */
+		public EraserThread(String prompt) {
+			System.out.print(prompt);
+		}
+
+		/**
+		 * Begin masking...display asterisks (*)
+		 */
+		public void run() {
+			stop = true;
+			while (stop) {
+				System.out.print("\010*");
+				try {
+					Thread.currentThread().sleep(1);
+				} catch (InterruptedException ie) {
+					ie.printStackTrace();
+				}
+			}
+		}
+
+		/**
+		 * Instruct the thread to stop masking
+		 */
+		public void stopMasking() {
+			this.stop = false;
+		}
+	}
+
+	public String readPassword(String prompt) {
+		EraserThread et = new EraserThread(prompt);
+		Thread mask = new Thread(et);
+		mask.start();
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		String password = "";
+
+		try {
+			password = in.readLine();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		// stop masking
+		et.stopMasking();
+		// return the password entered by the user
+		return password;
+	}
+
 	public static SwarmUser getUserInfo() {
-		SwarmUser su = null;
-		String username="x";
-		String password="x";
-		String email="x";
-		String server="x";
+		SwarmUser su = new SwarmUser();
+		String username = "x";
+		String password = "x";
+		String email = "x";
+		String server = "x";
 		ReadXMLFile r = attemptLoadFromFile();
-		if (r==null || !r.success) {
+		if (r == null || !r.success) {
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Username/Email: ");
 			username = scanner.nextLine();
 			username = username.replace("\n", "");
 			email = username;
 			System.out.print("Password: ");
-			password = scanner.nextLine();
+			password = new String(System.console().readPassword());
 			password = password.replace("\n", "");
+
 			email = username;
-//			System.out.print("Server [default ]: ");
-//			server = scanner.nextLine();
-//			server = server.replace("\n", "");
-			server="";
-			if (server.equals("")) server = Config.getStringValue(Config.SWARM_RAILS_URL);
+			// System.out.print("Server [default ]: ");
+			// server = scanner.nextLine();
+			// server = server.replace("\n", "");
+			server = "";
+			if (server.equals(""))
+				server = Config.getStringValue(Config.SWARM_RAILS_URL);
 			writeToFile(username, email, password, server);
 		} else {
-			username =  r.lusername;
-			password =  r.lpassword;
-			email =  r.lemail;
-			server =  r.lserver;
+			username = r.lusername;
+			try {
+				password = su.decrypt(r.lpassword);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			email = r.lemail;
+			server = r.lserver;
 		}
-		su = new SwarmUser();
 		su.email = new String(email);
 		su.username = new String(username);
-		su.password = new String (password);
-		su.server = new String (server);
+		su.password = new String(password);
+		su.server = new String(server);
 		return su;
 	}
+
 	private static final String dotswarmxml = "<?xml version=\"1.0\"?>\n"
-			+ "<swarm>\n"
-			+ "\t<email>%s</email>\n"
-			+ "\t<username>%s</username>\n"
-			+ "\t<password>%s</password>\n"
-			+ "\t<server>%s</server>\n"
-			+ "</swarm>\n";
-	
+			+ "<swarm>\n" + "\t<email>%s</email>\n"
+			+ "\t<username>%s</username>\n" + "\t<password>%s</password>\n"
+			+ "\t<server>%s</server>\n" + "</swarm>\n";
+
 	private static void writeToFile(String u, String e, String p, String s) {
-		String xmlfile = String.format(dotswarmxml, e, u, p, s);
 		try {
-			
-			String userHome = System.getProperty( "user.home" );
-//			System.out.print("userHome "+userHome);
+			SwarmUser su = new SwarmUser();
+			String xmlfile = String.format(dotswarmxml, e, u, su.encrypt(p), s);
+
+			String userHome = System.getProperty("user.home");
+			// System.out.print("userHome "+userHome);
 			Process pr = Runtime.getRuntime().exec(
-					Config.getStringValue(Config.SWARM_MAKE_DOT_SWARM_DIR), null, new File(userHome));
+					Config.getStringValue(Config.SWARM_MAKE_DOT_SWARM_DIR),
+					null, new File(userHome));
 			pr.waitFor();
 			String result = getOutAndErrStream(pr).replace("\n", "");
-//			System.out.print("resultmk "+result);
+			// System.out.print("resultmk "+result);
 			BufferedWriter bw;
-			bw = new BufferedWriter(new FileWriter(userHome+"/.swarm/swarmcfg.xml", false));
+			bw = new BufferedWriter(new FileWriter(userHome
+					+ "/.swarm/swarmcfg.xml", false));
 			bw.write(xmlfile);
 			bw.flush();
 			bw.close();
@@ -199,7 +294,6 @@ public class SwarmUser {
 			xe.printStackTrace();
 		}
 	}
-	
 
 	protected static String getOutAndErrStream(Process p) {
 
