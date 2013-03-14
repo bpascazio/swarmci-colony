@@ -144,7 +144,7 @@ public class HttpConnector {
 			}
 			in.close();
 			page = sb.toString();
-	//		System.out.println("***SECURITY**** page=" + page);
+//			System.out.println("***SECURITY**** page=" + page);
 			page = page.replace("\n", "");
 			page = page.replace(" ", "");
 			if (!page.equals("")) {
@@ -347,7 +347,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "useragent=" + useragent);
 
 			// execute the http GET
-			HttpResponse response = client.execute(request);
+			HttpResponse response = client.execute(request,mHttpContext);
 
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
