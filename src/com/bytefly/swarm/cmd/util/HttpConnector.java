@@ -296,6 +296,7 @@ public class HttpConnector {
 			// related.
 			// That is why we assume a server communication error.
 			//
+			Debug.Log(Debug.TRACE, "exception=" + e);
 			e.printStackTrace();
 
 		} finally {
@@ -354,7 +355,7 @@ public class HttpConnector {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
-			ex.printStackTrace();
+			Debug.Log(Debug.TRACE, "exception=" + ex);
 		}
 
 		try {
@@ -377,7 +378,7 @@ public class HttpConnector {
 				try {
 					in.close();
 				} catch (IOException ex) {
-					ex.printStackTrace();
+					Debug.Log(Debug.TRACE, "exception=" + ex);
 				}
 			}
 		} catch (ClientProtocolException epx) {

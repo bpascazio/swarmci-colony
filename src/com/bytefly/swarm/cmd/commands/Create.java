@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import com.bytefly.swarm.cmd.util.HttpConnector;
+import com.bytefly.swarm.colony.util.HttpConnector;
 import com.bytefly.swarm.cmd.util.SwarmUser;
 import com.bytefly.swarm.colony.models.Project;
 import com.bytefly.swarm.colony.util.Config;
@@ -26,7 +26,7 @@ public class Create extends Command {
 			HttpConnector h = new HttpConnector();
 			sw.uid = h.checkConnection(sw.server, sw.email, sw.password);
 			if (sw.uid==0) {
-				System.out.print("Could not authenticated.\n");
+				System.out.print("Could not authenticate.\n");
 			} else {
 				p.UserId = sw.uid;
 				h.setEntity(sw.server,p);

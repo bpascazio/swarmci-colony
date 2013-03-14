@@ -13,18 +13,22 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -51,7 +55,8 @@ public class HttpConnector {
 																// problem
 
 	private static HttpClient client = null;
-
+	static BasicHttpContext mHttpContext = new BasicHttpContext();
+	CookieStore mCookieStore      = new BasicCookieStore(); 
 	public static DefaultHttpClient getThreadSafeClient() {
 
 		DefaultHttpClient client = new DefaultHttpClient();
@@ -61,6 +66,113 @@ public class HttpConnector {
 
 		mgr.getSchemeRegistry()), params);
 		return client;
+	}
+	public int checkConnection(String sserver, String semail, String spassword) {
+
+		int userid = 0; // assume failure
+		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
+														// problem
+		BufferedReader in = null;
+
+		try {
+			String url = String
+					.format(Config
+							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
+							sserver, 
+							semail,
+							spassword);
+			
+//			System.out.println("***SECURITY**** url=" + url);
+
+			if (client==null) client = new DefaultHttpClient();
+			HttpGet request = new HttpGet();
+
+			request.setURI(new URI(url));
+
+			// set the user agent to from the phone os information
+			String useragent = "swarm" + Version.getVersion() + " "
+					+ Version.getBuildNum();
+			request.setHeader("User-Agent", useragent);
+
+			// execute the http GET
+			mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+			HttpResponse response = client.execute(request,mHttpContext);
+
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+			StringBuffer sb = new StringBuffer("");
+			String line = "";
+			String NL = System.getProperty("line.separator");
+			while ((line = in.readLine()) != null) {
+				sb.append(line + NL);
+			}
+			in.close();
+			String page = sb.toString();
+	//		System.out.println("***SECURITY**** page=" + page);
+
+			
+			url = String
+					.format(Config
+							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_TOKEN),
+							sserver, 
+							semail,
+							spassword);
+			
+//			System.out.println("***SECURITY**** url=" + url);
+
+			if (client==null) client = new DefaultHttpClient();
+			request = new HttpGet();
+
+			request.setURI(new URI(url));
+
+			// set the user agent to from the phone os information
+			useragent = "swarm" + Version.getVersion() + " "
+					+ Version.getBuildNum();
+			request.setHeader("User-Agent", useragent);
+
+			// execute the http GET
+			mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+			response = client.execute(request,mHttpContext);
+
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+			sb = new StringBuffer("");
+			line = "";
+			NL = System.getProperty("line.separator");
+			while ((line = in.readLine()) != null) {
+				sb.append(line + NL);
+			}
+			in.close();
+			page = sb.toString();
+	//		System.out.println("***SECURITY**** page=" + page);
+			page = page.replace("\n", "");
+			page = page.replace(" ", "");
+			if (!page.equals("")) {
+				userid = Integer.valueOf(page);
+			}
+
+		} catch (Exception e) {
+
+			//
+			// Note that this exception may be json parsing related or HTTP
+			// related.
+			// That is why we assume a server communication error.
+			//
+			Debug.Log(Debug.TRACE, "exception=" + e);
+
+		} finally {
+
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					Debug.Log(Debug.TRACE, "exception=" + e);
+				}
+			}
+
+		}
+
+		return userid;
 	}
 
 	public boolean checkConnection(String semail, String spassword) {
@@ -481,6 +593,83 @@ public class HttpConnector {
 			Debug.Log(Debug.INFO, "setEntity X " + excc);
 		}
 		return success;
+	}
+
+	public void setEntity(String sserver, Entity e) {
+		// Create a new HttpClient and Post Header
+		String entitystr = e.ENTITY_COLLECTION;
+		String url = "http://"+sserver+"/"+entitystr;
+		
+//		System.out.print("url=" + url);
+		
+		if (client==null) client = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost(url);
+		BufferedReader in = null;
+		// Add your data
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+
+		if (e instanceof Project) {
+
+			Project b = (Project)e;
+			nameValuePairs
+					.add(new BasicNameValuePair("project[name]", b.Name));
+			nameValuePairs.add(new BasicNameValuePair("project[repo]",
+					""+b.Repo));
+			nameValuePairs.add(new BasicNameValuePair("project[user_id]",
+					""+b.UserId));
+			nameValuePairs.add(new BasicNameValuePair("project[builder]",
+					""+b.Builder));
+		}
+
+		if (e instanceof Build) {
+
+			Build b = (Build)e;
+			nameValuePairs
+					.add(new BasicNameValuePair("build[success]", b.success?"1":"0"));
+			nameValuePairs.add(new BasicNameValuePair("build[project_id]",
+					""+b.project_id));
+			nameValuePairs.add(new BasicNameValuePair("build[user_id]",
+					""+b.user_id));
+//			System.out.print("adding entity "+b.project_id+" "+b.user_id+" "+b.success);
+		}
+		try {
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			Debug.Log(Debug.TRACE, "exception=" + ex);
+		}
+
+		try {
+			// Execute HTTP Post Request
+			HttpResponse response;
+
+			response = client.execute(httppost, mHttpContext);
+			in = new BufferedReader(new InputStreamReader(response.getEntity()
+					.getContent()));
+			StringBuffer sb = new StringBuffer("");
+			String line = "";
+			String NL = System.getProperty("line.separator");
+			while ((line = in.readLine()) != null) {
+				sb.append(line + NL);
+			}
+			in.close();
+			String page = sb.toString();
+//			Debug.Log(Debug.TRACE, "post response=" + page);
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException ex) {
+					Debug.Log(Debug.TRACE, "exception=" + ex);
+				}
+			}
+		} catch (ClientProtocolException epx) {
+			// TODO Auto-generated catch block
+			epx.printStackTrace();
+		} catch (IOException ioe) {
+			// TODO Auto-generated catch block
+			ioe.printStackTrace();
+
+		}
 	}
 
 }

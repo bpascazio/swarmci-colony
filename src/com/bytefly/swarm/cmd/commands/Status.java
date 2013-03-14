@@ -13,8 +13,8 @@ public class Status extends Command {
 			System.out.print("Server:\t"+sw.server+"\n");
 			Config.setRailsServer(sw.server);
 			HttpConnector h = new HttpConnector();
-			boolean cc = h.checkConnection(sw.email, sw.password);
-			if (cc) {
+			int uid = h.checkConnection(sw.server, sw.email, sw.password);
+			if (uid!=0) {
 				ProjectList pl = new ProjectList();
 				for (int i=0;i<pl.cv.size();i++) {
 					Project p = (Project) pl.cv.elementAt(i);
@@ -24,7 +24,7 @@ public class Status extends Command {
 					System.out.print(p.Name+" build-number["+bld+"] status["+((p.buildState==1)?"ON":"OFF")+"] "+((p.buildTrigger==1)?"RUNNING ":"")+"repo["+p.Repo+"] builder["+p.Builder+"]\n");
 				}
 			} else {
-				System.out.print("Could not connect to server.\n");
+				System.out.print("Could not connect to server or failure to authenticate.\n");
 			}
 	}
 
