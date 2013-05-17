@@ -99,16 +99,16 @@ public class GitManager extends Manager {
 
 						// in the repo
 						String existingval = (String) mg.get(p.Repo);
-						Debug.Log(Debug.TRACE, "GitManager existing key "
+						Debug.Log(p.Name, Debug.TRACE, "GitManager existing key "
 								+ existingval);
 
 						// so compare with checker val
 						if (gc.lastCheckin.equals(existingval)) {
-							Debug.Log(Debug.INFO, "GitManager not changed for "
+							Debug.Log(p.Name, Debug.INFO, "GitManager not changed for "
 									+ p.Name);
 							msg = " gr not changed " + p.Name;
 						} else {
-							Debug.Log(Debug.INFO,
+							Debug.Log(p.Name, Debug.INFO,
 									"Change detected kick off build for "
 											+ p.Name);
 
@@ -125,7 +125,7 @@ public class GitManager extends Manager {
 					} else {
 
 						// not so add it
-						Debug.Log(Debug.TRACE,
+						Debug.Log(p.Name, Debug.TRACE,
 								"GitManager not building - not in repo hash yet "
 										+ p.Repo);
 						mg.put(p.Repo, gc.lastCheckin);
@@ -134,7 +134,7 @@ public class GitManager extends Manager {
 				}
 
 			} catch (Exception e) {
-				Debug.Log(Debug.INFO,
+				Debug.Log(p.Name, Debug.INFO,
 						"GitManager exception in worker thread - exiting " + e);
 				stop();
 				msg = " gr exception " + p.Name;

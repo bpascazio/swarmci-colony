@@ -81,8 +81,8 @@ public class Debug {
 		if (Config.getLogFile() == null || Config.getLogFile().equals("")) {
 			if (project == null) {
 				if (!log_surpress)
-					System.out.println(timestame + ":" + getLevel(level) + ":"
-							+ msg);
+					System.out.println(timestame + ":" + getLevel(level)
+							+ ":@swarm" + ":" + msg);
 			} else {
 				if (!log_surpress)
 					System.out.println(timestame + ":" + getLevel(level) + ":@"
@@ -95,7 +95,8 @@ public class Debug {
 				bw = new BufferedWriter(new FileWriter(Config.getLogFile(),
 						true));
 				if (project == null) {
-					bw.write(timestame + ":" + getLevel(level) + ":" + msg);
+					bw.write(timestame + ":" + getLevel(level) + ":@swarm"
+							+ ":" + msg);
 				} else {
 					bw.write(timestame + ":" + getLevel(level) + ":@" + project
 							+ ":" + msg);

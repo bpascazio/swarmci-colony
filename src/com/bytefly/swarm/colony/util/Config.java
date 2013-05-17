@@ -114,7 +114,7 @@ public class Config {
 	}
 
 	public static String getPollRate() {
-		return VAL_SWARM_PROJECT_ALWAYS_CLEAN;
+		return VAL_SWARM_PROJECT_POLL_RATE;
 	}
 
 	public static String getAlwaysClean() {
