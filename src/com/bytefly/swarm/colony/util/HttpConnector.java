@@ -406,7 +406,7 @@ public class HttpConnector {
 			// related.
 			// That is why we assume a server communication error.
 			//
-			Debug.Log(Debug.INFO, "getEntityList X " + e);
+			Debug.Log(Debug.INFO, "getEntityList X1 " + e);
 			return null;
 
 		} finally {
@@ -416,7 +416,7 @@ public class HttpConnector {
 					in.close();
 					request.releaseConnection();
 				} catch (IOException e) {
-					Debug.Log(Debug.INFO, "getEntityList X " + e);
+					Debug.Log(Debug.INFO, "getEntityList X2 " + e);
 				}
 			}
 

@@ -13,15 +13,17 @@ public class GitChecker extends Builder {
 	
 	public void runAll() {
 		invalidGit = false;
+		if (p.forceClean || Config.getAlwaysClean().equals("yes")) {
+			Debug.Log(Debug.TRACE, "Forced Cleaning "+p.BaseName);
+			this.repoClean();
+			p.forceClean=false;
+		}
 		File f = new File(p.BaseName);
 		if(f.exists()) { 
-			Debug.Log(Debug.TRACE, "Git repo exists");
+			Debug.Log(Debug.TRACE, "Git repo exists "+p.BaseName);
 			this.repoUpdate();
 		} else {
-			if (p.forceClean) {
-				this.repoClean();
-				p.forceClean=false;
-			}
+			Debug.Log(Debug.TRACE, "Git repo clone necessary "+p.BaseName);
 			this.repoClone();
 		}
 		gitChecker();

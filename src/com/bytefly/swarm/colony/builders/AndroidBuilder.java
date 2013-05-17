@@ -1,9 +1,12 @@
 package com.bytefly.swarm.colony.builders;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import com.bytefly.swarm.colony.Status;
 import com.bytefly.swarm.colony.models.Build;
@@ -152,6 +155,32 @@ public class AndroidBuilder extends Builder {
 			if (p.debug)target="debug";
 			Debug.Log(Debug.DEBUG, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target+" in directory "+this.p.BaseName+"/"+this.p.buildDirectory);
 			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_BUILD_CMD)+" "+target,null,new File(this.p.BaseName+"/"+this.p.buildDirectory));
+		
+			  final InputStream stream = pr.getInputStream();
+			  new Thread(new Runnable() {
+			    public void run() {
+			      BufferedReader reader = null;
+			      try {
+			        reader = new BufferedReader(new InputStreamReader(stream));
+			        String line = null;
+			        while ((line = reader.readLine()) != null) {
+			          System.out.println(line);
+			        }
+			      } catch (Exception e) {
+			        // TODO
+			      } finally {
+			        if (reader != null) {
+			          try {
+			            reader.close();
+			          } catch (IOException e) {
+			            // ignore
+			          }
+			        }
+			      }
+			    }
+			  }).start();
+			
+			
 			pr.waitFor(); 
 			String result = getOutAndErrStream(pr);
 			p.logFile.writeToLog(result);

@@ -47,6 +47,7 @@ public class Config {
 	public static final String SWARM_ANDROID_SDK = "swarm_android_sdk";
 	public static final String SWARM_COLONY_CONFIG = "swarm_default_cfg";
 	public static final String SWARM_SUPERCOLONY_MODE = "swarm_supercolony_mode";
+	public static final String SWARM_PROJECT_ALWAYS_CLEAN = "swarm_project_always_clean";
 	
 	public static final String SWARM_COLONY_CONFIG_PATH = "SWARM_COLONY_CONFIG_PATH";
 	
@@ -84,6 +85,11 @@ public class Config {
 	static String VAL_SWARM_ANDROID_SDK = "/Android/sdk";
 	static String VAL_SWARM_COLONY_CONFIG_PATH = "";
 	static String VAL_SWARM_SUPERCOLONY_MODE = "";
+	static String VAL_SWARM_PROJECT_ALWAYS_CLEAN = "";
+	
+	public static void setAlwaysClean(String s) {
+		VAL_SWARM_PROJECT_ALWAYS_CLEAN = s;
+	}
 	
 	public static void setSuperColonyMode(String s) {
 		VAL_SWARM_SUPERCOLONY_MODE = s;
@@ -95,6 +101,10 @@ public class Config {
 	
 	public static void setProjectDir(String s) {
 		VAL_SWARM_PROJECT_DIR = s;
+	}
+
+	public static String getAlwaysClean() {
+		return VAL_SWARM_PROJECT_ALWAYS_CLEAN;
 	}
 
 	public static String getProjectDir() {

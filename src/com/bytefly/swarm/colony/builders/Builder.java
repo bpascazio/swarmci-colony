@@ -91,7 +91,7 @@ public class Builder {
 					Debug.TRACE,
 					"Executing "
 							+ Config.getStringValue(Config.SWARM_CLEAN_REPO_CMD)
-							+ " " + p.BaseName+ " " + p.Repo);
+							+ " " + p.BaseName);
 			Process pr = Runtime.getRuntime().exec(
 					Config.getStringValue(Config.SWARM_CLEAN_REPO_CMD) + " "
 							+ p.BaseName);
