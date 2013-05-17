@@ -26,7 +26,7 @@ public class GitManager extends Manager {
 	public GitManager(SecurityContext _sc, BuildManager m) {
 		sc = _sc;
 		bm = m;
-		mg = new HashMap();
+		mg = new HashMap<String, String>();
 	}
 
 	class GitRunnable implements Runnable {
@@ -38,13 +38,13 @@ public class GitManager extends Manager {
 		}
 
 		public void run() {
-			Debug.Log(Debug.DEBUG, "GitManager thread on " + p.Name);
+			Debug.Log(p.Name, Debug.DEBUG, "GitManager thread running");
 			String msg = "gitrun not";
 			try {
 				// Check for git updates with hashmap
 				GitChecker gc = null;
 				if (p.buildState > 0) {
-					Debug.Log(Debug.DEBUG,
+					Debug.Log(p.Name, Debug.DEBUG,
 							"GitManager checking for updates project repo "
 									+ p.Repo);
 					gc = new GitChecker();
@@ -55,10 +55,12 @@ public class GitManager extends Manager {
 						bw.data = p;
 						p.badGit = true;
 						bm.put(bw);
+						Debug.Log(p.Name, Debug.DEBUG, "GitManager says bad git");
 						return;
 					} else {
 						p.badGit = false;
 						gc.p.commit = gc.lastCheckin;
+						Debug.Log(p.Name, Debug.DEBUG, "GitManager says no commit change");
 						Status.counter_git_updates++;
 					}
 				}
@@ -171,7 +173,7 @@ public class GitManager extends Manager {
 
 						cp.buildState = pii.buildState;
 						cp.buildTrigger = pii.buildTrigger;
-						if (cp.getBusy()==false) {
+						if (cp.getBusy() == false) {
 							cp.buildNum = pii.buildNum;
 						}
 						cp.Builder = pii.Builder;

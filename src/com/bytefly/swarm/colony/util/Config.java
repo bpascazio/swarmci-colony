@@ -39,7 +39,7 @@ public class Config {
 	public static final String SWARM_XCODE_CREATE_IPA = "SWARM_XCODE_CREATE_IPA";
 	public static final String SWARM_PWD = "SWARM_PWD";
 	public static final String SWARM_XCODE_FIND_XCODEPROJ = "SWARM_XCODE_FIND_XCODEPROJ";
-	public static final String SWARM_XCODE_APP_NAME = "SWARM_XCODE_APP_NAME";	
+	public static final String SWARM_XCODE_APP_NAME = "SWARM_XCODE_APP_NAME";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
@@ -48,13 +48,13 @@ public class Config {
 	public static final String SWARM_COLONY_CONFIG = "swarm_default_cfg";
 	public static final String SWARM_SUPERCOLONY_MODE = "swarm_supercolony_mode";
 	public static final String SWARM_PROJECT_ALWAYS_CLEAN = "swarm_project_always_clean";
-	
+	public static final String SWARM_PROJECT_POLL_RATE = "swarm_project_poll_rate";
+
 	public static final String SWARM_COLONY_CONFIG_PATH = "SWARM_COLONY_CONFIG_PATH";
-	
-	
-	public static int getIntValue(String key) {	
+
+	public static int getIntValue(String key) {
 		if (key.equals(SWARM_COLONY_MAX_BUSY)) {
-			return 1000*60*5; // max busy time in mS for system entity
+			return 1000 * 60 * 5; // max busy time in mS for system entity
 		}
 		if (key.equals(SWARM_PROJECT_CHECK_FREQ)) {
 			return 15000; // fetch projects from rails server every 15 seconds
@@ -63,21 +63,26 @@ public class Config {
 			return 60000; // check connection to the cloud every 60 seconds
 		}
 		if (key.equals(SWARM_GIT_CHECK_FREQ)) {
-			return 60000; // scan for updated git repositories every 60 seconds
+			if (getPollRate().equals("")) {
+				return 60000; // scan for updated git repositories every 60 seconds
+			} else {
+				return Integer.parseInt(getPollRate()) * 60 * 1000;
+			}
 		}
 		if (key.equals(SWARM_STATUS_CHECK_FREQ)) {
 			return 15000; // check server status 15 seconds
 		}
 		if (key.equals(SWARM_MGR_CHECK_FREQ)) {
-			return 250; // swarm manager checks for commands every 4 times a second
+			return 250; // swarm manager checks for commands every 4 times a
+						// second
 		}
 		if (key.equals(SWARM_DEFAULT_QUEUE_SIZE)) {
 			return 25; // default maximum work items in queue
-		}		
+		}
 		Debug.Log(Debug.DEBUG, "Undefined Config Value " + key);
 		return 0;
 	}
-	
+
 	static String VAL_SWARM_RAILS_URL = "www.swarmci.com";
 	static String VAL_SWARM_COLONY_UUID = "";
 	static String VAL_SWARM_DEBUG_LOG_FILE = "";
@@ -86,21 +91,30 @@ public class Config {
 	static String VAL_SWARM_COLONY_CONFIG_PATH = "";
 	static String VAL_SWARM_SUPERCOLONY_MODE = "";
 	static String VAL_SWARM_PROJECT_ALWAYS_CLEAN = "";
-	
+	static String VAL_SWARM_PROJECT_POLL_RATE = "";
+
 	public static void setAlwaysClean(String s) {
 		VAL_SWARM_PROJECT_ALWAYS_CLEAN = s;
 	}
-	
+
+	public static void setPollRate(String s) {
+		VAL_SWARM_PROJECT_POLL_RATE = s;
+	}
+
 	public static void setSuperColonyMode(String s) {
 		VAL_SWARM_SUPERCOLONY_MODE = s;
 	}
-	
+
 	public static void setConfigPath(String s) {
 		VAL_SWARM_COLONY_CONFIG_PATH = s;
 	}
-	
+
 	public static void setProjectDir(String s) {
 		VAL_SWARM_PROJECT_DIR = s;
+	}
+
+	public static String getPollRate() {
+		return VAL_SWARM_PROJECT_ALWAYS_CLEAN;
 	}
 
 	public static String getAlwaysClean() {
@@ -146,9 +160,9 @@ public class Config {
 	public static String getLogFile() {
 		return VAL_SWARM_DEBUG_LOG_FILE;
 	}
-	
+
 	public static String getStringValue(String key) {
-		
+
 		if (key.equals(SWARM_SUPERCOLONY_MODE)) {
 			return VAL_SWARM_SUPERCOLONY_MODE;
 		}
@@ -157,98 +171,67 @@ public class Config {
 		}
 		if (key.equals(SWARM_RAILS_URL)) {
 			return VAL_SWARM_RAILS_URL;
-		}
-		else if (key.equals(SWARM_COLONY_UUID)) {
+		} else if (key.equals(SWARM_COLONY_UUID)) {
 			return VAL_SWARM_COLONY_UUID;
-		}
-		else if (key.equals(SWARM_COLONY_CONFIG_PATH)) {
+		} else if (key.equals(SWARM_COLONY_CONFIG_PATH)) {
 			return VAL_SWARM_COLONY_CONFIG_PATH;
-		}
-		else if (key.equals(SWARM_GIT_UPDATE_CMD)) {
+		} else if (key.equals(SWARM_GIT_UPDATE_CMD)) {
 			return "git pull";
-		}
-		else if (key.equals(SWARM_GIT_CLONE_CMD)) {
+		} else if (key.equals(SWARM_GIT_CLONE_CMD)) {
 			return "git clone";
-		}
-		else if (key.equals(SWARM_XCODE_BUILD_CMD)) {
+		} else if (key.equals(SWARM_XCODE_BUILD_CMD)) {
 			return "/usr/bin/xcodebuild -sdk iphoneos6.0 -configuration Debug OBJROOT=build_intermediates SYMROOT=build_results IPHONEOS_DEPLOYMENT_TARGET=5.0 clean build";
-		}
-		else if (key.equals(SWARM_ANDROID_BUILD_CMD)) {
+		} else if (key.equals(SWARM_ANDROID_BUILD_CMD)) {
 			return "ant";
-		}	
-		else if (key.equals(SWARM_GIT_CHECK_CMD)) {
+		} else if (key.equals(SWARM_GIT_CHECK_CMD)) {
 			return "git rev-parse HEAD";
-		}
-		else if (key.equals(SWARM_CLEAN_REPO_CMD)) {
+		} else if (key.equals(SWARM_CLEAN_REPO_CMD)) {
 			return "rm -rf";
-		}
-		else if (key.equals(SWARM_NOTIFY_EMAIL_CMD)) {
+		} else if (key.equals(SWARM_NOTIFY_EMAIL_CMD)) {
 			return "http://swarm.bytefly.com/email.php?name=639Building&bnum=4&build=639building-android-1.0.5.apk&log=buildlog-5.log&owner=bytefly&repo=639building-android&to=bob@bytefly.com&fname=AndroidBuild";
-		}
-		else if (key.equals(SWARM_ANDROID_CLEARN_CMD)) {
+		} else if (key.equals(SWARM_ANDROID_CLEARN_CMD)) {
 			return "rm -rf bin";
-		}
-		else if (key.equals(SWARM_ANDROID_FIND_MANIFEST)) {
+		} else if (key.equals(SWARM_ANDROID_FIND_MANIFEST)) {
 			return "find . -name AndroidManifest.xml -print -quit";
-		}
-		else if (key.equals(SWARM_XCODE_FIND_XCODEPROJ)) {
+		} else if (key.equals(SWARM_XCODE_FIND_XCODEPROJ)) {
 			return "find . -name *.xcodeproj -print -quit";
-		}
-		else if (key.equals(SWARM_ANDROID_FIND_BUILDXML)) {
+		} else if (key.equals(SWARM_ANDROID_FIND_BUILDXML)) {
 			return "find . -name build.xml -print -quit";
-		}
-		else if (key.equals(SWARM_ANDROID_APP_NAME)) {
+		} else if (key.equals(SWARM_ANDROID_APP_NAME)) {
 			return "find . -name *.apk -print -quit";
-		}
-		else if (key.equals(SWARM_XCODE_APP_NAME)) {
+		} else if (key.equals(SWARM_XCODE_APP_NAME)) {
 			return "find . -name *.app -print -quit";
-		}	
-		else if (key.equals(SWARM_ANDROID_UPLOAD_APK)) {
+		} else if (key.equals(SWARM_ANDROID_UPLOAD_APK)) {
 			return "scp -P 22123 %s bpascazio@www.bytefly.com:builds/%s";
-		}
-		else if (key.equals(SWARM_UPLOAD_LOGFILE)) {
+		} else if (key.equals(SWARM_UPLOAD_LOGFILE)) {
 			return "scp -P 22123 %s bpascazio@www.bytefly.com:builds/%s";
-		}
-		else if (key.equals(SWARM_ANDROID_GENERATE_BUILDXML)) {
+		} else if (key.equals(SWARM_ANDROID_GENERATE_BUILDXML)) {
 			return "tools/android update project -p .";
-		}
-		else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
+		} else if (key.equals(SWARM_ANDROID_SEND_EMAIL_APK)) {
 			return "curl http://swarm.bytefly.com/email.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=Android%%20Build&vcs=%s&builder=%s";
-		}	
-		else if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
+		} else if (key.equals(SWARM_SEND_FAILURE_EMAIL)) {
 			return "curl http://swarm.bytefly.com/femail.php?name=%s&bnum=%d&build=%s&log=%s&owner=%s&repo=%s&to=%s&fname=Build%%20Failure%%20Notice&vcs=%s&reason=%s&builder=%s";
-		}	
-		else if (key.equals(SWARM_COLONY_AUTHENTICATION_V1)) {
+		} else if (key.equals(SWARM_COLONY_AUTHENTICATION_V1)) {
 			return "http://%s/colony?email=%s&password=%s";
-		}	
-		else if (key.equals(SWARM_COLONY_AUTHENTICATION_TOKEN)) {
+		} else if (key.equals(SWARM_COLONY_AUTHENTICATION_TOKEN)) {
 			return "http://%s/tokens";
-		}	
-		else if (key.equals(SWARM_LOG_PREFIX)) {
+		} else if (key.equals(SWARM_LOG_PREFIX)) {
 			return "http://www.bytefly.com/builds/";
-		}		
-		else if (key.equals(SWARM_COPY_ANDROID_SCRIPTS)) {
+		} else if (key.equals(SWARM_COPY_ANDROID_SCRIPTS)) {
 			return "cp %s/scripts/android/update_version.sh %s";
-		}		
-		else if (key.equals(SWARM_COPY_BUILD_IPA_SCRIPTS)) {
+		} else if (key.equals(SWARM_COPY_BUILD_IPA_SCRIPTS)) {
 			return "cp %s/scripts/xcode/create_ipa.sh %s";
-		}			
-		else if (key.equals(SWARM_ANDROID_UPDATE_VERSION)) {
+		} else if (key.equals(SWARM_ANDROID_UPDATE_VERSION)) {
 			return "./update_version.sh %d";
-		}		
-		else if (key.equals(SWARM_XCODE_CREATE_IPA)) {
+		} else if (key.equals(SWARM_XCODE_CREATE_IPA)) {
 			return "./create_ipa.sh %s";
-		}		
-		else if (key.equals(SWARM_PWD)) {
+		} else if (key.equals(SWARM_PWD)) {
 			return "pwd";
-		}		
-		else if (key.equals(SWARM_DUMP_XML)) {
+		} else if (key.equals(SWARM_DUMP_XML)) {
 			return "cat swarm.xml";
-		} 
-		else if (key.equals(SWARM_MAKE_PROJECT_DIR)) {
+		} else if (key.equals(SWARM_MAKE_PROJECT_DIR)) {
 			return "mkdir";
-		} 
-		else if (key.equals(SWARM_MAKE_DOT_SWARM_DIR)) {
+		} else if (key.equals(SWARM_MAKE_DOT_SWARM_DIR)) {
 			return "mkdir .swarm";
 		}
 		Debug.Log(Debug.ERROR, "Undefined Config Value " + key);

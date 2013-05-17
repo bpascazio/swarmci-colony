@@ -102,6 +102,8 @@ public class Colony extends Thread {
 			Config.setProjectDir(dir);
 			String ac = colonyProps.getProperty(Config.SWARM_PROJECT_ALWAYS_CLEAN);
 			Config.setAlwaysClean(ac);
+			String pra = colonyProps.getProperty(Config.SWARM_PROJECT_POLL_RATE);
+			if (pra!=null)Config.setPollRate(pra);
 			Debug.Log("Directory set to :"+dir);
 			String asdk = colonyProps.getProperty(Config.SWARM_ANDROID_SDK);
 			Config.setAndroidSDK(asdk);

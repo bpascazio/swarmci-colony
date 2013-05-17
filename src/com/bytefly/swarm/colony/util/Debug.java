@@ -35,46 +35,71 @@ public class Debug {
 		else
 			log_level = ERROR;
 	}
-	
+
 	public static String getLevel(int l) {
 		switch (l) {
-		case ALWAYS:return "*";
-		case TRACE:return "T";
-		case DEBUG:return "D";
-		case WARNING:return "W";
-		case INFO:return "I";
-		case ERROR:return "E";
+		case ALWAYS:
+			return "*";
+		case TRACE:
+			return "T";
+		case DEBUG:
+			return "D";
+		case WARNING:
+			return "W";
+		case INFO:
+			return "I";
+		case ERROR:
+			return "E";
 		}
 		return "*";
 	}
 
 	public static void Log(String msg) {
-		Loga(ALWAYS, msg);
+		Loga(null, ALWAYS, msg);
+	}
+
+	public static void Log(String project, int level, String msg) {
+		if (level >= log_level) {
+			Loga(project, level, msg);
+		}
 	}
 
 	public static void Log(int level, String msg) {
 		if (level >= log_level) {
-			Loga(level, msg);
+			Loga(null, level, msg);
 		}
 	}
-	
+
 	public static void logSurpress() {
 		log_surpress = true;
 	}
 
-	public static void Loga(int level, String msg) {
+	public static void Loga(String project, int level, String msg) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		String timestame=dateFormat.format(date);
-		if (Config.getLogFile()==null||Config.getLogFile().equals("")) {
-			if(!log_surpress)System.out.println(timestame+":" + getLevel(level) + ":" + msg);
+		String timestame = dateFormat.format(date);
+		if (Config.getLogFile() == null || Config.getLogFile().equals("")) {
+			if (project == null) {
+				if (!log_surpress)
+					System.out.println(timestame + ":" + getLevel(level) + ":"
+							+ msg);
+			} else {
+				if (!log_surpress)
+					System.out.println(timestame + ":" + getLevel(level) + ":@"
+							+ project + ":" + msg);
+			}
 		} else {
 			BufferedWriter bw = null;
 
 			try {
 				bw = new BufferedWriter(new FileWriter(Config.getLogFile(),
 						true));
-				bw.write(timestame+":" + getLevel(level) + ":" + msg);
+				if (project == null) {
+					bw.write(timestame + ":" + getLevel(level) + ":" + msg);
+				} else {
+					bw.write(timestame + ":" + getLevel(level) + ":@" + project
+							+ ":" + msg);
+				}
 				bw.newLine();
 				bw.flush();
 			} catch (IOException ioe) {
