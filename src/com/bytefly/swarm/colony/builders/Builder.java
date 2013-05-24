@@ -59,12 +59,12 @@ public class Builder {
 							repo, to, commit, reason, builder);
 			
 			
-			Debug.Log(Debug.TRACE, "Executing " + cmd+ " " + p.Repo);
+			Debug.Log(p.Name, Debug.TRACE, "Executing " + cmd+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(cmd, null,
 					new File("."));
 			pr.waitFor();
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO,
+			Debug.Log(p.Name, Debug.INFO,
 					"Exception caught running sendFailureEmail " + e.toString());
 		}
 	}
@@ -72,15 +72,15 @@ public class Builder {
 	public void notifyEmail() {
 		try {
 			Debug.Log(
-					Debug.TRACE,
+					p.Name, Debug.TRACE,
 					"getting url "
 							+ Config.getStringValue(Config.SWARM_NOTIFY_EMAIL_CMD));
 			HttpConnector hc = new HttpConnector();
 			String r = hc.getURL(Config
 					.getStringValue(Config.SWARM_NOTIFY_EMAIL_CMD));
-			Debug.Log(Debug.TRACE, "notifyEmail result=" + r);
+			Debug.Log(p.Name, Debug.TRACE, "notifyEmail result=" + r);
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO,
+			Debug.Log(p.Name, Debug.INFO,
 					"Exception caught running notifyEmail " + e.toString());
 		}
 	}
@@ -88,7 +88,7 @@ public class Builder {
 	public void repoClean() {
 		try {
 			Debug.Log(
-					Debug.TRACE,
+					p.Name, Debug.TRACE,
 					"Executing "
 							+ Config.getStringValue(Config.SWARM_CLEAN_REPO_CMD)
 							+ " " + p.BaseName);
@@ -96,9 +96,9 @@ public class Builder {
 					Config.getStringValue(Config.SWARM_CLEAN_REPO_CMD) + " "
 							+ p.BaseName);
 			pr.waitFor();
-			Debug.Log(Debug.TRACE, "repoClean result=" + getOutAndErrStream(pr));
+			Debug.Log(p.Name, Debug.TRACE, "repoClean result=" + getOutAndErrStream(pr));
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO,
+			Debug.Log(p.Name, Debug.INFO,
 					"Exception caught running repoClean " + e.toString());
 		}
 	}
@@ -107,7 +107,7 @@ public class Builder {
 		try {
 			Status.counter_git_updates++;
 			Debug.Log(
-					Debug.TRACE,
+					p.Name, Debug.TRACE,
 					"Executing "
 							+ Config.getStringValue(Config.SWARM_GIT_UPDATE_CMD)+ " " + p.Repo);
 			Process pr = Runtime.getRuntime().exec(
@@ -115,9 +115,9 @@ public class Builder {
 					new File(this.p.BaseName));
 			pr.waitFor();
 			String result = getOutAndErrStream(pr).replace("\n", "");
-			Debug.Log(Debug.TRACE, "repoUpdate result=" + result);
+			Debug.Log(p.Name, Debug.TRACE, "repoUpdate result=" + result);
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO,
+			Debug.Log(p.Name, Debug.INFO,
 					"Exception caught running repoUpdate " + e.toString());
 		}
 	}
@@ -126,7 +126,7 @@ public class Builder {
 		try {
 			Status.counter_git_clone++;
 			Debug.Log(
-					Debug.TRACE,
+					p.Name, Debug.TRACE,
 					"Executing "
 							+ Config.getStringValue(Config.SWARM_GIT_CLONE_CMD)
 							+ " " + p.Repo);
@@ -134,9 +134,9 @@ public class Builder {
 					Config.getStringValue(Config.SWARM_GIT_CLONE_CMD) + " "
 							+ p.Repo, null, new File(Config.getProjectDir()));
 			pr.waitFor();
-			Debug.Log(Debug.TRACE, "repoClone result=" + getOutAndErrStream(pr));
+			Debug.Log(p.Name, Debug.TRACE, "repoClone result=" + getOutAndErrStream(pr));
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO,
+			Debug.Log(p.Name, Debug.INFO,
 					"Exception caught running repoClone " + e.toString());
 		}
 	}
@@ -258,7 +258,7 @@ public class Builder {
 				saxParser.parse(fname, handler);
 
 			} catch (Exception e) {
-				Debug.Log(Debug.INFO,
+				Debug.Log(p.Name, Debug.INFO,
 						"Exception caught running loadSwarmXML " + e.toString());
 			}
 
@@ -280,14 +280,14 @@ public class Builder {
 			tfDist = tfDist.replace("\n", "");
 			emailGit = emailGit.replace("\n", "");
 			
-			Debug.Log(Debug.TRACE, "to " + toList);
-			Debug.Log(Debug.TRACE, "fail " + toFailList);
-			Debug.Log(Debug.TRACE, "tf group " + tfGroup);
-			Debug.Log(Debug.TRACE, "tf api " + tfAPI);
-			Debug.Log(Debug.TRACE, "tf dist " + tfDist);
-			Debug.Log(Debug.TRACE, "email git " + emailGit);
+			Debug.Log(p.Name, Debug.TRACE, "to " + toList);
+			Debug.Log(p.Name, Debug.TRACE, "fail " + toFailList);
+			Debug.Log(p.Name, Debug.TRACE, "tf group " + tfGroup);
+			Debug.Log(p.Name, Debug.TRACE, "tf api " + tfAPI);
+			Debug.Log(p.Name, Debug.TRACE, "tf dist " + tfDist);
+			Debug.Log(p.Name, Debug.TRACE, "email git " + emailGit);
 		} catch (Exception e) {
-			Debug.Log(Debug.INFO,
+			Debug.Log(p.Name, Debug.INFO,
 					"Exception caught running loadSwarmXML " + e.toString());
 			toList = toFailList = "";
 		}

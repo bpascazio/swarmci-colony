@@ -40,6 +40,7 @@ public class Config {
 	public static final String SWARM_PWD = "SWARM_PWD";
 	public static final String SWARM_XCODE_FIND_XCODEPROJ = "SWARM_XCODE_FIND_XCODEPROJ";
 	public static final String SWARM_XCODE_APP_NAME = "SWARM_XCODE_APP_NAME";
+	public static final String SWARM_LIFETIME = "SWARM_LIFETIME";
 	public static final String SWARM_DEBUG_LOG_LEVEL = "swarm_debug_level";
 	public static final String SWARM_COLONY_UUID = "swarm_colony_uuid";
 	public static final String SWARM_DEBUG_LOG_FILE = "swarm_debug_file";
@@ -49,6 +50,7 @@ public class Config {
 	public static final String SWARM_SUPERCOLONY_MODE = "swarm_supercolony_mode";
 	public static final String SWARM_PROJECT_ALWAYS_CLEAN = "swarm_project_always_clean";
 	public static final String SWARM_PROJECT_POLL_RATE = "swarm_project_poll_rate";
+	public static final String SWARM_PROJECT_LIFETIME = "swarm_project_lifetime";
 
 	public static final String SWARM_COLONY_CONFIG_PATH = "SWARM_COLONY_CONFIG_PATH";
 
@@ -64,9 +66,16 @@ public class Config {
 		}
 		if (key.equals(SWARM_GIT_CHECK_FREQ)) {
 			if (getPollRate().equals("")) {
-				return 60000; // scan for updated git repositories every 60 seconds
+				return 60000; // scan for updated git repositories every 60 seconds is default
 			} else {
 				return Integer.parseInt(getPollRate()) * 60 * 1000;
+			}
+		}
+		if (key.equals(SWARM_LIFETIME)) {
+			if (getLifetime().equals("")) {
+				return -1; // number of polls for lifetime of server
+			} else {
+				return Integer.parseInt(getLifetime());
 			}
 		}
 		if (key.equals(SWARM_STATUS_CHECK_FREQ)) {
@@ -92,6 +101,7 @@ public class Config {
 	static String VAL_SWARM_SUPERCOLONY_MODE = "";
 	static String VAL_SWARM_PROJECT_ALWAYS_CLEAN = "";
 	static String VAL_SWARM_PROJECT_POLL_RATE = "";
+	static String VAL_SWARM_LIFETIME = "";
 
 	public static void setAlwaysClean(String s) {
 		VAL_SWARM_PROJECT_ALWAYS_CLEAN = s;
@@ -99,6 +109,10 @@ public class Config {
 
 	public static void setPollRate(String s) {
 		VAL_SWARM_PROJECT_POLL_RATE = s;
+	}
+
+	public static void setLifetime(String s) {
+		VAL_SWARM_LIFETIME = s;
 	}
 
 	public static void setSuperColonyMode(String s) {
@@ -115,6 +129,10 @@ public class Config {
 
 	public static String getPollRate() {
 		return VAL_SWARM_PROJECT_POLL_RATE;
+	}
+
+	public static String getLifetime() {
+		return VAL_SWARM_LIFETIME;
 	}
 
 	public static String getAlwaysClean() {

@@ -79,13 +79,14 @@ public class GitManager extends Manager {
 
 				if (p.buildTriggerCleared == 1 && p.buildTrigger == 0) {
 					p.buildTriggerCleared = 0;
+					Debug.Log(p.Name, Debug.TRACE, "Clearing build trigger.");
 				}
 
 				// We can trigger if we are not currently in a cleared state and
 				// triggered.
 				if (p.buildTriggerCleared == 0 && p.buildTrigger == 1) {
 
-					Debug.Log(Debug.TRACE, "Build triggered by project.");
+					Debug.Log(p.Name, Debug.TRACE, "Build triggered by project.");
 					Status.counter_builds_triggered++;
 					p.buildTriggerCleared = 1;
 					Work bw = new Work(Work.WORK_ITEM_BUILD_BUILD_PROJECT);

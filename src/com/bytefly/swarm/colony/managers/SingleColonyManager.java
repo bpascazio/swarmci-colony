@@ -28,6 +28,7 @@ public class SingleColonyManager extends Manager {
 		int cproject = 0;
 		int cscan = 0;
 		int ccloud = 0;
+		int clife = Config.getIntValue(Config.SWARM_LIFETIME);
 		Work w = null;
 
 		while (running) {
@@ -123,6 +124,18 @@ public class SingleColonyManager extends Manager {
 				// reset the counter
 				cscan = Config.getIntValue(Config.SWARM_GIT_CHECK_FREQ)
 						+ Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
+				
+				// if clife is not -1 (infinite run) then we decrement it till it gets to 0
+				if (clife>=0) {
+					clife--;
+					Debug.Log(Debug.TRACE, "SingleColonyManager lifetime is "+clife);
+					if(clife==0) {
+						running=false;
+						System.exit(1);
+					}
+				} else {
+					Debug.Log(Debug.TRACE, "SingleColonyManager lifetime is forever");
+				}
 			} else {
 				cscan = cscan - Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
 			}
