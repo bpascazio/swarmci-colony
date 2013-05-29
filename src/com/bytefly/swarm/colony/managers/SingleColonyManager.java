@@ -42,7 +42,7 @@ public class SingleColonyManager extends Manager {
 				Debug.Log(Debug.INFO,
 						"SingleColonyManager exception with managers.");
 				stop();
-			}
+			} 
 			//
 			// Swarm main processing is a thread that waks up 4 times a second
 			// (for now).
@@ -56,7 +56,7 @@ public class SingleColonyManager extends Manager {
 			// config and properties.
 			//
 
-			if (ccloud == 0) {
+			if (running && ccloud == 0) {
 
 				// send command to git manager
 				try {
@@ -77,7 +77,7 @@ public class SingleColonyManager extends Manager {
 						- Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
 			}
 
-			if (cproject == 0) {
+			if (running && cproject == 0) {
 
 				// Only issue project scan if cloud is connected
 				if (((CloudManager) cm).connected()) {
@@ -108,7 +108,7 @@ public class SingleColonyManager extends Manager {
 						- Config.getIntValue(Config.SWARM_MGR_CHECK_FREQ);
 			}
 
-			if (cscan == 0) {
+			if (running && cscan == 0) {
 
 				// Only issue git change scan if cloud is connected
 				if (((CloudManager) cm).connected()) {
@@ -154,7 +154,7 @@ public class SingleColonyManager extends Manager {
 			}
 
 			// Check to see if we've gone to a connected state, this auto clears
-			if (((CloudManager) cm).connectTriggerLatchTransition()) {
+			if (running && ((CloudManager) cm).connectTriggerLatchTransition()) {
 
 				// Reset everthing since now connected
 				cproject = cscan = 0;
