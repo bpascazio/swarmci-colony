@@ -46,29 +46,24 @@ public class HttpConnector {
 	public String tempstr = "";
 	public String infostr = "";
 	public int error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume
-																// communicaton
-	static HttpClient httpclient = null;														// problem
+																// communication
+	static HttpClient httpclient = null; // problem
 	static BasicHttpContext mHttpContext = new BasicHttpContext();
-	CookieStore mCookieStore      = new BasicCookieStore();        
-	
-//	public HttpConnector() {
-//	}
+	CookieStore mCookieStore = new BasicCookieStore();
+
 	public String getURL(String eurl) {
 
 		boolean updated = false; // assume failure
-		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
+		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communication
 														// problem
 		BufferedReader in = null;
 
 		try {
 
-			String sstr = java.net.URLEncoder.encode(eurl, "ISO-8859-1");
 			String url = eurl;
 
-//			Debug.Log(Debug.TRACE, "url=" + url);
-
-			
-			if (httpclient==null) httpclient = new DefaultHttpClient();
+			if (httpclient == null)
+				httpclient = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -80,7 +75,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "useragent=" + useragent);
 
 			// execute the http GET
-			HttpResponse response = httpclient.execute(request,mHttpContext);
+			HttpResponse response = httpclient.execute(request, mHttpContext);
 
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
@@ -92,7 +87,6 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-	//		Debug.Log(Debug.TRACE, "response=" + page);
 			return page;
 
 		} catch (Exception e) {
@@ -130,12 +124,12 @@ public class HttpConnector {
 		try {
 
 			String entitystr = java.net.URLEncoder.encode(entity, "ISO-8859-1");
-			String url = "http://www.swarmci.com" + "/"
-					+ entitystr + ".json";
+			String url = "http://www.swarmci.com" + "/" + entitystr + ".json";
 
 			Debug.Log(Debug.TRACE, "url=" + url);
-			
-			if (httpclient==null) httpclient = new DefaultHttpClient();
+
+			if (httpclient == null)
+				httpclient = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -147,7 +141,7 @@ public class HttpConnector {
 			Debug.Log(Debug.TRACE, "useragent=" + useragent);
 
 			// execute the http GET
-			HttpResponse response = httpclient.execute(request,mHttpContext);
+			HttpResponse response = httpclient.execute(request, mHttpContext);
 
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
@@ -205,24 +199,21 @@ public class HttpConnector {
 
 		return c;
 	}
+
 	public int checkConnection(String sserver, String semail, String spassword) {
 
 		int userid = 0; // assume failure
-		error_code = ERROR_CODE_COMMUNICATON_PROBLEM; // assume communicaton
+		error_code = ERROR_CODE_COMMUNICATON_PROBLEM;	// assume communication
 														// problem
 		BufferedReader in = null;
 
 		try {
-			String url = String
-					.format(Config
-							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
-							sserver, 
-							semail,
-							spassword);
-			
-//			System.out.println("***SECURITY**** url=" + url);
+			String url = String.format(Config
+					.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_V1),
+					sserver, semail, spassword);
 
-			if (httpclient==null) httpclient = new DefaultHttpClient();
+			if (httpclient == null)
+				httpclient = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -234,7 +225,7 @@ public class HttpConnector {
 
 			// execute the http GET
 			mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
-			HttpResponse response = httpclient.execute(request,mHttpContext);
+			HttpResponse response = httpclient.execute(request, mHttpContext);
 
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
@@ -246,19 +237,13 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-	//		System.out.println("***SECURITY**** page=" + page);
 
-			
-			url = String
-					.format(Config
-							.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_TOKEN),
-							sserver, 
-							semail,
-							spassword);
-			
-//			System.out.println("***SECURITY**** url=" + url);
+			url = String.format(Config
+					.getStringValue(Config.SWARM_COLONY_AUTHENTICATION_TOKEN),
+					sserver, semail, spassword);
 
-			if (httpclient==null) httpclient = new DefaultHttpClient();
+			if (httpclient == null)
+				httpclient = new DefaultHttpClient();
 			request = new HttpGet();
 
 			request.setURI(new URI(url));
@@ -270,7 +255,7 @@ public class HttpConnector {
 
 			// execute the http GET
 			mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
-			response = httpclient.execute(request,mHttpContext);
+			response = httpclient.execute(request, mHttpContext);
 
 			in = new BufferedReader(new InputStreamReader(response.getEntity()
 					.getContent()));
@@ -282,7 +267,6 @@ public class HttpConnector {
 			}
 			in.close();
 			page = sb.toString();
-	//		System.out.println("***SECURITY**** page=" + page);
 			page = page.replace("\n", "");
 			page = page.replace(" ", "");
 			if (!page.equals("")) {
@@ -315,46 +299,44 @@ public class HttpConnector {
 	}
 
 	public void setEntity(String sserver, Entity e) {
+		
 		// Create a new HttpClient and Post Header
 		String entitystr = e.ENTITY_COLLECTION;
-		String url = "http://"+sserver+"/"+entitystr;
-		
-//		System.out.print("url=" + url);
-		
-		if (httpclient==null) httpclient = new DefaultHttpClient();
+		String url = "http://" + sserver + "/" + entitystr;
+
+		if (httpclient == null)
+			httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
 		BufferedReader in = null;
+		
 		// Add your data
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
 		if (e instanceof Project) {
 
-			Project b = (Project)e;
-			nameValuePairs
-					.add(new BasicNameValuePair("project[name]", b.Name));
-			nameValuePairs.add(new BasicNameValuePair("project[repo]",
-					""+b.Repo));
-			nameValuePairs.add(new BasicNameValuePair("project[user_id]",
-					""+b.UserId));
-			nameValuePairs.add(new BasicNameValuePair("project[builder]",
-					""+b.Builder));
+			Project b = (Project) e;
+			nameValuePairs.add(new BasicNameValuePair("project[name]", b.Name));
+			nameValuePairs.add(new BasicNameValuePair("project[repo]", ""
+					+ b.Repo));
+			nameValuePairs.add(new BasicNameValuePair("project[user_id]", ""
+					+ b.UserId));
+			nameValuePairs.add(new BasicNameValuePair("project[builder]", ""
+					+ b.Builder));
 		}
 
 		if (e instanceof Build) {
 
-			Build b = (Build)e;
-			nameValuePairs
-					.add(new BasicNameValuePair("build[success]", b.success?"1":"0"));
-			nameValuePairs.add(new BasicNameValuePair("build[project_id]",
-					""+b.project_id));
-			nameValuePairs.add(new BasicNameValuePair("build[user_id]",
-					""+b.user_id));
-//			System.out.print("adding entity "+b.project_id+" "+b.user_id+" "+b.success);
+			Build b = (Build) e;
+			nameValuePairs.add(new BasicNameValuePair("build[success]",
+					b.success ? "1" : "0"));
+			nameValuePairs.add(new BasicNameValuePair("build[project_id]", ""
+					+ b.project_id));
+			nameValuePairs.add(new BasicNameValuePair("build[user_id]", ""
+					+ b.user_id));
 		}
 		try {
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		} catch (Exception ex) {
-			// TODO Auto-generated catch block
 			Debug.Log(Debug.TRACE, "exception=" + ex);
 		}
 
@@ -373,7 +355,6 @@ public class HttpConnector {
 			}
 			in.close();
 			String page = sb.toString();
-//			Debug.Log(Debug.TRACE, "post response=" + page);
 			if (in != null) {
 				try {
 					in.close();
@@ -382,10 +363,8 @@ public class HttpConnector {
 				}
 			}
 		} catch (ClientProtocolException epx) {
-			// TODO Auto-generated catch block
 			epx.printStackTrace();
 		} catch (IOException ioe) {
-			// TODO Auto-generated catch block
 			ioe.printStackTrace();
 
 		}

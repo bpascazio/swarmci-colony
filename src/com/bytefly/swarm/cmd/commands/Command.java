@@ -26,8 +26,7 @@ public class Command {
 			+ "\t<testflight_team_token></testflight_team_token>\n"
 			+ "\t<!-- testflight distribution group -->\n"
 			+ "\t<testflight_distribution_group></testflight_distribution_group>\n"
-			+ "\t<email_git_info>true</email_git_info>\n"
-			+ "</swarm>\n";
+			+ "\t<email_git_info>true</email_git_info>\n" + "</swarm>\n";
 
 	public boolean checkForGit() {
 
@@ -71,18 +70,19 @@ public class Command {
 				success = sxmlok = true;
 			}
 		} catch (Exception e) {
-				System.out.print("swarm.xml search exception: " + e);
+			System.out.print("swarm.xml search exception: " + e);
 		}
 		if (!sxmlFound) {
 			// Create it and commit it.
 			Scanner scanner = new Scanner(System.in);
-			System.out.print("\nswarm.xml not found - create and push? (Y/n): ");
+			System.out
+					.print("\nswarm.xml not found - create and push? (Y/n): ");
 			String resp = scanner.nextLine();
 			resp = resp.replace("\n", "");
-			if (resp.equals("n")||resp.equals("N")) {
+			if (resp.equals("n") || resp.equals("N")) {
 				sxmlok = false;
 			}
-			
+
 			SwarmUser u = SwarmUser.getUserInfo();
 			String xmlfile = String.format(swarmxml, u.email, u.email);
 			try {
@@ -90,6 +90,7 @@ public class Command {
 				bw = new BufferedWriter(new FileWriter("swarm.xml", true));
 				bw.write(xmlfile);
 				bw.flush();
+				bw.close();
 				sxmlok = true;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -103,7 +104,7 @@ public class Command {
 							null, new File("."));
 					pr.waitFor();
 					String result = getOutAndErrStream(pr).replace("\n", "");
-					if (result.equals("")) {			
+					if (result.equals("")) {
 						System.out.print("...");
 						gitadd = true;
 					}
@@ -115,14 +116,13 @@ public class Command {
 			if (gitadd) {
 				System.out.print("commiting");
 				try {
-					Process pr = Runtime.getRuntime().exec("git commit -m added swarm.xml",
-							null, new File("."));
+					Process pr = Runtime.getRuntime().exec(
+							"git commit -m added swarm.xml", null,
+							new File("."));
 					pr.waitFor();
 					String result = getOutAndErrStream(pr).replace("\n", "");
-//					if (result.equals("")) {
-						System.out.print("...");
-						gitcommit = true;
-//					}
+					System.out.print("...");
+					gitcommit = true;
 				} catch (Exception e) {
 					System.out.print("commit search exception: " + e);
 				}
@@ -131,14 +131,12 @@ public class Command {
 			if (gitcommit) {
 				System.out.print("pushing\n");
 				try {
-					Process pr = Runtime.getRuntime().exec("git push",
-							null, new File("."));
+					Process pr = Runtime.getRuntime().exec("git push", null,
+							new File("."));
 					pr.waitFor();
 					String result = getOutAndErrStream(pr).replace("\n", "");
-//					if (result.equals("")) {
-						gitpush = true;
-						success = true;
-//					}
+					gitpush = true;
+					success = true;
 				} catch (Exception e) {
 					System.out.print("push exception: " + e);
 				}

@@ -9,8 +9,6 @@ import com.bytefly.swarm.colony.util.HttpConnector;
 public class Run extends Command {
 	public Run(String pn, boolean s) {
 		SwarmUser sw = SwarmUser.getUserInfo();
-		// System.out.print("Email:\t"+sw.email+"\n");
-		// System.out.print("Server:\t"+sw.server+"\n");
 		Config.setRailsServer(sw.server);
 		HttpConnector h = new HttpConnector();
 		Project fproject = null;
@@ -19,7 +17,6 @@ public class Run extends Command {
 			ProjectList pl = new ProjectList();
 			for (int i = 0; i < pl.cv.size(); i++) {
 				Project p = (Project) pl.cv.elementAt(i);
-				// System.out.print(p.Name+" last build "+p.buildNum+". ["+p.Repo+"]\n");
 				if (p.Name.equals(pn)) {
 					fproject = p;
 					break;

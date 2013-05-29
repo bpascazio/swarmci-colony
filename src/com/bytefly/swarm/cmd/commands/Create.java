@@ -20,22 +20,23 @@ public class Create extends Command {
 		if (checkForGit()) {
 
 			getRepo();
-			if (repo==null) {
-				System.out.print("Repository not found or not supported on this platform.\n");
+			if (repo == null) {
+				System.out
+						.print("Repository not found or not supported on this platform.\n");
 				return;
 			}
 			checkForSwarmXML();
 			Project p = new Project();
-			p.Repo=repo;
-			p.Name=n;
+			p.Repo = repo;
+			p.Name = n;
 			SwarmUser sw = SwarmUser.getUserInfo();
 			HttpConnector h = new HttpConnector();
 			sw.uid = h.checkConnection(sw.server, sw.email, sw.password);
-			if (sw.uid==0) {
+			if (sw.uid == 0) {
 				System.out.print("Could not authenticate.\n");
 			} else {
 				p.UserId = sw.uid;
-				h.setEntity(sw.server,p);
+				h.setEntity(sw.server, p);
 				System.out.print("Swarm cloud building enabled.\n");
 			}
 		} else {
@@ -48,16 +49,16 @@ public class Create extends Command {
 			repo = "";
 			Process pr = null;
 			String homeDir = System.getenv("HOMEPATH");
-			if (homeDir!=null && homeDir.equals("")==false) {
+			if (homeDir != null && homeDir.equals("") == false) {
 				repo = null;
 				return;
 			} else {
-				pr = Runtime.getRuntime().exec("git remote show origin",
-						null, new File("."));
+				pr = Runtime.getRuntime().exec("git remote show origin", null,
+						new File("."));
 			}
 			pr.waitFor();
 			String result = getOutAndErrStream(pr);
-			System.out.print("result="+result);
+			System.out.print("result=" + result);
 			Pattern myPattern = Pattern.compile(".git.",
 					Pattern.CASE_INSENSITIVE);
 			// loop start
@@ -73,7 +74,7 @@ public class Create extends Command {
 					return;
 				}
 			}
-			
+
 		} catch (Exception e) {
 			System.out.print("git repo exception: " + e);
 		}

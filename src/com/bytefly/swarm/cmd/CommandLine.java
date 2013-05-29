@@ -13,70 +13,78 @@ import com.bytefly.swarm.colony.util.Debug;
 
 public class CommandLine {
 	public static void main(String[] args) {
-		if (args.length==3&&args[2].equals("v")) {
+		if (args.length == 3 && args[2].equals("v")) {
 			;
 		} else {
 			Debug.logSurpress();
 		}
-		if (args.length==0) {
+		if (args.length == 0) {
 			usage();
 		} else if (args[0].equals("version")) {
 			version();
 		} else if (args[0].equals("create")) {
-			if (args.length>1) {
+			if (args.length > 1) {
 				create(args[1]);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm create myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm create myapp'.");
 			}
 		} else if (args[0].equals("on")) {
-			if (args.length>1) {
-				on_off(args[1],true);
+			if (args.length > 1) {
+				on_off(args[1], true);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm on myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm on myapp'.");
 			}
 		} else if (args[0].equals("off")) {
-			if (args.length>1) {
-				on_off(args[1],false);
+			if (args.length > 1) {
+				on_off(args[1], false);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm off myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm off myapp'.");
 			}
 		} else if (args[0].equals("run")) {
-			if (args.length>1) {
-				run(args[1],true);
+			if (args.length > 1) {
+				run(args[1], true);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm run myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm run myapp'.");
 			}
-		}  else if (args[0].equals("stop")) {
-			if (args.length>1) {
-				run(args[1],false);
+		} else if (args[0].equals("stop")) {
+			if (args.length > 1) {
+				run(args[1], false);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm stop myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm stop myapp'.");
 			}
 		} else if (args[0].equals("log")) {
-			if (args.length>1) {
+			if (args.length > 1) {
 				log(args[1]);
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm log myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm log myapp'.");
 			}
 		} else if (args[0].equals("colony")) {
-			if (args.length>1) {
+			if (args.length > 1) {
 				builder(args[1], "colony");
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm colony myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm colony myapp'.");
 			}
 		} else if (args[0].equals("cloud")) {
-			if (args.length>1) {
+			if (args.length > 1) {
 				builder(args[1], "cloud");
 			} else {
 				usage();
-				System.out.println(">>>>>>>>>> Project name is required such as 'swarm cloud myapp'.");
+				System.out
+						.println(">>>>>>>>>> Project name is required such as 'swarm cloud myapp'.");
 			}
 		} else if (args[0].equals("status")) {
 			status();
@@ -84,46 +92,70 @@ public class CommandLine {
 			usage();
 		}
 	}
+
 	public static void usage() {
-		System.out.println("\nCloud Based Continuous Integration for Mobile Apps.");
-		System.out.println("\nUsage:\n\tswarm [options] <project name> <profile filename> <comment>");
-		System.out.println("\nDescription: To begin using swarm run 'swarm create <project name>' while in\nthe subdirectory containing your git repository.  The project will initially\nbe in the off state and not compile builds on git commits.");
-		System.out.println("\nFor build settings, review the swarm.xml which should be created in the repository\nsubdirectory.");
-		System.out.println("\nNext use 'swarm run <project name> to test the cloud compilation. After successful");
-		System.out.println("compilation run 'swarm on <project name>' to begin normal continuous integration.");
+		System.out
+				.println("\nCloud Based Continuous Integration for Mobile Apps.");
+		System.out
+				.println("\nUsage:\n\tswarm [options] <project name> <profile filename> <comment>");
+		System.out
+				.println("\nDescription: To begin using swarm run 'swarm create <project name>' while in\nthe subdirectory containing your git repository.  The project will initially\nbe in the off state and not compile builds on git commits.");
+		System.out
+				.println("\nFor build settings, review the swarm.xml which should be created in the repository\nsubdirectory.");
+		System.out
+				.println("\nNext use 'swarm run <project name> to test the cloud compilation. After successful");
+		System.out
+				.println("compilation run 'swarm on <project name>' to begin normal continuous integration.");
 		System.out.println("\nOptions:\n");
-		System.out.println("create <project name> - Create and configure a new project.");		
-		System.out.println("remove <project name> - Removes a project from swarm.");		
-		System.out.println("profile <project name> <profile filename> - Uploads Apple iOS profile to swarm cloud.");
-		System.out.println("run    <project name> - Run a single build of the project.");
+		System.out
+				.println("create <project name> - Create and configure a new project.");
+		System.out
+				.println("remove <project name> - Removes a project from swarm.");
+		System.out
+				.println("profile <project name> <profile filename> - Uploads Apple iOS profile to swarm cloud.");
+		System.out
+				.println("run    <project name> - Run a single build of the project.");
 		System.out.println("stop   <project name> - Stop a running project.");
-		System.out.println("on     <project name> - Start normal continuous integration for project.");
-		System.out.println("off    <project name> - Stops continous integration.");
-		System.out.println("colony <project name> - Run builds on personal Colony Server.");
-		System.out.println("cloud  <project name> - Run builds on the SwarmBuild Cloud Server.");
-		System.out.println("\nstatus  - Displays list of projects and their status.");
+		System.out
+				.println("on     <project name> - Start normal continuous integration for project.");
+		System.out
+				.println("off    <project name> - Stops continous integration.");
+		System.out
+				.println("colony <project name> - Run builds on personal Colony Server.");
+		System.out
+				.println("cloud  <project name> - Run builds on the SwarmBuild Cloud Server.");
+		System.out
+				.println("\nstatus  - Displays list of projects and their status.");
 		System.out.println("log     - Displays log file for a project.");
 		System.out.println("version - Displays version information.\n");
 	}
+
 	public static void version() {
-		System.out.println("Version is "+Info.build_version+" built on "+Info.build_date);		
+		System.out.println("Version is " + Info.build_version + " built on "
+				+ Info.build_date);
 	}
+
 	public static void create(String n) {
 		Create c = new Create(n);
 	}
+
 	public static void log(String n) {
 		Log c = new Log(n);
 	}
+
 	public static void status() {
 		Status c = new Status();
 	}
+
 	public static void on_off(String n, boolean s) {
-		OnOff c = new OnOff(n,s);
+		OnOff c = new OnOff(n, s);
 	}
+
 	public static void run(String n, boolean s) {
-		Run c = new Run(n,s);
+		Run c = new Run(n, s);
 	}
+
 	public static void builder(String n, String c) {
-		Builder cm = new Builder(n,c);
+		Builder cm = new Builder(n, c);
 	}
 }

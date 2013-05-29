@@ -142,7 +142,7 @@ public class SwarmUser {
 				success = true;
 
 			} catch (Exception e) {
-	//			 e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 		}
@@ -158,7 +158,7 @@ public class SwarmUser {
 			if (path.equals("")) {
 				String homeDir = System.getenv("HOMEPATH");
 				String userHome = System.getProperty("user.home");
-				if (homeDir!=null && homeDir.equals("")==false) {
+				if (homeDir != null && homeDir.equals("") == false) {
 					path = System.getenv("HOMEDRIVE") + "\\swarmcfg.xml";
 				} else {
 					path = userHome + "/.swarm/swarmcfg.xml";
@@ -166,7 +166,7 @@ public class SwarmUser {
 			}
 			r = new ReadXMLFile();
 			r.execute(path);
-			
+
 		} catch (Exception e) {
 			System.out.print("Exception caught running attemptLoadFromFile "
 					+ e.toString());
@@ -245,9 +245,6 @@ public class SwarmUser {
 			password = password.replace("\n", "");
 
 			email = username;
-			// System.out.print("Server [default ]: ");
-			// server = scanner.nextLine();
-			// server = server.replace("\n", "");
 			server = "";
 			if (server.equals(""))
 				server = Config.getStringValue(Config.SWARM_RAILS_URL);
@@ -282,19 +279,17 @@ public class SwarmUser {
 			String xmlfile = String.format(dotswarmxml, e, u, su.encrypt(p), s);
 
 			String userHome = System.getProperty("user.home");
-			// System.out.print("userHome "+userHome);
 			String homeDir = System.getenv("HOMEPATH");
-			if (homeDir==null || homeDir.equals("")==true) {
+			if (homeDir == null || homeDir.equals("") == true) {
 				Process pr = Runtime.getRuntime().exec(
 						Config.getStringValue(Config.SWARM_MAKE_DOT_SWARM_DIR),
 						null, new File(userHome));
 				pr.waitFor();
 				String result = getOutAndErrStream(pr).replace("\n", "");
 			}
-			// System.out.print("resultmk "+result);
 			String path = userHome + "/.swarm/swarmcfg.xml";
-			if (homeDir!=null && homeDir.equals("")==false) {
-				path =  System.getenv("HOMEDRIVE") + "\\swarmcfg.xml";
+			if (homeDir != null && homeDir.equals("") == false) {
+				path = System.getenv("HOMEDRIVE") + "\\swarmcfg.xml";
 			}
 			BufferedWriter bw;
 			bw = new BufferedWriter(new FileWriter(path, false));
