@@ -101,7 +101,7 @@ public class Colony extends Thread {
 			String dir = colonyProps.getProperty(Config.SWARM_PROJECT_DIR);
 			Config.setProjectDir(dir);
 			String ac = colonyProps.getProperty(Config.SWARM_PROJECT_ALWAYS_CLEAN);
-			Config.setAlwaysClean(ac);
+			if (ac!=null)Config.setAlwaysClean(ac);
 			String pra = colonyProps.getProperty(Config.SWARM_PROJECT_POLL_RATE);
 			if (pra!=null)Config.setPollRate(pra);
 			String lt = colonyProps.getProperty(Config.SWARM_PROJECT_LIFETIME);
