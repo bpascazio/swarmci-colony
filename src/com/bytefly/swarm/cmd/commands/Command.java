@@ -26,7 +26,9 @@ public class Command {
 			+ "\t<testflight_team_token></testflight_team_token>\n"
 			+ "\t<!-- testflight distribution group -->\n"
 			+ "\t<testflight_distribution_group></testflight_distribution_group>\n"
-			+ "\t<email_git_info>true</email_git_info>\n" + "</swarm>\n";
+			+ "\t<email_git_info>true</email_git_info>\n"
+			+ "\t<!-- comma delimited paths to build -->\n"
+			+ "\t<build_paths></build_paths>\n" + "</swarm>\n";
 
 	public boolean checkForGit() {
 

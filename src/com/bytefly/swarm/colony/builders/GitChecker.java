@@ -47,8 +47,13 @@ public class GitChecker extends Builder {
 	
 	public void buildTypeChecker() {
 		try {
+			String path = p.BaseName;
+			if (!buildPaths.equals("")) {
+				path = path+"/"+buildPaths;
+				Debug.Log(p.Name, Debug.TRACE, "building specified path:"+path);
+			}
 			Debug.Log(p.Name, Debug.TRACE, "Executing "+Config.getStringValue(Config.SWARM_ANDROID_FIND_MANIFEST)+"");
-			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_FIND_MANIFEST),null,new File(this.p.BaseName));
+			Process pr = Runtime.getRuntime().exec(Config.getStringValue(Config.SWARM_ANDROID_FIND_MANIFEST),null,new File(path));
 			pr.waitFor(); 
 			String androidManifestPath = new String(getOutAndErrStream(pr));
 			androidManifestPath = androidManifestPath.replace("\n", "");

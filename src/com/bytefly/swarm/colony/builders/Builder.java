@@ -30,6 +30,7 @@ public class Builder {
 	String tfDist= "y";
 	
 	String emailGit = "true";
+	String buildPaths = "";
 
 	public static final int BUILDER_TYPE_GENERIC = 0;
 	public static final int BUILDER_TYPE_XCODE = 1;
@@ -185,6 +186,7 @@ public class Builder {
 					boolean tftg = false; //group
 					boolean tfd = false; //distribution list
 					boolean tegit = false; 
+					boolean bpath = false;
 
 					public void startElement(String uri, String localName,
 							String qName, org.xml.sax.Attributes attributes)
@@ -211,6 +213,10 @@ public class Builder {
 						if (qName.equalsIgnoreCase("email_git_info")) {
 							tegit = true;
 						}
+
+						if (qName.equalsIgnoreCase("build_paths")) {
+							bpath = true;
+						}
 					}
 
 					public void endElement(String uri, String localName,
@@ -224,6 +230,11 @@ public class Builder {
 						if (tegit) {
 							tegit = false;
 							emailGit = new String(ch, start, length);
+						}
+
+						if (bpath) {
+							bpath = false;
+							buildPaths = new String(ch, start, length);
 						}
 
 						if (tos) {
@@ -279,6 +290,7 @@ public class Builder {
 			tfGroup = tfGroup.replace("\n", "");
 			tfDist = tfDist.replace("\n", "");
 			emailGit = emailGit.replace("\n", "");
+			buildPaths = buildPaths.replace("\n", "");
 			
 			Debug.Log(p.Name, Debug.TRACE, "to " + toList);
 			Debug.Log(p.Name, Debug.TRACE, "fail " + toFailList);
@@ -286,6 +298,7 @@ public class Builder {
 			Debug.Log(p.Name, Debug.TRACE, "tf api " + tfAPI);
 			Debug.Log(p.Name, Debug.TRACE, "tf dist " + tfDist);
 			Debug.Log(p.Name, Debug.TRACE, "email git " + emailGit);
+			Debug.Log(p.Name, Debug.TRACE, "bpaths git " + buildPaths);
 		} catch (Exception e) {
 			Debug.Log(p.Name, Debug.INFO,
 					"Exception caught running loadSwarmXML " + e.toString());
